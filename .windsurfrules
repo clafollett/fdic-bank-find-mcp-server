@@ -1,5 +1,8 @@
 # .windsurfrules for fdic-bank-find-mcp-server
 
+## Prime Directive: Do It Right the First Time
+- All code, tests, and documentation must be written with maximum accuracy and completeness on the first attempt. No shortcuts, sloppiness, or incomplete implementations are permitted. Any code or test that does not fully match the requirements, struct definitions, or project standards must be considered a failure and corrected immediately.
+
 ## General Rust Coding Standards
 - All code must be idiomatic Rust and pass `cargo check` and `cargo test`.
 - Use explicit error handling (`Result`, `Option`)—avoid panics in production code.
@@ -14,6 +17,7 @@
 - Consistently wrap external API responses in a project-standard MCP format (e.g., `{ meta, data }`).
 
 ## Testing
+- **All new features, structs, and public types must have comprehensive unit test coverage. Tests must validate both typical and edge/error cases, and should directly exercise all struct fields and logic. No new feature or struct should be merged without corresponding tests.**
 - All endpoints and handlers must have unit tests covering both success and error cases.
 - Tests must be kept up to date with code changes.
 - Use mock servers for external API dependencies in tests.
