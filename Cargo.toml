@@ -12,3 +12,9 @@ serde_json = "1"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 hyper = { version = "1", features = ["server"] }
+http-body-util = "0.1"
+utoipa = "5.3.1"
+utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
+
+[dev-dependencies]
+wiremock = "0.6"
