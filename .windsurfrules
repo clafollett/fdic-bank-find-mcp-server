@@ -1,0 +1,32 @@
+# .windsurfrules for fdic-bank-find-mcp-server
+
+## Prime Directive: Do It Right the First Time
+- All code, tests, and documentation must be written with maximum accuracy and completeness on the first attempt. No shortcuts, sloppiness, or incomplete implementations are permitted. Any code or test that does not fully match the requirements, struct definitions, or project standards must be considered a failure and corrected immediately.
+
+## General Rust Coding Standards
+- All code must be idiomatic Rust and pass `cargo check` and `cargo test`.
+- Use explicit error handling (`Result`, `Option`)—avoid panics in production code.
+- Validate all user input and return clear, actionable error messages.
+- Follow Rust naming conventions: `snake_case` for functions/variables, `CamelCase` for types/structs/enums.
+- Document all public functions, structs, and modules with `///` doc comments.
+- Prefer small, focused functions and modular code organization.
+
+## Web/Handler Rules
+- Use `axum` 0.7+ idioms for all web handlers.
+- Always validate query and body parameters; return HTTP 400 for user errors, 502 for upstream errors.
+- Consistently wrap external API responses in a project-standard MCP format (e.g., `{ meta, data }`).
+
+## Testing
+- **All new features, structs, and public types must have comprehensive unit test coverage. Tests must validate both typical and edge/error cases, and should directly exercise all struct fields and logic. No new feature or struct should be merged without corresponding tests.**
+- All endpoints and handlers must have unit tests covering both success and error cases.
+- Tests must be kept up to date with code changes.
+- Use mock servers for external API dependencies in tests.
+
+## Project-Specific
+- MCP endpoints must proxy all relevant FDIC BankFind API parameters and validate them.
+- Ensure all string parameters (except for `api_key` and `filename`) are uppercased before proxying to FDIC API.
+- Add clear TODO comments for any temporary workarounds (e.g., Swagger UI with Axum 0.7+).
+
+## Collaboration
+- Prompt the User to update this file with any new conventions, patterns, or architectural decisions as the project evolves.
+- Provide the necessary instructions and examples for new patterns or decisions.
