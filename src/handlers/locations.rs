@@ -86,17 +86,46 @@ pub struct LocationsQuery {
     tag = "Structure"
 )]
 pub async fn locations_handler(Query(params): Query<LocationsQuery>) -> Response {
+
+
+    use axum::Json;
+    use serde_json::json;
+
+    // Validate limit (must be <= 10_000)
+    if let Some(limit) = params.limit {
+        if limit > 10_000 {
+            return (
+                StatusCode::BAD_REQUEST,
+                Json(json!({
+                    "error": "Limit must be <= 10,000"
+                }))
+            ).into_response();
+        }
+    }
+    // Validate sort_order if present
+    if let Some(ref order) = params.sort_order {
+        let upper = order.to_uppercase();
+        if upper != "ASC" && upper != "DESC" {
+            return (
+                StatusCode::BAD_REQUEST,
+                Json(json!({
+                    "error": "sort_order must be 'ASC' or 'DESC'"
+                }))
+            ).into_response();
+        }
+    }
+    // Build query map, uppercasing all string values except api_key, filename
     let mut query_map = HashMap::new();
-    if let Some(v) = params.api_key { query_map.insert("api_key".to_string(), v); }
-    if let Some(v) = params.filters { query_map.insert("filters".to_string(), v); }
-    if let Some(v) = params.fields { query_map.insert("fields".to_string(), v); }
-    if let Some(v) = params.sort_by { query_map.insert("sort_by".to_string(), v); }
-    if let Some(v) = params.sort_order { query_map.insert("sort_order".to_string(), v); }
+    if let Some(v) = params.api_key.as_ref() { query_map.insert("api_key".to_string(), v.clone()); }
+    if let Some(v) = params.filters.as_ref() { query_map.insert("filters".to_string(), v.to_uppercase()); }
+    if let Some(v) = params.fields.as_ref() { query_map.insert("fields".to_string(), v.to_uppercase()); }
+    if let Some(v) = params.sort_by.as_ref() { query_map.insert("sort_by".to_string(), v.to_uppercase()); }
+    if let Some(v) = params.sort_order.as_ref() { query_map.insert("sort_order".to_string(), v.to_uppercase()); }
     if let Some(v) = params.limit { query_map.insert("limit".to_string(), v.to_string()); }
     if let Some(v) = params.offset { query_map.insert("offset".to_string(), v.to_string()); }
-    if let Some(v) = params.format { query_map.insert("format".to_string(), v); }
-    if let Some(v) = params.download { query_map.insert("download".to_string(), v); }
-    if let Some(v) = params.filename { query_map.insert("filename".to_string(), v); }
+    if let Some(v) = params.format.as_ref() { query_map.insert("format".to_string(), v.to_uppercase()); }
+    if let Some(v) = params.download.as_ref() { query_map.insert("download".to_string(), v.to_uppercase()); }
+    if let Some(v) = params.filename.as_ref() { query_map.insert("filename".to_string(), v.clone()); }
 
     let client = reqwest::Client::new();
     let mut req = client.get("https://banks.data.fdic.gov/api/locations");
@@ -106,7 +135,7 @@ pub async fn locations_handler(Query(params): Query<LocationsQuery>) -> Response
         Err(e) => {
             return (
                 StatusCode::BAD_GATEWAY,
-                format!("FDIC API request failed: {}", e),
+                Json(json!({ "error": format!("FDIC API request failed: {}", e) }))
             ).into_response();
         }
     };
@@ -117,10 +146,27 @@ pub async fn locations_handler(Query(params): Query<LocationsQuery>) -> Response
         Err(e) => {
             return (
                 StatusCode::BAD_GATEWAY,
-                format!("FDIC API response error: {}", e),
+                Json(json!({ "error": format!("FDIC API response error: {}", e) }))
             ).into_response();
         }
     };
+    // Try to parse and reformat as MCP (meta, data)
+    let maybe_json: Result<serde_json::Value, _> = serde_json::from_slice(&bytes);
+    if let Ok(val) = maybe_json {
+        if val.get("meta").is_some() && val.get("data").is_some() {
+            return (
+                status,
+                Json(val)
+            ).into_response();
+        } else {
+            // Wrap as MCP if possible
+            return (
+                status,
+                Json(json!({ "meta": {}, "data": val }))
+            ).into_response();
+        }
+    }
+    // Fallback: return raw bytes
     HttpResponse::builder()
         .status(status)
         .header(header::CONTENT_TYPE, "application/json")
@@ -197,5 +243,51 @@ mod tests {
         assert_eq!(data["STNAME"], "Test State");
         assert_eq!(data["ZIP"], "12345");
         assert_eq!(data["COUNTY"], "Test County");
+    }
+
+    #[tokio::test]
+    async fn test_locations_handler_limit_too_high() {
+        
+        use axum::http::StatusCode;
+        
+        use crate::handlers::locations::{locations_handler, LocationsQuery};
+
+        let params = LocationsQuery {
+            api_key: None,
+            filters: None,
+            fields: None,
+            sort_by: None,
+            sort_order: None,
+            limit: Some(10001),
+            offset: None,
+            format: None,
+            download: None,
+            filename: None,
+        };
+        let response = locations_handler(axum::extract::Query(params)).await.into_response();
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
+    }
+
+    #[tokio::test]
+    async fn test_locations_handler_invalid_sort_order() {
+        
+        use axum::http::StatusCode;
+        use axum::ServiceExt;
+        use crate::handlers::locations::{locations_handler, LocationsQuery};
+
+        let params = LocationsQuery {
+            api_key: None,
+            filters: None,
+            fields: None,
+            sort_by: None,
+            sort_order: Some("INVALID".to_string()),
+            limit: None,
+            offset: None,
+            format: None,
+            download: None,
+            filename: None,
+        };
+        let response = locations_handler(axum::extract::Query(params)).await.into_response();
+        assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     }
 }

@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+tower-http = { version = "0.5", features = ["fs"] }
 axum = { version = "0.7", features = ["json", "macros", "ws", "multipart"] }
 tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.11", features = ["json"] }
@@ -17,4 +18,5 @@ utoipa = "5.3.1"
 utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
 
 [dev-dependencies]
+tower = { version = "0.4", features = ["util"] }
 wiremock = "0.6"

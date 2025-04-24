@@ -7,14 +7,20 @@ use axum::{
     Router,
     Json
 };
+use tower_http::services::ServeDir;
+use axum::routing::get_service;
 use tokio::net::TcpListener;
 use tracing_subscriber;
 use utoipa::OpenApi;
-use utoipa_swagger_ui::SwaggerUi;
+
 
 // Internal modules
 mod handlers;
 use handlers::locations::{locations_handler, LocationsQuery};
+
+// Export for utoipa OpenApi macro compatibility
+pub use crate::handlers::locations::__path_locations_handler;
+
 
 #[derive(OpenApi)]
 #[openapi(
@@ -30,11 +36,14 @@ struct ApiDoc;
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    let openapi = ApiDoc::openapi();
+    let openapi_doc = ApiDoc::openapi();
     let app = Router::new()
         .route("/locations", get(locations_handler))
-        .route("/openapi.json", get(|| async { Json(openapi.clone()) }))
-        .route_service("/docs", SwaggerUi::new("/docs").url("/openapi.json", openapi.clone()));
+        .route("/openapi.json", get({
+            let openapi = openapi_doc.clone();
+            move || async move { Json(openapi.clone()) }
+        }))
+        .nest_service("/docs", get_service(ServeDir::new("public/swagger-ui")));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     tracing::info!("listening on {}", addr);
@@ -44,10 +53,50 @@ async fn main() {
 
 #[cfg(test)]
 mod tests {
-    // use super::*; // REMOVE: unused import
+    use super::*;
+    use axum::body::{Body, to_bytes};
+    use axum::http::{Request, StatusCode};
+    use tower::ServiceExt; // for `oneshot`
+    use serde_json::Value;
     use std::collections::HashMap;
     use wiremock::matchers::{method, path};
     use wiremock::{Mock, MockServer, ResponseTemplate};
+
+    #[tokio::test]
+    async fn test_openapi_json_endpoint() {
+        let openapi_doc = ApiDoc::openapi();
+        let app = Router::new()
+            .route("/openapi.json", get({
+                let openapi = openapi_doc.clone();
+                move || async move { Json(openapi.clone()) }
+            }));
+        let response = app
+            .oneshot(Request::builder().uri("/openapi.json").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        let body = to_bytes(response.into_body(), usize::MAX).await.unwrap();
+        let json: Value = serde_json::from_slice(&body).expect("response is valid JSON");
+        assert!(json.get("openapi").is_some(), "openapi field present");
+        assert!(json.get("paths").is_some(), "paths field present");
+    }
+
+    #[tokio::test]
+    async fn test_swagger_ui_docs_served() {
+        let app = Router::new()
+            .nest_service("/docs", get_service(ServeDir::new("public/swagger-ui")));
+        let response = app
+            .oneshot(Request::builder().uri("/docs/index.html").body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        let content_type = response.headers().get("content-type").unwrap().to_str().unwrap();
+        assert!(content_type.starts_with("text/html"), "Content-Type is HTML");
+        let body = to_bytes(response.into_body(), usize::MAX).await.unwrap();
+        let html = String::from_utf8_lossy(&body).to_lowercase();
+        assert!(html.contains("<!doctype html>"), "Contains <!DOCTYPE html>");
+        assert!(html.contains("<html"), "Contains <html> tag");
+    }
 
     #[tokio::test]
     async fn test_locations_handler_success() {
