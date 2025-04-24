@@ -1,0 +1,22 @@
+[#{issue-number}] Short summary of changes (50 chars or less)
+
+# Why is this change necessary?
+# How does it address the issue?
+# Any side effects or other impacts?
+
+# Format guide:
+# - First line: Start with issue number [#123] and short summary in imperative mood
+# - Leave a blank line after the first line
+# - Provide more detailed explanation in paragraph or bullet form
+# - Use imperative mood ("Add feature" not "Added feature")
+# - Limit line length to 72 characters
+# - Reference issues and pull requests using [#{issue-number}]
+#
+# Example:
+# [#42] Add product bundle discount calculation
+# 
+# - Implement percentage-based discount logic for product bundles
+# - Add validation to prevent negative prices
+# - Update cart calculations to reflect bundle pricing
+# 
+# Fixes #42
