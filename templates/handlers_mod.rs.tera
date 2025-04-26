@@ -1,0 +1,20 @@
+//! Do not edit by hand.
+//! Auto-generated handler stubs for FDIC BankFind API endpoints.
+use axum::{Router, routing::get};
+use crate::config::FDICApiConfig;
+
+// MCP auto-generated: Endpoint handler modules
+{% for ep in endpoints -%}
+pub mod {{ ep }};
+{% endfor %}
+// MCP auto-generated: Endpoint handler imports
+{% for ep in endpoints -%}
+use {{ ep }}::{{ ep }}_handler;
+{% endfor %}
+// Import all generated handler functions
+/// Registers all generated FDIC handlers on the provided router.
+/// This function is auto-generated and should be called by the application to attach all FDIC routes.
+pub fn register_fdic_handlers(router: Router<FDICApiConfig>) -> Router<FDICApiConfig> {
+    router
+    {% for ep in endpoints %}    .route("/{{ ep }}", get({{ ep }}_handler))
+    {% endfor %}}

@@ -11,6 +11,26 @@
 - Document all public functions, structs, and modules with `///` doc comments.
 - Prefer small, focused functions and modular code organization.
 
+## Imports Organization
+- Group and nest all imports by crate/module.
+- Internal imports (std, crate) must come before external.
+- Alphabetize within groups.
+
+### Example
+```rust
+// Internal imports (std, crate)
+use std::collections::HashMap;
+use crate::config::FDICApiConfig;
+
+// Public/external imports (alphabetized)
+use axum::{extract::{Query, State}, http::StatusCode, response::IntoResponse, response::Response};
+use axum::http::{header, Response as HttpResponse};
+use http_body_util::Full;
+use reqwest;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
+```
+
 ## Web/Handler Rules
 - Use `axum` 0.7+ idioms for all web handlers.
 - Always validate query and body parameters; return HTTP 400 for user errors, 502 for upstream errors.
