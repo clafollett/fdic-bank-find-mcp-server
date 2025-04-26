@@ -1,0 +1,631 @@
+﻿type: object
+properties:
+  data:
+    type: object
+    properties:
+      ADDRESBR:
+        title: ADDRESS (BRANCH)
+        description: ADDRESS (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: ADDRESBR
+      ADDRESS:
+        title: ADDRESS
+        description: ADDRESS
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: ADDRESS
+      ASSET:
+        title: TOTAL ASSETS
+        description: TOTAL ASSETS
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: ASSET
+      BKCLASS:
+        title: INSTITUTION CLASS
+        description: INSTITUTION CLASS
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: BKCLASS
+      BKMO:
+        title: MAIN OFFICE DESIGNATION FLAG
+        description: MAIN OFFICE DESIGNATION FLAG
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: BKMO
+      BRCENM:
+        title: CENCODES C
+        description: CENCODES C
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: BRCENM
+      BRNUM:
+        title: BRANCH NUMBER
+        description: BRANCH NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: BRNUM
+      BRSERTYP:
+        title: BRANCH SERVICE TYPE
+        description: BRANCH SERVICE TYPE
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: BRSERTYP
+      CALL:
+        title: REPORT TYPE
+        description: REPORT TYPE
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CALL
+      CB:
+        title: COMMUNITY BANK FLAG
+        description: COMMUNITY BANK FLAG
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CB
+      CBSA_DIV_NAMB:
+        title: CBSA DIVISION NAME (BRANCH)
+        description: CBSA DIVISION NAME (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CBSA_DIV_NAMB
+      CERT:
+        title: FDIC CERT NUMBER
+        description: FDIC CERT NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CERT
+      CHARTER:
+        title: CHARTER
+        description: CHARTER
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CHARTER
+      CHRTAGNN:
+        title: CHARTER AGENT NAME
+        description: CHARTER AGENT NAME
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CHRTAGNN
+      CHRTAGNT:
+        title: CHARTER AGENT CODE
+        description: CHARTER AGENT CODE
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CHRTAGNT
+      CITY:
+        title: CITY (MAIN OFFICE)
+        description: CITY (MAIN OFFICE)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CITY
+      CITY2BR:
+        title: PREFERRED CITY (BRANCH)
+        description: PREFERRED CITY (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CITY2BR
+      CITYBR:
+        title: CITY (BRANCH)
+        description: CITY (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CITYBR
+      CITYHCR:
+        title: CITY-HOLDING CO.- REGULATORY
+        description: CITY-HOLDING CO.- REGULATORY
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CITYHCR
+      CLCODE:
+        title: CLASS NUMBER
+        description: CLASS NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CLCODE
+      CNTRYNA:
+        title: COUNTRY NAME (MAIN OFFICE)
+        description: COUNTRY NAME (MAIN OFFICE)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CNTRYNA
+      CNTRYNAB:
+        title: COUNTRY NAME (BRANCH)
+        description: COUNTRY NAME (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CNTRYNAB
+      CNTYNAMB:
+        title: COUNTY NAME (BRANCH)
+        description: COUNTY NAME (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: CNTYNAMB
+      CNTYNUMB:
+        title: FIPS COUNTY CODE (BRANCH)
+        description: FIPS COUNTY CODE (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CNTYNUMB
+      CONSOLD:
+        title: CONSOLIDATED BRANCH NUMBER
+        description: CONSOLIDATED BRANCH NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CONSOLD
+      CSABR:
+        title: CSA NUMBER (BRANCH)
+        description: CSA NUMBER (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: CSABR
+      CSANAMBR:
+        title: CSA NAME (BRANCH)
+        description: CSA NAME (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: CSANAMBR
+      DENOVO:
+        title: DENOVO FLAG
+        description: DENOVO FLAG
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DENOVO
+      DEPDOM:
+        title: TOTAL DOMESTIC DEPOSITS
+        description: TOTAL DOMESTIC DEPOSITS
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DEPDOM
+      DEPSUM:
+        title: TOTAL DEPOSITS
+        description: TOTAL DEPOSITS
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DEPSUM
+      DEPSUMBR:
+        title: DOMESTIC DEPOSITS (SOD)
+        description: DOMESTIC DEPOSITS (SOD)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DEPSUMBR
+      DIVISIONB:
+        title: CBSA DIVISION CODE (BRANCH)
+        description: CBSA DIVISION CODE (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DIVISIONB
+      DOCKET:
+        title: OTS DOCKET NUMBER
+        description: OTS DOCKET NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: DOCKET
+      ESCROW:
+        title: ESCROW ACCOUNTS - TFR
+        description: ESCROW ACCOUNTS - TFR
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: ESCROW
+      FDICDBS:
+        title: FDIC REGION NUMBER
+        description: FDIC REGION NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: FDICDBS
+      FDICNAME:
+        title: FDIC REGION NAME
+        description: FDIC REGION NAME
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: FDICNAME
+      FED:
+        title: FRB DISTRICT NUMBER
+        description: FRB DISTRICT NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: FED
+      FEDNAME:
+        title: FED DISTRICT NAME
+        description: FED DISTRICT NAME
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: FEDNAME
+      HCTMULT:
+        title: MULTI-BANK HOLDING CO
+        description: MULTI-BANK HOLDING CO
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: HCTMULT
+      INSAGNT1:
+        title: PRIMARY INSURANCE FUND
+        description: PRIMARY INSURANCE FUND
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: INSAGNT1
+      INSBRDD:
+        title: DEMAND DEPOSITS IN INSURED BRANCHES
+        description: DEMAND DEPOSITS IN INSURED BRANCHES
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: INSBRDD
+      INSBRTS:
+        title: TIME & SAVINGS DEPOSITS IN INSURED BRANCHES
+        description: TIME & SAVINGS DEPOSITS IN INSURED BRANCHES
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: INSBRTS
+      INSURED:
+        title: INSURED
+        description: INSURED
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: INSURED
+      METROBR:
+        title: METRO FLAG (BRANCH)
+        description: METRO FLAG (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: METROBR
+      MICROBR:
+        title: MICRO FLAG (BRANCH)
+        description: MICRO FLAG (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: MICROBR
+      MSABR:
+        title: MSA (BRANCH)
+        description: MSA (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: MSABR
+      MSANAMB:
+        title: MSA NAME (BRANCH)
+        description: MSA NAME (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: MSANAMB
+      NAMEBR:
+        title: INSTITUTION NAME (BRANCH)
+        description: INSTITUTION NAME (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: NAMEBR
+      NAMEFULL:
+        title: INSTITUTION NAME (MAIN OFFICE)
+        description: INSTITUTION NAME (MAIN OFFICE)
+        type: string
+        x-elastic-type: keyword
+        x-elastic-analyzer:
+          - variable: raw
+            analyzer: whitespace_analyzer
+          - variable: autocomplete
+            analyzer: autocomplete_analyzer
+        x-source-mapping:
+          - file:  SOD
+            field: NAMEFULL
+      NAMEHCR:
+        title: BANK HOLDING CO. NAME
+        description: BANK HOLDING CO. NAME
+        type: string
+        x-elastic-type: keyword
+        x-elastic-analyzer:
+          - variable: raw
+            analyzer: whitespace_analyzer
+          - variable: autocomplete
+            analyzer: autocomplete_analyzer
+        x-source-mapping:
+          - file:  SOD
+            field: NAMEHCR
+      NECNAMB:
+        title: NECTA NAME (BRANCH)
+        description: NECTA NAME (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: NECNAMB
+      NECTABR:
+        title: NECTA (BRANCH)
+        description: NECTA (BRANCH)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: NECTABR
+      OCCDIST:
+        title: OCC DISTRICT NUMBER
+        description: OCC DISTRICT NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: OCCDIST
+      OCCNAME:
+        title: OCC REGION NAME
+        description: OCC REGION NAME
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: OCCNAME
+      PLACENUM:
+        title: PLACE CODE NUMBER (DF)
+        description: PLACE CODE NUMBER (DF)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: PLACENUM
+      REGAGNT:
+        title: PRIMARY FEDERAL REGULATOR
+        description: PRIMARY FEDERAL REGULATOR
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: REGAGNT
+      RSSDHCR:
+        title: FRB ID NUMBER - BHC
+        description: FRB ID NUMBER - BHC
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: RSSDHCR
+      RSSDID:
+        title: FRB ID NUMBER
+        description: FRB ID NUMBER
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: RSSDID
+      SIMS_ACQUIRED_DATE:
+        title: SIMS ACQUIRED DATE
+        description: SIMS ACQUIRED DATE
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_ACQUIRED_DATE
+      SIMS_DESCRIPTION:
+        title: SIMS MATCH CODE (DESCRIPTION)
+        description: SIMS MATCH CODE (DESCRIPTION)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_DESCRIPTION
+      SIMS_ESTABLISHED_DATE:
+        title: SIMS ESTABLISHED DATE
+        description: SIMS ESTABLISHED DATE
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_ESTABLISHED_DATE
+      SIMS_LATITUDE:
+        title: SIMS GEOGRAPHIC LATITUDE
+        description: SIMS GEOGRAPHIC LATITUDE
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_LATITUDE
+      SIMS_LONGITUDE:
+        title: SIMS GEOGRAPHIC LONGITUDE
+        description: SIMS GEOGRAPHIC LONGITUDE
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_LONGITUDE
+      SIMS_PROJECTION:
+        title: SIMS SCORE (PROJECTION)
+        description: SIMS SCORE (PROJECTION)
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: SIMS_PROJECTION
+      SPECDESC:
+        title: SPECGRP DESCRIPTION
+        description: SPECGRP DESCRIPTION
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: SPECDESC
+      SPECGRP:
+        title: INDUSTRY SPECIALIZATION GROUP
+        description: INDUSTRY SPECIALIZATION GROUP
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: SPECGRP
+      STALP:
+        title: FIPS STATE ALPHA CODE (MAIN OFFICE)
+        description: FIPS STATE ALPHA CODE (MAIN OFFICE)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: STALP
+      STALPBR:
+        title: FIPS STATE ALPHA CODE (BRANCH)
+        description: FIPS STATE ALPHA CODE (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: STALPBR
+      STALPHCR:
+        title: FIPS STATE ALPHA CODE - BHC
+        description: FIPS STATE ALPHA CODE - BHC
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: STALPHCR
+      STCNTY:
+        title: FIPS STATE & COUNTY NO. (MAIN OFFICE)
+        description: FIPS STATE & COUNTY NO. (MAIN OFFICE)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: STCNTY
+      STCNTYBR:
+        title: 
+        description: 
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: STCNTYBR
+      STNAME:
+        title: FIPS STATE NAME (MAIN OFFICE)
+        description: FIPS STATE NAME (MAIN OFFICE)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: STNAME
+      STNAMEBR:
+        title: STATE NAME (BRANCH)
+        description: STATE NAME (BRANCH)
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file:  SOD
+            field: STNAMEBR
+      STNUMBR:
+        title: FIPS STATE CODE (BRANCH)
+        description: FIPS STATE CODE (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: STNUMBR
+      UNINUMBR:
+        title: UNINUM (BRANCH)
+        description: UNINUM (BRANCH)
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: UNINUMBR
+      UNIT:
+        title: UNIT BANK FLAG
+        description: UNIT BANK FLAG
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: UNIT
+      USA:
+        title: USA LOCATED INSTITUTION
+        description: USA LOCATED INSTITUTION
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: USA
+      YEAR:
+        title: YEAR
+        description: YEAR
+        type: number
+        x-source-mapping:
+          - file:  SOD
+            field: YEAR
+      ZIP_RAW:
+        title: 
+        description: 
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: ZIP
+      ZIPBR_RAW:
+        title: 
+        description: 
+        type: string
+        x-source-mapping:
+          - file:  SOD
+            field: ZIPBR
+      ZIP:
+        type: string
+        title: Zip Code
+        description: The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices.
+        x-elastic-type: keyword
+        x-source-mapping:
+          - formula:
+              type: raw
+              parameters:
+                script: |
+                  if (ctx.ZIP_RAW != null && ctx.ZIP_RAW?.length() < 5){
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < 5; i++) {
+                      sb.append('0');
+                    }
+                    ctx.ZIP = sb.substring(ctx.ZIP_RAW.length()) + ctx.ZIP_RAW;
+                  } else {
+                    ctx.ZIP = ctx.ZIP_RAW;
+                  }
+      ZIPBR:
+        type: string
+        title: Zip Code
+        description: The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices.
+        x-elastic-type: keyword
+        x-source-mapping:
+          - formula:
+              type: raw
+              parameters:
+                script: |
+                  if (ctx.ZIPBR_RAW != null && ctx.ZIPBR_RAW?.length() < 5){
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < 5; i++) {
+                      sb.append('0');
+                    }
+                    ctx.ZIPBR = sb.substring(ctx.ZIPBR_RAW.length()) + ctx.ZIPBR_RAW;
+                  } else {
+                    ctx.ZIPBR = ctx.ZIPBR_RAW;
+                  }

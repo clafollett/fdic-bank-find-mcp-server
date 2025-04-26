@@ -1,0 +1,459 @@
+type: object
+properties:
+  data:
+    type: object
+    properties:
+      ACTEVT:
+        title: STRUCTURE ACTIVITY EVENT CODE.  MERGER OR CLOSING CODES ONLY.
+        type: string
+        description: Structure activity event code. Merger or closing codes only.
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: ACTEVT
+      BRANCH:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION HAS BRANCHES. 0 = UNIT BANK (NO BRANCHES). 1 = BRANCHES.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: BRANCH
+      CALLYM:
+        title: REPRESENTS THE CALENDER DATE FOR WHICH THE FINANCIAL DATA WAS COLLECTED IN YEAR AND MONTH FORMAT (CCYYMM).
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CALLYM
+      CALLYMD:
+        title: REPRESENTS THE CALANDER DATE FOR WHICH THE FINANCIAL DATA WAS COLLECTED IN YEAR, MONTH, AND DAY FORMAT (CCYYMMDD).
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CALLYMD
+      CBSANAME:
+        title: THE U.S. CENSUS BUREAU OFFICE OF MANANGEMENT AND BUDGET DEFINES THE CORE BASED STATISTICAL AREA (CBSA).  IT IS A STATISTICAL GEOGRAPHIC ENTITY CONSISTING OF THE COUNTY OR COUNTIES ASSOCIATED WITH AT LEAST ONE CORE (URBANIZED AREA OR URBAN CLUSTER) OF AT LEAST 10,0000 POPULATION, PLUS ADJACENT COUNTIES HAVING A HIGH DEGREE OF SOCIAL AND ECONOMIC INTEGRATION WITH THE CORE AS MEASURED THROUGH COMMUTING TIES WITH THE COUNTIES CONTAINING THE  CORE.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CBSANAME
+      CERT:
+        title: 'FDIC Certificate #'
+        description: >-
+          A unique NUMBER assigned by the FDIC used to identify institutions
+          and for the issuance of insurance certificates.
+        type: number
+        x-source-overwrite: false
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CERT
+      CLCODE:
+        title: A TWO DIGIT NUMERIC CODE WHICH IDENTIFIES THE MAJOR AND MINOR CATAGORIES OF AN INSTITUTION
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CLCODE
+      CMSA:
+        title: THE FEDERAL INFORMATION PROCESSING STANDARDS (FIPS) CONSOLIDATED METROPOLITAN STATISTICAL AREA (CMSA) CODE IS A NUMBER REPRESENTING THE INSTITUTION LOCATION.  A CMSA CONSISTS OF TWO OR MORE CONTIGUOUS METROPOLITAN STATISTICAL AREAS (MSA) WITH A  COMBINED POPULATION OF OVER 1 MILLION
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CMSA
+      CNTRYALP:
+        title: THE FEDERAL INFORMATION PROCESSING STANDARDS (FIPS) ALPHABETIC CODE OF THE COUNTRY IN WHICH THE INSTITUTION IS PHYSICALLY LOCATED.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CNTRYALP
+      CNTRYNUM:
+        title: THE FEDERAL INFORMATION PROCESSING STANDARDS (FIPS) NUMERIC CODE  OF THE COUNTRY IN WHICH THE INSTITUTION IS PHYSICALLY LOCATED.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CNTRYNUM
+      CNTYNUM:
+        title: THE FEDERAL INFORMATION PROCESSING STANDARDS (FIPS) NUMERIC CODE  OF THE COUNTY IN WHICH THE INSTITUTION IS PHYSICALLY LOCATED.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CNTYNUM
+      CSA:
+        title: THE U.S. CENSUS BUREAU OFFICE OF MANANGEMENT AND BUDGET DEFINES THE COMBINED STATISTICAL AREA (CSA).  A GEOGRAPHIC ENTITY CONSISTING OF TWO OR MORE ADJACENT CORE BASED STATISTICAL AREAS (CBSAS) WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST 15.PAIRS OF CBSAS WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST 25 COMBINE AUTOMATICALLY.  PAIRS OF CBSAS WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST 15, BUT LESS THAN 25, MAY COMBINE IF LOCAL OPTION IN BOTH AREAS FAVOR COMBINATION.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: CSA
+      DIVISION:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION IS IN A CBSA DIVISION 0 = INSTITUTION IS NOT IN A CBSA DIVISION; 1 = INSTITUTION IS IN A CBSA DIVISION FRB NUMBER.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: DIVISION
+      DOCKET:
+        title: A UNIQUE IDENTIFICATION NUMBER ASSIGNED TO INSTITUTIONS CHARTERED BY THE OFFICE OF THRIFT SUPERVISION OR THAT BECOME MEMBERS OF THE  FEDERAL HOME LOAN SYSTEM.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: DOCKET
+      FDICAREA:
+        title: A NUMBER USED TO IDENTIFY THE FDIC COMPLIANCE AREA IN WHICH AN  INSTITUTION IS LOCATED
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: FDICAREA
+      FDICTERR:
+        title: AN ABBREVIATION OF THE CURRENT COMPLIANCE TERRITORY WHERE AN NSTITUTION IS LOCATED (FDIC COMPLIANCE TERRITORY).  ALL PERIODS ARE DISPLAYED IN THE CURRENT PERSPECTIVE (EXCEPTIONS CAN EXIST DEPENDING ON WHEN A QUARTER IS UPDATED).
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: FDICTERR
+      FLDOFDCA:
+        title: THE NAME OF THE COMPLIANCE FIELD OFFICE TO WHICH AN INSTITUTION IS ASSIGNED.  ALL PERIODS ARE DISPLAYED IN THE CURRENT PERSPECTIVE (EXCEPTIONS CAN EXIST DEPENDING ON WHEN A QUARTER IS UPDATED
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: FLDOFDCA
+      HCTNONE:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION IS AN INDEPENDENT BANK.  NOT A MEMBER OF A BANK HOLDING COMPANY.  0 = MEMBER OF A BANK HOLDING COMPANY OR 1 = NOT A MEMBER OF A BANK HOLDING COMPANY.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: HCTNONE
+      INSAGNT2:
+        title: THE SECONDARY INSURER, INSURANCE AGENT, OR INSURANCE STATUS OF AN INSTITUTION
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: INSAGNT2
+      METRO:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION IS IN A METROPOLITAN STATISTICAL AREA THE U.S. CENSUS BUREAU OFFICE 0 = INSTITUTION IS NOT IN A METROPOLITAN STATISTICAL AREA AND 1 = INSTITUTION IS IN A METROPOLITAN STATISTICAL AREA.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: METRO
+      MICRO:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION IS IN A MICROPOLITAN STATISTICAL AREA.  THE U.S. CENSUS BUREAU OFFICE OF  MANANGEMENT AND BUDGET DEFINES THE MICROPOLITAN STATISTICAL AREA.  A CORE BASED STATISTICAL AREA ASSOCIATED WITH AT LEAST ONE URBAN  CLUSTER THAT HAS A POPULATION OF AT LEAST 10,000 BUT LESS THAN 50,000.  THE MICROPOLITAN STATISTICAL AREA COMPRISES THE CENTRAL COUNTY OR COUNTIES CONTAINING THE CORE, PLUS ADJACENT OUTLYING  COUNTIES HAVING A HIGH DEGREE OF SOCIAL AND ECONOMIC INTEGRATION WITH THE CENTRAL COUNTY AS MEASURED THROUGH COMMUTING. 0 = INSTITUTION IS NOT IN A MICROPOLITAN STATISTICAL AREA; 1 = INSTITUTION IS IN A MICROPOLITAN STATISTICAL AREA.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: MICRO
+      MNRTYCDE:
+        title: A CHARACTER FIELD ON THE INSTITUTION FILE CORRESPONDING TO A TYPE OF MINORITY OWNERSHIP.  .  = NONE. ;  01 = AFRICAN AMERICAN; 02 = HISPANIC AMERICAN; 03 = ASIAN OR PACIFIC ISLANDER AMERICANS; 04 = NATIVE AMERICAN OR NATIVE ALASKAN AMERICAN; 05 = MULIT-RACIAL AMERICAN; 06 = MINORITY BOARD AND SERVING AFRICAN AMERICAN COMMUNITY; 08 = MINORITY BOARD AND SERVING ASIAN/PACIFIC ISLANDER AMERICANS; 10 = MINORITY BOARD AND SERVING MULTI-RACIAL COMMUNITY.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: MNRTYCDE
+      MNRTYDTE:
+        title: REPRESENTS THE EFFECTIVE DATE ON WHICH AN INSTITUTION IS ASSIGNED A MINORITY STATUS.  TRANSACTION IN DATE9.  FORMAT (DDMONCCYY) DAY, MONTH ABBREV, CENTURY AND YEAR.
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: MNRTYDTE
+      OAKAR:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION ACQUIRED DEPOSITS  THAT WERE PREVIOUSLY INSURED UNDER A DIFFERENT INSURANCE FUND.  0 = HAS NO OAKAR DEPOSITS; 1 = HAS OAKAR DEPOSITS
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OAKAR
+      OFFDMULT:
+        title: THE NUMBER OF MULTIPLE SERVICE DOMESTIC OFFICES OPERATED BY AN  INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFDMULT
+      OFFNDOM:
+        title: THE NUMBER OF NONDOMESTIC OFFICES OPERATED BY AN INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFNDOM
+      OFFOTH:
+        title: THE NUMBER OF DOMESTIC NON-MULTIPLE SERVICE OFFICES OPERATED BY  INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFOTH
+      OFFSOD:
+        title: THE NUMBER OF OFFICES OPERATED BY AN INSTITUTION BASED ON THE SUMMARY OF DEPOSITS DEFINITION OF OFFICES.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFSOD
+      OFFSTATE:
+        title: THE NUMBER OF STATES WITH OFFICES (INCLUDING ITS MAIN OFFICE).
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFSTATE
+      OFFTOT:
+        title: THE TOTAL NUMBER OF OFFICES OPERATED BY AN INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFTOT
+      OFFUSOA:
+        title: THE NUMBER OF DOMESTIC AND U.S. TERRITORIES OFFICES OPERATED BY AN INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OFFUSOA
+      OTSDIST:
+        title: A NUMBER USED TO IDENTIFY THE OFFICE OF THRIFT SUPERVISION DISTRICT IN WHICH THE INSTITUTION IS LOCATED. 01 = NORTHEAST;  02 = SOUTHEAST; 04 = MIDWEST; 05 = WEST
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OTSDIST
+      OTSREGNO:
+        title: A NUMBER USED TO IDENTIFY THE OFFICE OF THRIFT SUPERVISION REGION IN WHICH THE INSTITUTION IS LOCATED.  1 = NORTHEAST;  2 = SOUTHEAST; 4 = MIDWEST; 5 = WEST
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: OTSREGNO
+      QTRNO:
+        title: IDENTIFIES THE CALENDAR QUARTER.  1 = MARCH; 2 = JUNE; 3 = SEPTEMBER; 4 = DECEMBER.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: QTRNO
+      REPDTE:
+        title: Report Date
+        description: The last day of the financial reporting period selected.
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: REPDTE
+      REPDTE_INT:
+        title: Report Date Integer
+        description: The last day of the financial reporting period selected.
+        type: string
+        x-elastic-type: keyword
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: CALL_RPT_INTGR_DTE
+      RISKTERR:
+        title: AN ABBREVIATION OF THE CURRENT RISK TERRITORY FOR AN INSTITUTION (FDIC RISK TERRITORY).  ALL PERIODS ARE DISPLAYED IN THE CURRENT PERSPECTIVE (EXCEPTIONS CAN EXIST DEPENDING ON WHEN A QUARTER IS UPDATED).
+        type: string
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: RISKTERR
+      SASSER:
+        title: A FLAG USED TO INDICATE WHETHER AN INSTITUTION WAS A FORMER SAVINGS ASSOCIATION THAT HAS CONVERTED TO A BANK CHARTER AND IS STILL A SAIF INSURED INSTITUTION.  0 = NOT A SASSER INSTITUTION; 1 = IS A SASSER INSTITUTION.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: SASSER
+      SIMS_LAT:
+        title: GEOGRAPHIC LATITUDE OF MAIN OFFICE.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: SIMS_LAT
+      SIMS_LONG:
+        title: GEOGRAPHIC LONGITUDE OF MAIN OFFICE.
+        type: number
+        x-source-mapping:
+          - file: RISVIEW_DEMOGRAPHICS
+            field: SIMS_LAT
+      WEBADDR:
+        title: Primary Internet Web Address
+        description: >-
+          The primary internet web address is the public internet site
+          obtained from the most recent FFIEC Call Report (CALL) for
+          commercial banks or from the supplemental information for Thrift
+          Financial Reporters (TFR). The primary internet web address is
+          included only for those institutions reporting an address on the
+          most recent FFIEC Call Report or Thrift Financial Report.  This
+          information resides in the most recent demographic information file.
+          For some institutions users will find that for the item Primary
+          Internet Web Address: the caption will read 'Web site not
+          available'.  Possible reasons that a Web site may not be available
+          are: The institution failed to file on the most recent call report
+          or TFR. The institution filed a primary Internet Web address on its
+          most recent FFIEC Call Report; however, the address filed by the
+          institution was not in accordance with the instructions provided by
+          the FFIEC on how to file a primary Internet Web address or FDIC
+          attempts to validate and access the site were unsuccessful. Users
+          may also experience instances where the URL provided for primary
+          Internet Web address in ID returns an error stating that the site is
+          not found. Possible reasons for such occurrences are: The
+          institution?s reported primary Web address was valid as of the date
+          that the demographic information was updated in ID, but is no longer
+          valid. The institution?s reported Internet Web address is valid, but
+          the institution?s Web site was inoperable at the time that the user
+          attempted to access it due to technical problems being experienced
+          by the institution?s Web site, the institution?s web provider, the
+          user?s Web provider, or other issues not related to the validity of
+          the Web address.  Users are advised to contact the institution on
+          any questions regarding the services provided by the institution.
+          For questions involving the reporting of primary Internet Web
+          address by those institutions that file a FFIEC Call report, users
+          are advised to contact supervision@fdic.gov.  For questions
+          involving the primary Internet Web address of institutions that file
+          a Thrift Financial Report, users are advised to contact
+          pamela.schaar@ots.treas.gov or call Ms. Schaar at (202) 906-7205.
+          Disclaimer: The Primary Internet Web Addresses listed have been
+          reported to the FDIC by each institution. The hyperlinks to
+          institution Internet sites are provided solely as a convenience to
+          users of the FDIC Internet site. The FDIC has made a limited effort
+          to determine that these links function properly. However, linked
+          sites are not under the control of FDIC, and FDIC is not responsible
+          for the contents of any linked site, or any link contained in a
+          linked site.  Even if you access an institution?s site by means of
+          the link provided by FDIC, you are responsible for confirming the
+          identity and authenticity of any institution you visit and transact
+          business with online. The inclusion of a link does not imply or
+          constitute an endorsement by FDIC of the institution, its ownership
+          or management, the products or services it offers, or any
+          advertisers or sponsors appearing on the institution?s web site.
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: WEBADDR
+      TE01N528:
+        title: Web Site URL 01
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE01N528
+      TE02N528:
+        title: Web Site URL 02
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE02N528
+      TE03N528:
+        title: Web Site URL 03
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE03N528
+      TE04N528:
+        title: Web Site URL 04
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE04N528
+      TE05N528:
+        title: Web Site URL 05
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE05N528
+      TE06N528:
+        title: Web Site URL 06
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE06N528
+      TE07N528:
+        title: Web Site URL 07
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE07N528
+      TE08N528:
+        title: Web Site URL 08
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE08N528
+      TE09N528:
+        title: Web Site URL 09
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE09N528
+      TE10N528:
+        title: Web Site URL 10
+        description: >-
+          URL of other public-facing internet web site the reporting
+          institution uses to accept or solicit deposits from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE10N528
+      TE01N529:
+        title: Trade Name 01
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE01N529
+      TE02N529:
+        title: Trade Name 02
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE02N529
+      TE03N529:
+        title: Trade Name 03
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE03N529
+      TE04N529:
+        title: Trade Name 04
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE04N529
+      TE05N529:
+        title: Trade Name 05
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE05N529
+      TE06N529:
+        title: Trade Name 06
+        description: >-
+          Trade name other than the institution's legal name used to identify
+          one of the institution's physical offices at which deposits are
+          accepted or solicited from the public
+        type: string
+        x-source-mapping:
+          - file: CBIS_DEMOGRAPHICS
+            field: TE06N529
