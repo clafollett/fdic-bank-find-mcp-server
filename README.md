@@ -20,7 +20,7 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 - [Usage Examples](#usage-examples)
 - [Adding New Endpoints](#adding-new-endpoints)
 - [Contributing](#contributing)
-- [Governance & Docs](#governance--docs)
+- [Governance and Docs](#governance-and-docs)
 - [License](#license)
 - [Official FDIC Resources](#official-fdic-resources)
 
@@ -108,7 +108,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## 📚 Governance & Docs
+## 📚 Governance and Docs
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
