@@ -13,20 +13,20 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 
 ---
 
-## 📋 Table of Contents
-- [Features](#features)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Usage Examples](#usage-examples)
-- [Adding New Endpoints](#adding-new-endpoints)
-- [Contributing](#contributing)
-- [Governance and Docs](#governance-and-docs)
-- [License](#license)
-- [Official FDIC Resources](#official-fdic-resources)
+## Table of Contents 📋
+- [Features](#features) ✨
+- [Architecture](#architecture) 🏗️
+- [Getting Started](#getting-started) 🚀
+- [Usage Examples](#usage-examples) 📦
+- [Adding New Endpoints](#adding-new-endpoints) ➕
+- [Contributing](#contributing) 🤝
+- [Governance and Docs](#governance-and-docs) 📚
+- [License](#license) ⚖️
+- [Official FDIC Resources](#official-fdic-resources) 🔗
 
 ---
 
-## ✨ Features
+## Features
 - **Template-Driven Handlers:** Add new FDIC endpoints in minutes using Tera templates.
 - **MCP Protocol Compliance:** All responses use `MCPResponse<T>` for success and `MCPError` for errors—machine-readable, predictable, and debuggable.
 - **Centralized Validation:** All parameter validation (fields, filters, sort, etc.) is reusable and standards-compliant.
@@ -35,7 +35,7 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 - **Rust + Axum 0.7+** for async web APIs
 - **Handler templates** in `templates/` generate endpoint stubs
 - **Parameter utils** in `src/param_utils.rs` for validation/normalization
@@ -44,7 +44,7 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ```sh
 # Clone the repo
@@ -60,7 +60,7 @@ $ cargo run
 
 ---
 
-## 📦 Usage Examples
+## Usage Examples
 
 ### Success Response
 ```json
@@ -85,7 +85,7 @@ $ cargo run
 
 ---
 
-## ➕ Adding New Endpoints
+## Adding New Endpoints
 1. Place or update the official FDIC YAML definition (e.g., `institution_properties.yaml`, `summary_properties.yaml`, etc.) in the `public/fdic/` directory. The generator will honor whatever is present here—these files define the fields, data types, and structure for each endpoint, and are sourced directly from the FDIC. 
    - 📖 **Source:** [FDIC BankFind API Documentation](https://banks.data.fdic.gov/docs/)  
    - 📄 **YAML Definitions:** [FDIC BankFind API YAMLs](https://banks.data.fdic.gov/docs/yaml/)
@@ -100,7 +100,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## 🤝 Contributing
+## Contributing
 - Open issues or feature requests using the templates in `.github/ISSUE_TEMPLATE/`
 - Fork and PR from a feature branch (see [CONTRIBUTING.md](CONTRIBUTING.md))
 - Follow the [Prime Directive](.windsurfrules) and code style rules
@@ -108,7 +108,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## 📚 Governance and Docs
+## Governance and Docs
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
@@ -117,7 +117,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## 🔗 Official FDIC Resources
+## Official FDIC Resources
 - [FDIC BankFind Suite](https://banks.data.fdic.gov/docs/)
 - [API Documentation](https://banks.data.fdic.gov/docs/)
 - [YAML Definitions](https://banks.data.fdic.gov/docs/yaml/)
@@ -125,7 +125,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## ⚖️ License
+## License
 This project is licensed under the terms of the LICENSE file in this repo.
 
 ---
