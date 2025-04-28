@@ -1,20 +1,31 @@
 # .windsurfrules for fdic-bank-find-mcp-server
 
 ## Prime Directive: Do It Right the First Time
-- All code, tests, and documentation must be written with maximum accuracy and completeness on the first attempt. No shortcuts, sloppiness, or incomplete implementations are permitted. Any code or test that does not fully match the requirements, struct definitions, or project standards must be considered a failure and corrected immediately.
+- **IMPORTANT!!!!!** All code, tests, and documentation must be written with maximum accuracy and completeness on the first attempt. No shortcuts, sloppiness, or incomplete implementations are permitted. Any code or test that does not fully match the requirements, struct definitions, or project standards must be considered a failure and corrected immediately.
 
 ## General Rust Coding Standards
-- All code must be idiomatic Rust and pass `cargo check` and `cargo test`.
+- **IMPORTANT!!!!!** All code must be idiomatic Rust
+- **IMPORTANT!!!!!** All code must pass `cargo check` and `cargo test`.
+- **IMPORTANT!!!!!** Iterate until code is refactored correctly and tests pass!!!
 - Use explicit error handling (`Result`, `Option`)—avoid panics in production code.
 - Validate all user input and return clear, actionable error messages.
 - Follow Rust naming conventions: `snake_case` for functions/variables, `CamelCase` for types/structs/enums.
 - Document all public functions, structs, and modules with `///` doc comments.
 - Prefer small, focused functions and modular code organization.
 
-## Imports Organization
-- Group and nest all imports by crate/module.
-- Internal imports (std, crate) must come before external.
-- Alphabetize within groups.
+## **IMPORTANT!!!!!** Rust *.rs Code File Organization
+- Imports
+    - Group and nest all imports by crate/module.
+    - Internal imports (std, crate) must come before external.
+    - Alphabetize within groups.
+- Type Definitions
+    - Internal vars and struct definitions
+    - Public vars and struct definitions
+- Main Function (directly after types)
+- Public Functions (alphabetical)
+- Private/Helper Functions (alphabetical)
+
+I want `main` to end up as the top level function after all imports and internal vars and struct definitions, functions always follow declarations, with main first, then public funcs in alphabetical order, then private funcs in alphabetical order.
 
 ### Example
 ```rust

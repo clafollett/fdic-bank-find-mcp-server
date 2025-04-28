@@ -18,11 +18,14 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 - [Architecture](#architecture) 🏗️
 - [Getting Started](#getting-started) 🚀
 - [Usage Examples](#usage-examples) 📦
+- [Handler & OpenAPI Generation](#handler--openapi-generation) 🛠️
 - [Adding New Endpoints](#adding-new-endpoints) ➕
 - [Contributing](#contributing) 🤝
 - [Governance and Docs](#governance-and-docs) 📚
 - [License](#license) ⚖️
 - [Official FDIC Resources](#official-fdic-resources) 🔗
+- [Vibe-Architected with Windsurf & GPT-4.1](#vibe-architected-with-windsurf-gpt-41) 🚀
+- [About Dynamic Search Response Fields](#about-dynamic-search-response-fields) ⚡️
 
 ---
 
@@ -85,6 +88,38 @@ $ cargo run
 
 ---
 
+## 🛠️ Handler & OpenAPI Generation
+
+This project uses **automated code and OpenAPI generation** to keep Rust handlers, docs, and API schemas perfectly in sync with the YAML specs.
+
+### Generating Handlers & OpenAPI
+
+1. **Edit your YAML specs** (in `public/fdic/*.yaml`).
+2. **Run the generator:**
+
+   ```sh
+   cargo run --bin generate_handlers
+   ```
+
+   This will:
+   - Regenerate all handler stubs in `src/handlers/`
+   - Update the OpenAPI JSON at `public/openapi.json`
+
+3. **Rebuild & retest:**
+
+   ```sh
+   cargo check && cargo test
+   ```
+
+### Why Do This?
+- **No manual sync**: Your Rust code, OpenAPI, and YAML are always aligned
+- **Instant metadata**: Any new field-level capabilities (e.g., searchability) are exposed everywhere
+- **Agent/automation ready**: UIs and clients can introspect all field capabilities
+
+**Pro tip:** Regenerate handlers after any YAML/spec change to keep your API and docs in perfect harmony! 🎶
+
+---
+
 ## Adding New Endpoints
 1. Place or update the official FDIC YAML definition (e.g., `institution_properties.yaml`, `summary_properties.yaml`, etc.) in the `public/fdic/` directory. The generator will honor whatever is present here—these files define the fields, data types, and structure for each endpoint, and are sourced directly from the FDIC. 
    - 📖 **Source:** [FDIC BankFind API Documentation](https://banks.data.fdic.gov/docs/)  
@@ -117,6 +152,54 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
+## ⚡️ About Dynamic Search Response Fields
+
+Some endpoints, like `/institutions`, may return additional fields in each search result—such as `highlight` (for term highlighting) and `score` (for match relevance)—in addition to the standard `data` object. These fields are passed directly from the underlying search engine (e.g., Elasticsearch) and are not always present for every query.
+
+### Example Response
+```json
+{
+  "type": "success",
+  "data": [
+    {
+      "data": { "NAME": "Wells Fargo Bank", ... },
+      "highlight": { "NAME.raw": ["<em>Wells</em> ..."] },
+      "score": 1091.385
+    }
+  ],
+  "meta": { ... }
+}
+```
+
+### What Clients/Agents Should Know
+- Always expect a `data` object, but be prepared for optional `highlight` and `score` fields.
+- These fields help agents/UIs explain and rank results, but may not appear for every query.
+- If your client or agent only expects the core `data` fields, simply ignore any unknown fields at the top level of each array entry.
+- For agent/AI use: leverage `highlight` for explanations and `score` for ranking or filtering.
+
+### OpenAPI Note
+Our OpenAPI spec describes the core response shape, but additional fields may be present in the result objects. This is intentional for agent/automation flexibility.
+
+**Pro tip:** If you want to always see these fields, use a query that matches search terms directly (e.g., `NAME:WELLS FARGO`).
+
+---
+
+## 🚀 Vibe-Architected with Windsurf & GPT-4.1
+
+This project was fully architected, coded, and iterated using the **Windsurf Editor** with the help of GPT-4.1 and 04-mini-high models. The entire development experience was:
+
+- **Conversational, collaborative, and lightning-fast**
+- **Zero context lost**—AI paired on every design and code decision
+- **100% code generated, reviewed, and refactored in real-time**
+- **No manual boilerplate**: All endpoints, docs, and metadata (like `x-elastic-type` for search/filter discovery) were vibe-architected and auto-wired
+- **Agent/AI-friendly by design**: Every feature was built with future automation and discoverability in mind
+
+> _"This has been the most amazing development experience I've had in years!!!"_
+
+If you’re reading this, you’re looking at a codebase that’s not just modern, but **future-native**. All thanks to the Windsurf + GPT-4.1/04-mini-high workflow. Give it a try and you’ll never want to code solo again! 😎🤙✨
+
+---
+
 ## Official FDIC Resources
 - [FDIC BankFind Suite](https://banks.data.fdic.gov/docs/)
 - [API Documentation](https://banks.data.fdic.gov/docs/)
@@ -126,7 +209,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 ---
 
 ## License
-This project is licensed under the terms of the LICENSE file in this repo.
+This project is licensed under the terms of the [LICENSE](LICENSE) file in this repo.
 
 ---
 
