@@ -1,52 +1,56 @@
 // Internal imports (std, crate)
-use serde::{Deserialize, Serialize, Deserializer, de};
+use serde::{Deserialize, Deserializer, Serialize, de};
 
 // Public/external imports (alphabetized)
-use utoipa::{IntoParams, ToSchema};
+// utoipa removed: no longer needed for OpenAPI
 
 /// Shared FDIC BankFind API query parameters.
-#[derive(Clone, Debug, Default, Deserialize, Serialize, IntoParams, ToSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct CommonParameters {
-    /// API key used for api.fdic.gov
-    #[param(rename = "api_key")]
+    #[doc = r#"API key used for api.fdic.gov"#]
     pub api_key: Option<String>,
 
-    /// Filter expression (all values must be UPPERCASE)
-    #[param(rename = "filters")]
+    #[doc = r#"Filter expression for advanced querying using FDIC BankFind syntax. 
+    
+    **Format:** `FIELD:VALUE`, `FIELD:>=VALUE`, `FIELD:<=VALUE`, combined with `AND`/`OR`.
+    
+    **Examples:**
+      - Single value: `CERT:10002`
+      - Date range: `FAILDATE:>=20200101 AND FAILDATE:<=20201231`
+      - Multiple filters: `STATE:CA AND ACTIVE:1`
+    
+    **Note:** Incorrect syntax will result in a 400 error from the FDIC API.
+    
+    For full details, see: https://banks.data.fdic.gov/docs
+    
+    All Fields must be UPPERCASE.
+    "#]
     pub filters: Option<String>,
 
-    /// Comma-delimited list of fields to return (all values must be UPPERCASE)
-    #[param(rename = "fields")]
+    #[doc = r#"Comma-delimited list of fields to return (all fields must be UPPERCASE)"#]
     pub fields: Option<String>,
 
-    /// Field to sort by (default: `NAME`, all values must be UPPERCASE)
-    #[param(rename = "sort_by")]
+    #[doc = r#"Field to sort by (default: `NAME`, all fields must be UPPERCASE)"#]
     pub sort_by: Option<String>,
 
-    /// Sort order: `ASC` or `DESC` (default: `ASC`)
-    #[param(rename = "sort_order")]
+    #[doc = r#"Sort order: `ASC` or `DESC` (default: `ASC`)"#]
     pub sort_order: Option<String>,
 
-    /// Number of records to return (default: 10, max: 10,000)
-    #[param(rename = "limit")]
     #[serde(default, deserialize_with = "de_option_u32")]
+    #[doc = r#"Number of records to return (default: 10, max: 10,000)"#]
     pub limit: Option<u32>,
 
-    /// Pagination offset (default: 0)
-    #[param(rename = "offset")]
     #[serde(default, deserialize_with = "de_option_u32")]
+    #[doc = r#"Pagination offset (default: 0)"#]
     pub offset: Option<u32>,
 
-    /// Response format (json/csv/xml)
-    #[param(rename = "fileFormat")]
+    #[doc = r#"Response format (json/csv/xml)"#]
     pub file_format: Option<String>,
 
-    /// Download flag (if set, triggers file download)
-    #[param(rename = "fileDownload")]
+    #[doc = r#"Download flag (if set, triggers file download)"#]
     pub file_download: Option<bool>,
 
-    /// Custom filename for download
-    #[param(rename = "fileName")]
+    #[doc = r#"Custom filename for download"#]
     pub file_name: Option<String>,
 }
 
@@ -54,7 +58,8 @@ pub struct CommonParameters {
 use std::fmt;
 
 fn de_option_u32<'de, D>(deserializer: D) -> Result<Option<u32>, D::Error>
-where D: Deserializer<'de>,
+where
+    D: Deserializer<'de>,
 {
     struct OptionU32Visitor;
 
@@ -66,29 +71,35 @@ where D: Deserializer<'de>,
         }
 
         fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
-        where E: de::Error,
+        where
+            E: de::Error,
         {
             Ok(Some(v as u32))
         }
 
         fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-        where E: de::Error,
+        where
+            E: de::Error,
         {
             let s = v.trim();
             if s.is_empty() {
                 return Ok(None);
             }
-            s.parse::<u32>().map(Some).map_err(|e| de::Error::custom(e.to_string()))
+            s.parse::<u32>()
+                .map(Some)
+                .map_err(|e| de::Error::custom(e.to_string()))
         }
 
         fn visit_none<E>(self) -> Result<Self::Value, E>
-        where E: de::Error,
+        where
+            E: de::Error,
         {
             Ok(None)
         }
 
         fn visit_some<D2>(self, deserializer: D2) -> Result<Self::Value, D2::Error>
-        where D2: Deserializer<'de>,
+        where
+            D2: Deserializer<'de>,
         {
             deserializer.deserialize_any(self)
         }
@@ -113,63 +124,98 @@ use serde_json::json;
 use std::collections::HashMap;
 
 /// Standard MCP error response shape, following Anthropic MCP protocol and Rust best practices.
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize)]
 pub struct MCPError {
-    /// Always "error" for MCP error responses.
     #[serde(rename = "type")]
+    #[doc = r#"Always "error" for MCP error responses."#]
     pub error_type: String,
-    /// Error detail object (always present)
+
+    #[doc = r#"Error detail object (always present)."#]
     pub error: MCPErrorDetail,
 }
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize)]
 pub struct MCPErrorDetail {
-    /// Machine-readable error type (e.g., "fdic_proxy_error", "invalid_request_error")
     #[serde(rename = "type")]
+    #[doc = r#"Machine-readable error type (e.g., "fdic_proxy_error", "invalid_request_error")."#]
     pub kind: String,
-    /// Human-readable error message
+
+    #[doc = r#"Human-readable error message."#]
     pub message: String,
-    /// Optional HTTP status code
+
+    #[doc = r#"Optional HTTP status code."#]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<u16>,
-    /// Optional additional error details (e.g., FDIC error details)
+
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[doc = r#"Optional additional error details (e.g., FDIC error details)."#]
     pub detail: Option<String>,
-    /// Optional error source (e.g., which parameter was invalid)
+
+    #[doc = r#"Optional error source (e.g., which parameter was invalid)."#]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<serde_json::Value>,
-    /// Optional metadata (e.g., timestamp)
+
+    #[doc = r#"Optional metadata (e.g., timestamp)."#]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub meta: Option<serde_json::Value>,
-    /// Optionally include the full FDIC error object for advanced debugging
+
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[doc = r#"Optionally include the full FDIC error object for advanced debugging."#]
     pub fdic_raw: Option<serde_json::Value>,
 }
 
 /// Standard MCP success response shape, following Anthropic MCP protocol and Rust best practices.
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize)]
 pub struct MCPResponse<T> {
-    /// Always "success" for MCP success responses.
     #[serde(rename = "type")]
+    #[doc = r#"Always "success" for MCP success responses."#]
     pub response_type: String,
-    /// Main response data (payload).
+
+    #[doc = r#"Main response data (payload)."#]
     pub data: T,
-    /// Optional metadata (e.g., FDIC index info, parameters, etc.).
+
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[doc = r#"Optional metadata (e.g., FDIC index info, parameters, etc.)."#]
     pub meta: Option<serde_json::Value>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[doc = r#"Aggregate totals and counts for the query, as provided by the upstream FDIC API. Present only if the FDIC response includes a totals object."#]
+    pub totals: Option<serde_json::Value>,
 }
 
 /// Trait for endpoint-specific parameter injection.
 #[allow(dead_code)]
 pub trait QueryParameters {
     const VALID_FIELDS: &'static [&'static str];
+
     fn insert_endpoint_specific(&self, query: &mut HashMap<String, String>);
+
     /// Mutable access to shared common params
     fn common_mut(&mut self) -> &mut CommonParameters;
 }
 
-/// Proxy common and endpoint-specific params to FDIC BankFind and return parsed response.
-#[allow(dead_code)]
+#[doc = r#"
+- Proxies validated FDIC BankFind query parameters and endpoint-specific parameters to the FDIC BankFind API, executes the proxied HTTP request, and returns a standardized MCP response.
+ 
+- This function:
+    - Validates and collects shared/common FDIC parameters (e.g., api_key, filters, fields, etc.)
+    - Injects endpoint-specific parameters via the `QueryParameters` trait
+    - Constructs the query string for the FDIC BankFind API endpoint
+    - Proxies the HTTP request and parses the upstream FDIC response
+    - Wraps the response in the MCP standard format (`MCPResponse` or `MCPError`) with appropriate metadata
+    - Handles all error and edge cases, including FDIC error shapes and malformed responses
+
+- Arguments:
+    - `State(config)`: Shared FDIC API configuration
+    - `Query(mut params)`: Extracted and validated query parameters (common + endpoint-specific)
+    - `endpoint`: FDIC BankFind endpoint path (e.g., "demographics")
+
+- Returns:
+    - `Response`: Axum-compatible HTTP response containing either a success or error MCP shape
+
+- Errors:
+    - Returns an `MCPError` response if validation fails, the upstream FDIC API returns an error, or the response is malformed.
+"#]
 pub async fn list_endpoint<Q>(State(config): State<FDICApiConfig>, Query(mut params): Query<Q>, endpoint: &str) -> Response
 where
     Q: QueryParameters,
@@ -259,21 +305,36 @@ where
     if let Ok(val) = serde_json::from_slice::<serde_json::Value>(&bytes) {
         let meta = val.get("meta");
         let data = val.get("data");
+        let totals = val.get("totals");
         if meta.is_some() && data.is_some() {
             let resp = MCPResponse {
                 response_type: "success".to_string(),
                 data: data.unwrap().clone(),
                 meta: meta.cloned(),
+                totals: totals.cloned(),
             };
             return (status, Json(resp)).into_response();
         }
         // FDIC error shape: { "errors": [ ... ] }
         if let Some(errors) = val.get("errors") {
             // Use the first error if present
-            let fdic_error = errors.get(0).cloned().unwrap_or_else(|| json!({"message": "Unknown FDIC error"}));
-            let message = fdic_error.get("title").and_then(|v| v.as_str()).unwrap_or("FDIC API error").to_string();
-            let detail = fdic_error.get("detail").and_then(|v| v.as_str()).map(|s| s.to_string());
-            let status_code = fdic_error.get("status").and_then(|v| v.as_u64()).map(|n| n as u16);
+            let fdic_error = errors
+                .get(0)
+                .cloned()
+                .unwrap_or_else(|| json!({"message": "Unknown FDIC error"}));
+            let message = fdic_error
+                .get("title")
+                .and_then(|v| v.as_str())
+                .unwrap_or("FDIC API error")
+                .to_string();
+            let detail = fdic_error
+                .get("detail")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string());
+            let status_code = fdic_error
+                .get("status")
+                .and_then(|v| v.as_u64())
+                .map(|n| n as u16);
             let source = fdic_error.get("source").cloned();
             let meta_val = fdic_error.get("meta").cloned();
             let err = MCPError {
@@ -291,11 +352,7 @@ where
             return (status, Json(err)).into_response();
         }
         // If not a recognized FDIC shape, return as data
-        let resp = MCPResponse {
-            response_type: "success".to_string(),
-            data: val,
-            meta: None,
-        };
+        let resp = MCPResponse { response_type: "success".to_string(), data: val, meta: None, totals: None };
         return (status, Json(resp)).into_response();
     }
 
