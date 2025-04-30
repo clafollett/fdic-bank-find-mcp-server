@@ -19,4 +19,5 @@ target/
 .env
 
 # OS FIles
-.DT_Store
+.DS_Store
+**/.DS_Store
