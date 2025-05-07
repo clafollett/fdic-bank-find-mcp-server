@@ -1,38 +1,42 @@
 //! Do not edit by hand.
-//! Auto-generated handler for FDIC BankFind API `/failures` endpoint.// Internal imports (std, crate)
-use std::collections::HashMap;
-use crate::config::FDICApiConfig;
-use crate::common::{list_endpoint, CommonParameters, QueryParameters};
+//! Auto-generated handler for FDIC BankFind API `/failures` endpoint.
+
+// Internal imports (std, crate)
+use crate::common::{CommonParameters, FdicEndpoint, QueryParameters, get_fdic_bank_find_mcp_response};
+use crate::config::FdicApiConfig;
 
 // External imports (alphabetized)
-use axum::{extract::{Query, State}, response::Response};
+use rmcp::model::*;
 use serde::{Deserialize, Serialize};
-use tracing::{info, debug};
+use std::collections::HashMap;
+use tracing::info;
 
 /// Auto-generated parameters struct for `/failures` endpoint.
 /// Spec: failure_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
 pub struct FailuresParameters {
     /// Shared FDIC query parameters
     #[serde(flatten)]
     pub common: CommonParameters,
-    #[doc = r#"Fields to sum up (in a totals response object). Only numeric columns are valid. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: QBFDEP,QBFASSET,COST"#]
+    #[schemars(description = r#"Fields to sum up (in a totals response object). Only numeric columns are valid. All values must be entered in UPPERCASE."#)]
     pub total_fields: Option<String>,
-    #[doc = r#"The field by which data will be subtotaled (in totals response object). Only categorical values should be used. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: RESTYPE"#]
+    #[schemars(description = r#"The field by which data will be subtotaled (in totals response object). Only categorical values should be used. All values must be entered in UPPERCASE."#)]
     pub subtotal_by: Option<String>,
-    #[doc = r#"The field by which data will be aggregated. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: FAILYR"#]
+    #[schemars(description = r#"The field by which data will be aggregated. All values must be entered in UPPERCASE."#)]
     pub agg_by: Option<String>,
-    #[doc = r#"The field(s) for which aggregations will be counted for each unique term. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: RESTYPE"#]
+    #[schemars(description = r#"The field(s) for which aggregations will be counted for each unique term. All values must be entered in UPPERCASE."#)]
     pub agg_term_fields: Option<String>,
-    #[doc = r#"The field(s) for which aggregations will be summed or aggregated. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: QBFASSET,QBFDEP,COST"#]
+    #[schemars(description = r#"The field(s) for which aggregations will be summed or aggregated. All values must be entered in UPPERCASE."#)]
     pub agg_sum_fields: Option<String>,
-    #[doc = r#"The limit on how many aggregated results will be displayed"#]
+    #[schemars(description = r#"The limit on how many aggregated results will be displayed"#)]
     pub agg_limit: Option<i32>,
+}
+
+// Implement FdicEndpoint for generic handler
+impl FdicEndpoint for FailuresParameters {
+    fn name() -> &'static str {
+        "failures"
+    }
 }
 
 // Implement QueryParameters for generic handler
@@ -84,41 +88,35 @@ impl QueryParameters for FailuresParameters {
 
 /// Auto-generated properties struct for `/failures` endpoint.
 /// Spec: failure_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct FailuresProperties {
     #[doc = r#"Title: Institution Name (Search-Eligible)"#]
     #[doc = r#"Description: This is the legal name of the institution. When available, the Institution's name links to useful information for the customers and vendors of these institutions. This information includes press releases, information about the acquiring institution, (if applicable), how your accounts and loans are affected, and how vendors can file claims against the receivership. This field can be used for search and filtering."#]
-    #[serde(rename="NAME")]
     pub name: Option<String>,
 
     #[doc = r#"Title: Cert (Search-Eligible)"#]
     #[doc = r#"Description: The certificate number assigned by the FDIC used to identify institutions and for the issuance of insurance certificates. By clicking on this number, you will link to the Institution Directory (ID) system which will provide the last demographic and financial data filed by the selected institution. This field can be used for search and filtering."#]
-    #[serde(rename="CERT")]
     pub cert: Option<String>,
 
     #[doc = r#"Title: FIN (Search-Eligible)"#]
     #[doc = r#"Description: Financial Institution Number (FIN) is a unique number assigned to the institution as an Assistance Agreement, Conservatorship, Bridge Bank or Receivership. This field can be used for search and filtering."#]
-    #[serde(rename="FIN")]
     pub fin: Option<String>,
 
     #[doc = r#"Title: Location (Search-Eligible)"#]
     #[doc = r#"Description: The city and state (or territory) of the headquarters of the institution. This field can be used for search and filtering."#]
-    #[serde(rename="CITYST")]
     pub cityst: Option<String>,
 
     #[doc = r#"Title: Effective Date"#]
     #[doc = r#"Description: The date that the failed / assisted institution ceased to exist as a privately held going concern. For institutions that entered into government ownership, such as FDIC Bridge Banks and RTC conservatorships, this is the date that they entered into such ownership."#]
-    #[serde(rename="FAILDATE")]
     pub faildate: Option<String>,
 
     #[doc = r#"Title: Year (Search-Eligible)"#]
     #[doc = r#"Description: The 4-digit year that the failed / assisted institution ceased to exist as a privately held going concern. For institutions that entered into government ownership, such as FDIC Bridge Banks and RTC conservatorships, this is the date that they entered into such ownership. This field can be used for search and filtering."#]
-    #[serde(rename="FAILYR")]
     pub failyr: Option<String>,
 
     #[doc = r#"Title: Insurance Fund (Search-Eligible)"#]
     #[doc = r#"Description: Before 1989, there were two federal deposit insurance funds, one administered by the FDIC, which insured deposits in commercial banks and state-chartered savings banks, and another administered by the Federal Savings and Loan Insurance Corporation (FSLIC), which insured deposits in state- and federally-chartered savings associations. In 1989, the Financial Institutions Reform, Recovery and Enforcement Act (FIRREA) specified that thereafter the FDIC would be the federal deposit insurer of all banks and savings associations and would administer both the FDIC fund, which was renamed the Bank Insurance Fund (BIF) and the replacement for the insolvent FSLIC fund, which was called the Savings Association Insurance Fund (SAIF). Although it was created in 1989, the SAIF was not responsible for savings association failures until 1996. From 1989 through 1995, savings association failures were the responsibility of the Resolution Trust Corporation (RTC). In February 2006, The Federal Deposit Insurance Reform Act of 2005 provided for the merger of the BIF and the SAIF into a single Deposit Insurance Fund (DIF). Necessary technical and conforming changes to the law were made under The Federal Deposit Insurance Reform Conforming Amendments Act of 2005. The merger of the funds was effective on March 31, 2006. For additional information about deposit insurance fund and legislation, go to http://www.fdic.gov/deposit/insurance/index.html. This field can be used for search and filtering."#]
-    #[serde(rename="SAVR")]
     pub savr: Option<String>,
 
     #[doc = r#"Title: Transaction Type (Search-Eligible)"#]
@@ -134,7 +132,6 @@ IDT - Insured Deposit Transfer, where the acquiring institution served as a payi
 MGR - An institution where FSLIC took over management and generally provided financial assistance. FSLIC closed down before the institution was sold.
 Category 3
 PO - Payout, where the insurer paid the depositors directly and placed the assets in a liquidating receivership. Note: Includes transactions where the FDIC established a Deposit Insurance National Bank to facilitate the payout process. This field can be used for search and filtering."#]
-    #[serde(rename="RESTYPE1")]
     pub restype1: Option<String>,
 
     #[doc = r#"Title: Charter Class (Search-Eligible)"#]
@@ -144,27 +141,22 @@ SM - State charter Fed member commercial bank supervised by the Federal Reserve;
 NM - State charter Fed nonmember commercial bank supervised by the FDIC;
 SA - State or federal charter savings association supervised by the Office of Thrift Supervision or Office of the Comptroller of the Currency;
 SB - State charter savings bank supervised by the FDIC. This field can be used for search and filtering."#]
-    #[serde(rename="CHCLASS1")]
     pub chclass1: Option<String>,
 
     #[doc = r#"Title: Date of Resolution"#]
     #[doc = r#"Description: Date of Resolution. Usually the same as the fail date, except with banks with Open Bank Assistance."#]
-    #[serde(rename="RESDATE")]
     pub resdate: Option<String>,
 
     #[doc = r#"Title: Resolution (Search-Eligible)"#]
     #[doc = r#"Description: The given institution has failure stature or it can be assistance has been provided by FDIC in merging with other institution. This field can be used for search and filtering."#]
-    #[serde(rename="RESTYPE")]
     pub restype: Option<String>,
 
     #[doc = r#"Title: Total Deposits"#]
     #[doc = r#"Description: Total including demand deposits, money market deposits, other savings deposits, time deposits and deposits in foreign offices as of the last Call Report or Thrift Financial Report filed by the institution prior to the effective date. Note this does not necessarily reflect total deposits on the last report filed because in some cases reports were filed after the effective date."#]
-    #[serde(rename="QBFDEP")]
     pub qbfdep: Option<f32>,
 
     #[doc = r#"Title: Total Assets"#]
     #[doc = r#"Description: The Total assets owned by the institution including cash, loans, securities, bank premises and other assets as of the last Call Report or Thrift Financial Report filed by the institution prior to the effective date. Note this does not necessarily reflect total assets on the last report filed because in some cases reports were filed after the effective date. This total does not include off-balance-sheet accounts."#]
-    #[serde(rename="QBFASSET")]
     pub qbfasset: Option<f32>,
 
     #[doc = r#"Title: Estimated Loss"#]
@@ -175,12 +167,10 @@ Estimated Loss data was previously referred to as 'Estimated Cost' in past relea
 Beginning with the release of 2007 information, the 'Estimated Loss' in the Historical Statistics on Banking is presented and defined consistently with the aggregate Estimated Receivership Loss for FRF-RTC institutions and Estimated Losses for FDIC receiverships that are reported in the FDIC's Annual Report. The estimated loss is obtained from the FDIC's Failed Bank Cost Analysis (FBCA) report and the RTC Loss report. The FBCA provides data for receiverships back to 1986. The RTC Loss Report provides similar data back to 1989. 
 Questions regarding Estimated Loss should be sent to DOFBusinessCenter@fdic.gov. 
 Also, for more detail regarding resolution transactions and the FDIC's receivership activities, see Managing the Crisis: The FDIC and RTC Experience, a historical study prepared by the FDIC's Division of Resolutions and Receiverships. Copies are available from the FDIC's Public Information Center."#]
-    #[serde(rename="COST")]
     pub cost: Option<f32>,
 
     #[doc = r#"Title: State (Search-Eligible)"#]
     #[doc = r#"Description: Two-character alphanumeric code for US state or Territory This field can be used for search and filtering."#]
-    #[serde(rename="PSTALP")]
     pub pstalp: Option<String>,
 
 }
@@ -191,7 +181,6 @@ Also, for more detail regarding resolution transactions and the FDIC's receivers
 pub struct FailuresResponse {
     #[doc = r#"Title: "#]
     #[doc = r#"Description: "#]
-    #[serde(rename="data")]
     pub data: Option<String>,
 
 }
@@ -232,9 +221,10 @@ Responses:
     504: Gateway Timeout
 Tag: Failures"#]
 pub async fn failures_handler(
-    State(config): State<FDICApiConfig>,
-    Query(params): Query<FailuresParameters>,
-) -> Response {
+    config: &FdicApiConfig,
+    params: &FailuresParameters,
+) -> Result<CallToolResult, rmcp::Error> {
+   
     // Log incoming request parameters and request details as structured JSON
     info!(
         target = "handler",
@@ -242,22 +232,12 @@ pub async fn failures_handler(
         endpoint = "failures",
         method = "GET",
         path = "/failures",
-        params = serde_json::to_string(&params).unwrap()
+        params = serde_json::to_string(params).unwrap()
     );
-    let resp = list_endpoint(
-        State(config),
-        Query(params.clone()),
-        "failures",
-    ).await;
+
+    let resp = get_fdic_bank_find_mcp_response(config, params).await;
+
     // Log outgoing FDIC API request as structured JSON
-    debug!(
-        target = "fdic_proxy",
-        event = "proxied_fdic_api_request",
-        endpoint = "failures",
-        method = "GET",
-        path = "/failures",
-        params = serde_json::to_string(&params).unwrap()
-    );
     resp
 }
 
@@ -282,7 +262,6 @@ mod tests {
     #[test]
     fn test_properties_struct_serialization() {
         let props = FailuresProperties {
-            
             name: None,
             cert: None,
             fin: None,
@@ -298,7 +277,7 @@ mod tests {
             qbfasset: None,
             cost: None,
             pstalp: None,
-        };
+            };
         let _ = serde_json::to_string(&props).unwrap();
     }
 }

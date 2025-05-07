@@ -1,8 +1,5 @@
-//! Shared parameter validation and transformation utilities for FDIC MCP handlers.
-//! These functions ensure consistent validation and uppercasing of query parameters across all endpoint handlers.
-use crate::common::CommonParameters;
-use axum::http::StatusCode;
-use axum::response::IntoResponse;
+//! Shared parameter utilities for FDIC MCP handlers.
+//! All validation is now deferred to the FDIC BankFind API. Only proxy/transformation helpers remain.
 use std::collections::HashSet;
 
 /// Normalizes and uppercases a comma-delimited list of fields against the allowed set.
@@ -80,96 +77,4 @@ pub fn normalize_sort_order(sort_order: &Option<String>) -> Result<Option<String
     } else {
         Ok(None)
     }
-}
-
-/// Uppercases a parameter if present.
-pub fn uppercase_param(param: &Option<String>) -> Option<String> {
-    param.as_ref().map(|s| s.to_ascii_uppercase())
-}
-
-/// Validates that an optional limit does not exceed a maximum. Returns Ok(()) if valid, Err(message) if exceeded.
-pub fn validate_limit(limit: Option<u32>, max: u32) -> Result<(), String> {
-    if let Some(lim) = limit {
-        if lim > max {
-            return Err(format!("limit must be <= {}", max));
-        }
-    }
-    Ok(())
-}
-
-/// Validate and normalize all common parameters in one shot.
-#[allow(dead_code)]
-pub fn validate_common_params(common: &mut CommonParameters, valid_fields: &[&str]) -> Result<(), (StatusCode, impl IntoResponse)> {
-    use crate::common::{MCPError, MCPErrorDetail};
-    // limit
-    validate_limit(common.limit, 10000).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // sort_order
-    common.sort_order = normalize_sort_order(&common.sort_order).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // sort_by
-    common.sort_by = normalize_sort_by(&common.sort_by, valid_fields).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // fields
-    common.fields = normalize_fields(&common.fields, valid_fields).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // filters
-    common.filters = normalize_filters(&common.filters);
-    // format, filename uppercase
-    common.file_format = uppercase_param(&common.file_format);
-    common.file_download = common.file_download;
-    common.file_name = common.file_name.clone();
-    Ok(())
 }

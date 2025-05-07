@@ -4,6 +4,6 @@
 
 /// Config for FDIC BankFind API base URL.
 #[derive(Clone, Debug)]
-pub struct FDICApiConfig {
+pub struct FdicApiConfig {
     pub base_url: String,
 }

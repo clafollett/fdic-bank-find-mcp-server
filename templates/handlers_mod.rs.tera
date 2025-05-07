@@ -1,20 +1,60 @@
 //! Do not edit by hand.
 //! Auto-generated handler stubs for FDIC BankFind API endpoints.
-use axum::{Router, routing::get};
-use crate::config::FDICApiConfig;
-
 // MCP auto-generated: Endpoint handler modules
-{% for ep in endpoints -%}
-pub mod {{ ep }};
-{% endfor %}
-// MCP auto-generated: Endpoint handler imports
-{% for ep in endpoints -%}
-use {{ ep }}::{{ ep }}_handler;
-{% endfor %}
-// Import all generated handler functions
-/// Registers all generated FDIC handlers on the provided router.
-/// This function is auto-generated and should be called by the application to attach all FDIC routes.
-pub fn register_fdic_handlers(router: Router<FDICApiConfig>) -> Router<FDICApiConfig> {
-    router
-    {% for ep in endpoints %}    .route("/{{ ep }}", get({{ ep }}_handler))
-    {% endfor %}}
+{%- for ep in endpoints %}
+pub mod {{ ep.endpoint }};
+{%- endfor %}
+
+use crate::config::FdicApiConfig;
+use rmcp::{ServerHandler, model::*, tool};
+
+pub const FDIC_BASE_URL: &str = "https://banks.data.fdic.gov/api";
+
+#[derive(Clone, Debug, Default)]
+pub struct FdicBankFindMcpToolBox;
+
+#[tool(tool_box)]
+impl FdicBankFindMcpToolBox {
+    /// Returns MCP server status for Inspector/health validation
+    #[tool(description = "Returns MCP server status for Inspector/health validation")]
+    pub async fn ping(&self) -> String {
+        "The FDIC Bank Find MCP server is alive!".to_string()
+    }
+
+    {%- for ep in endpoints %}
+    #[tool(description = "{{ ep.description }}")]
+    pub async fn {{ ep.fn_name }}(&self, #[tool(aggr)] params: {{ ep.endpoint }}::{{ ep.endpoint_cap }}Parameters) -> Result<CallToolResult, rmcp::Error> {
+        let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
+        let fdic_response = {{ ep.endpoint }}::{{ ep.endpoint }}_handler(&config, &params).await;
+
+        fdic_response
+    }{% endfor %}
+}
+
+#[tool(tool_box)]
+impl ServerHandler for FdicBankFindMcpToolBox {
+    fn get_info(&self) -> ServerInfo {
+        eprintln!("[FDIC MCP] get_info() called - should show tools!");
+
+        // Set up explicit capabilities for tools and resources
+        let mut tools_capability = ToolsCapability::default();
+        tools_capability.list_changed = Some(true);
+        
+        let info = ServerInfo {
+            protocol_version: ProtocolVersion::V_2024_11_05,
+            capabilities: ServerCapabilities {
+                experimental: None,
+                logging: None,
+                completions: None,
+                prompts: None,
+                resources: None,
+                tools: Some(tools_capability),
+            },
+            server_info: Implementation::from_build_env(),
+            instructions: Some("FDIC Bank Find MCP Server (Unofficial) - https://banks.data.fdic.gov/docs/".into()),
+        };
+
+        eprintln!("[FDIC MCP] Returning ServerInfo with enabled tools and resources: {:?}", info);
+        info
+    }
+}

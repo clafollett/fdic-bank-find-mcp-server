@@ -27,14 +27,6 @@ pub struct Cli {
     /// Output directory for generated handlers
     #[arg(long, default_value = concat!(env!("CARGO_MANIFEST_DIR"), "/src/handlers"))]
     pub handler_dir: PathBuf,
-
-    /// Output path for generated OpenAPI JSON (openapi.json)
-    #[arg(long, default_value = concat!(env!("CARGO_MANIFEST_DIR"), "/public/openapi.json"))]
-    pub openapi_json_path: PathBuf,
-
-    /// Whether to render the OpenAPI JSON file (default: true)
-    #[arg(long, default_value_t = true)]
-    pub render_openapi_json: bool,
 }
 
 /// Canonical struct for extracted property info
@@ -99,8 +91,15 @@ fn main() -> Result<()> {
     // Debug: print out the path and YAML structure for troubleshooting
     debug!("swagger_path: {:?}", swagger_path);
 
+    // Extract fdic_description from swagger_doc
+    let fdic_description = swagger_doc
+        .get("info")
+        .and_then(|i| i.get("description"))
+        .and_then(|d| d.as_str())
+        .unwrap_or("")
+        .to_string();
+
     // For each path in OpenAPI, generate handler/parameters/properties
-    let mut all_endpoints = Vec::new();
     trace!("All endpoints to process:");
 
     trace!("Start of endpoint list");
@@ -109,10 +108,11 @@ fn main() -> Result<()> {
     }
     trace!("End of endpoint list");
 
-    let mut endpoint_data: Vec<serde_json::Value> = Vec::new();
+    let mut all_endpoints: Vec<serde_json::Value> = Vec::new();
     for (path_key, path_item) in paths_map.iter() {
         let path_str = path_key.as_str().expect("Path key should be a string");
         let endpoint = if path_str.starts_with('/') { &path_str[1..] } else { path_str };
+        let endpoint_cap = endpoint[..1].to_uppercase() + &endpoint[1..];
         let path_obj = path_item.as_mapping().expect("Path item must be mapping");
         let (properties_yaml, spec_file_name) = match extract_properties_yaml_value(&swagger_doc, path_obj, &cli.fdic_yaml_dir, endpoint) {
             Ok((doc, spec_file)) => {
@@ -129,8 +129,6 @@ fn main() -> Result<()> {
                 (YamlValue::Null, None)
             }
         };
-        let endpoint_cap = endpoint[..1].to_uppercase() + &endpoint[1..];
-        let parameters_type = format!("{}Parameters", endpoint_cap);
 
         // Use helper for YAML doc loading
         let selected_doc = properties_yaml;
@@ -138,6 +136,11 @@ fn main() -> Result<()> {
         let (summary, description, tags) = extract_operation_metadata(path_obj);
         // Extract parameters for handler using canonical extraction (with $ref support)
         let parameters = extract_parameters_for_handler(&swagger_doc, path_obj);
+        // Build OpenAPI parameter objects (not just internal struct)
+        let openapi_parameters = parameters
+            .iter()
+            .map(parameter_info_to_openapi)
+            .collect::<Vec<_>>();
         // Extract the actual row/item properties for the Properties struct
         let row_properties = extract_row_properties(&selected_doc);
         // Extract envelope properties for the Response struct (meta, data, totals, etc)
@@ -146,24 +149,30 @@ fn main() -> Result<()> {
             .and_then(YamlValue::as_mapping)
             .map(|mapping| extract_properties(mapping))
             .unwrap_or_default();
-        // Canonical: Build endpoint metadata struct for both handler and OpenAPI, no duplication
-        let properties_struct_name = format!("{}Properties", endpoint[..1].to_uppercase() + &endpoint[1..]);
-        let response_struct_name = format!("{}Response", endpoint[..1].to_uppercase() + &endpoint[1..]);
+        let parameters_type = format!("{endpoint_cap}Parameters");
+        let properties_type = format!("{endpoint_cap}Properties");
         let properties_schema = build_properties_schema(&row_properties);
-        let response_schema = build_response_schema(&properties_struct_name);
+        let response_schema = build_response_schema(&properties_type);
         let valid_fields: Vec<String> = row_properties
             .iter()
             .map(|p| p.name.to_ascii_uppercase())
             .collect();
+        let verb = path_obj
+            .keys()
+            .next()
+            .and_then(|k| k.as_str())
+            .unwrap_or("get");
         let endpoint_obj = serde_json::json!({
             "endpoint": endpoint,
             "endpoint_cap": endpoint_cap,
+            "fn_name": format!("{}_{}", verb, endpoint.to_lowercase()),
             "parameters_type": parameters_type,
-            "properties_type": properties_struct_name,
+            "properties_type": properties_type,
             "envelope_properties": serde_json::to_value(&envelope_properties).unwrap(),
             "properties": serde_json::to_value(&row_properties).unwrap(),
             "properties_for_handler": row_properties.iter().map(|p| p.name.to_ascii_uppercase()).collect::<Vec<_>>(),
             "parameters": serde_json::to_value(&parameters).unwrap(),
+            "openapi_parameters": serde_json::to_value(&openapi_parameters).unwrap(),
             "common_parameter_names": vec![
                 "api_key", "filters", "fields", "sort_by", "sort_order",
                 "limit", "offset", "format", "download", "filename"
@@ -187,23 +196,20 @@ fn main() -> Result<()> {
             "summary": summary,
             "description": description,
             "tags": tags,
-            "properties_struct_name": properties_struct_name,
-            "response_struct_name": response_struct_name,
             "properties_schema": properties_schema,
             "response_schema": response_schema,
             "spec_file_name": spec_file_name,
             "valid_fields": valid_fields,
         });
-        endpoint_data.push(endpoint_obj);
+        all_endpoints.push(endpoint_obj);
 
         // Use helper for context
-        let context = context_from_endpoint_obj(endpoint_data.last().unwrap());
+        let context = context_from_endpoint_obj(all_endpoints.last().unwrap());
         // Render and write handler stub
         let rendered = tera.render("handler", &context)?;
         let handler_out_path = cli.handler_dir.join(format!("{}.rs", endpoint));
 
         fs::write(&handler_out_path, rendered)?;
-        all_endpoints.push(endpoint.to_string());
 
         debug!("Generated handler stub: {}", handler_out_path.display());
     }
@@ -213,19 +219,16 @@ fn main() -> Result<()> {
 
     // After all handler files are generated, render the register_handlers.rs.tera template
     let mut reg_ctx = Context::new();
+    // Sort endpoints by "endpoint" field for deterministic output
+    all_endpoints.sort_by_key(|f| f["endpoint"].as_str().unwrap().to_owned());
     reg_ctx.insert("endpoints", &all_endpoints);
+    reg_ctx.insert("fdic_description", &fdic_description);
 
     // Also generate handlers/mod.rs from handlers_mod.rs.tera
     let mod_rendered = tera.render("handlers_mod.rs.tera", &reg_ctx)?;
     let mod_out_path = cli.handler_dir.join("mod.rs");
     fs::write(&mod_out_path, mod_rendered)?;
     debug!("Generated handler mod.rs: {}", mod_out_path.display());
-
-    if cli.render_openapi_json {
-        // Use endpoint_data for OpenAPI generation (single source of truth)
-        generate_openapi_json(&all_endpoints, &endpoint_data, &cli.openapi_json_path, &schemas)?;
-        debug!("Generated OpenAPI JSON: {}", cli.openapi_json_path.display());
-    }
     Ok(())
 }
 
@@ -233,23 +236,40 @@ fn main() -> Result<()> {
 // Public Functions (alphabetical)
 // =============================
 
+/// Converts internal ParameterInfo to OpenAPI parameter object.
+/// This ensures the generated OpenAPI JSON matches the OpenAPI spec pattern for parameters.
+fn parameter_info_to_openapi(param: &ParameterInfo) -> serde_json::Value {
+    let mut param_obj = serde_json::Map::new();
+    param_obj.insert("in".to_string(), serde_json::json!("query"));
+    param_obj.insert("name".to_string(), serde_json::json!(param.name));
+    if !param.description.is_empty() {
+        param_obj.insert("description".to_string(), serde_json::json!(param.description.clone()));
+    }
+    param_obj.insert("required".to_string(), serde_json::json!(param.required));
+    if !param.example.is_empty() {
+        param_obj.insert("example".to_string(), serde_json::json!(param.example.clone()));
+    }
+    // The schema field must be an object
+    param_obj.insert("schema".to_string(), param.schema.clone());
+    serde_json::Value::Object(param_obj)
+}
+
 /// Extracts the metadata and totals schemas from a loaded swagger.yaml Value and adds them to the schemas map.
-pub fn add_metadata_and_totals_schemas(
-    swagger_yaml: &serde_yaml::Value,
-    schemas: &mut serde_json::Map<String, serde_json::Value>,
-) {
-    let components = swagger_yaml.get("components").and_then(|c| c.get("schemas"));
+pub fn add_metadata_and_totals_schemas(swagger_yaml: &serde_yaml::Value, schemas: &mut serde_json::Map<String, serde_json::Value>) {
+    let components = swagger_yaml
+        .get("components")
+        .and_then(|c| c.get("schemas"));
     if let Some(schemas_map) = components.and_then(|s| s.as_mapping()) {
         if let Some(metadata_schema) = schemas_map.get(&serde_yaml::Value::String("metadata".to_string())) {
             schemas.insert(
                 "metadata".to_string(),
-                serde_json::to_value(metadata_schema).expect("Failed to convert metadata schema to JSON")
+                serde_json::to_value(metadata_schema).expect("Failed to convert metadata schema to JSON"),
             );
         }
         if let Some(totals_schema) = schemas_map.get(&serde_yaml::Value::String("totals".to_string())) {
             schemas.insert(
                 "totals".to_string(),
-                serde_json::to_value(totals_schema).expect("Failed to convert totals schema to JSON")
+                serde_json::to_value(totals_schema).expect("Failed to convert totals schema to JSON"),
             );
         }
     }
@@ -342,6 +362,10 @@ fn build_properties_schema(properties: &[PropertyInfo]) -> serde_json::Map<Strin
             }
             if !prop.example.is_empty() {
                 schema["example"] = serde_json::json!(prop.example);
+            }
+            // Write the title above the description, if present
+            if !prop.title.is_empty() {
+                schema["title"] = serde_json::json!(prop.title);
             }
             if !prop.description.is_empty() {
                 schema["description"] = serde_json::json!(prop.description);
@@ -625,83 +649,6 @@ fn extract_parameters_for_handler(swagger_doc: &YamlValue, path_obj: &Mapping) -
         }
     }
     parameters
-}
-
-/// Generates the OpenAPI JSON file from endpoint data.
-fn generate_openapi_json(
-    endpoints: &Vec<String>,
-    endpoint_data: &Vec<serde_json::Value>,
-    openapi_json_path: &PathBuf,
-    schemas: &serde_json::Map<String, serde_json::Value>,
-) -> anyhow::Result<()> {
-    use serde_json::{Map, Value};
-    use std::fs::File;
-    use std::io::Write;
-
-    // Build OpenAPI doc structure
-    let mut paths = Map::new();
-
-    // Add shared metadata and totals schemas
-    let mut openapi_schemas = schemas.clone();
-
-    for ed in endpoint_data {
-        let endpoint = ed.get("endpoint").and_then(Value::as_str).unwrap();
-        let response_struct_name = ed
-            .get("response_struct_name")
-            .and_then(Value::as_str)
-            .unwrap();
-        let properties_struct_name = ed
-            .get("properties_struct_name")
-            .and_then(Value::as_str)
-            .unwrap();
-        let response_schema = ed.get("response_schema").unwrap();
-        let properties_schema = ed.get("properties_schema").unwrap();
-
-        // Add schemas
-        openapi_schemas.insert(response_struct_name.to_string(), response_schema.clone());
-        openapi_schemas.insert(properties_struct_name.to_string(), properties_schema.clone());
-
-        // Find parameters for this endpoint in swagger_doc (flattened, idiomatic)
-        let parameters_json = ed.get("parameters").unwrap();
-
-        // Add endpoint path
-        let path_entry = serde_json::json!({
-            "get": {
-                "operationId": format!("get_{}", endpoint),
-                "summary": format!("MCP Server proxied request to the FDIC Bank Find /{} API Endpoint", endpoint),
-                "parameters": parameters_json,
-                "responses": {
-                    "200": {
-                        "description": format!("Successful {} response", endpoint),
-                        "content": {
-                            "application/json": {
-                                "schema": {"$ref": format!("#/components/schemas/{}", response_struct_name)}
-                            }
-                        }
-                    },
-                    "400": {"description": "Bad input parameter"},
-                    "500": {"description": "Internal Server Error"},
-                    "502": {"description": "Bad Gateway"}
-                }
-            }
-        });
-        paths.insert(format!("/{}", endpoint), path_entry);
-    }
-
-    let openapi_doc = serde_json::json!({
-        "openapi": "3.0.3",
-        "info": {
-            "title": "FDIC BankFind MCP API",
-            "version": "1.0.0"
-        },
-        "paths": paths,
-        "components": {
-            "schemas": openapi_schemas
-        }
-    });
-    let mut file = File::create(openapi_json_path)?;
-    file.write_all(serde_json::to_string_pretty(&openapi_doc)?.as_bytes())?;
-    Ok(())
 }
 
 /// Maps OpenAPI types and formats to Rust types for code generation.

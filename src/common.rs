@@ -1,16 +1,25 @@
 // Internal imports (std, crate)
-use serde::{Deserialize, Deserializer, Serialize, de};
+use crate::config::FdicApiConfig;
+use std::collections::HashMap;
 
 // Public/external imports (alphabetized)
-// utoipa removed: no longer needed for OpenAPI
+use log;
+use reqwest;
+use rmcp::model::*;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
+
+/// Maximum allowed FDIC API response Content-Length in bytes.
+/// Configurable via the FDIC_MAX_RESPONSE_CONTENT_LENGTH env variable (default: 5MB).
+pub const FDIC_MAX_RESPONSE_CONTENT_LENGTH: usize = 5 * 1024 * 1024; // 5MB
 
 /// Shared FDIC BankFind API query parameters.
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
 pub struct CommonParameters {
-    #[doc = r#"API key used for api.fdic.gov"#]
+    #[schemars(description = r#"API key used for api.fdic.gov"#)]
     pub api_key: Option<String>,
 
-    #[doc = r#"Filter expression for advanced querying using FDIC BankFind syntax. 
+    #[schemars(description = r#"Filter expression for advanced querying using FDIC BankFind syntax. 
     
     **Format:** `FIELD:VALUE`, `FIELD:>=VALUE`, `FIELD:<=VALUE`, combined with `AND`/`OR`.
     
@@ -24,167 +33,35 @@ pub struct CommonParameters {
     For full details, see: https://banks.data.fdic.gov/docs
     
     All Fields must be UPPERCASE.
-    "#]
+    "#)]
     pub filters: Option<String>,
 
-    #[doc = r#"Comma-delimited list of fields to return (all fields must be UPPERCASE)"#]
+    #[schemars(description = r#"Comma-delimited list of fields to return (all fields must be UPPERCASE)"#)]
     pub fields: Option<String>,
 
-    #[doc = r#"Field to sort by (default: `NAME`, all fields must be UPPERCASE)"#]
+    #[schemars(description = r#"Field to sort by (default: `NAME`, all fields must be UPPERCASE)"#)]
     pub sort_by: Option<String>,
 
-    #[doc = r#"Sort order: `ASC` or `DESC` (default: `ASC`)"#]
+    #[schemars(description = r#"Sort order: `ASC` or `DESC` (default: `ASC`)"#)]
     pub sort_order: Option<String>,
 
-    #[serde(default, deserialize_with = "de_option_u32")]
-    #[doc = r#"Number of records to return (default: 10, max: 10,000)"#]
+    #[schemars(description = r#"Number of records to return (default: 10, max: 10,000)"#)]
     pub limit: Option<u32>,
 
-    #[serde(default, deserialize_with = "de_option_u32")]
-    #[doc = r#"Pagination offset (default: 0)"#]
+    #[schemars(description = r#"Pagination offset (default: 0)"#)]
     pub offset: Option<u32>,
 
-    #[doc = r#"Response format (json/csv/xml)"#]
+    #[schemars(description = r#"Response format (json/csv/xml)"#)]
     pub file_format: Option<String>,
 
-    #[doc = r#"Download flag (if set, triggers file download)"#]
+    #[schemars(description = r#"Download flag (if set, triggers file download)"#)]
     pub file_download: Option<bool>,
 
-    #[doc = r#"Custom filename for download"#]
+    #[schemars(description = r#"Custom filename for download"#)]
     pub file_name: Option<String>,
 }
 
-// Custom deserializer to accept strings or numbers for Option<u32>
-use std::fmt;
-
-fn de_option_u32<'de, D>(deserializer: D) -> Result<Option<u32>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    struct OptionU32Visitor;
-
-    impl<'de> de::Visitor<'de> for OptionU32Visitor {
-        type Value = Option<u32>;
-
-        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-            write!(formatter, "an integer or string representing an integer")
-        }
-
-        fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
-        where
-            E: de::Error,
-        {
-            Ok(Some(v as u32))
-        }
-
-        fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-        where
-            E: de::Error,
-        {
-            let s = v.trim();
-            if s.is_empty() {
-                return Ok(None);
-            }
-            s.parse::<u32>()
-                .map(Some)
-                .map_err(|e| de::Error::custom(e.to_string()))
-        }
-
-        fn visit_none<E>(self) -> Result<Self::Value, E>
-        where
-            E: de::Error,
-        {
-            Ok(None)
-        }
-
-        fn visit_some<D2>(self, deserializer: D2) -> Result<Self::Value, D2::Error>
-        where
-            D2: Deserializer<'de>,
-        {
-            deserializer.deserialize_any(self)
-        }
-    }
-
-    deserializer.deserialize_option(OptionU32Visitor)
-}
-
-// Generic list handler to reduce boilerplate across endpoints
-use crate::config::FDICApiConfig;
-use crate::param_utils::validate_common_params;
-use axum::{
-    Json,
-    extract::{Query, State},
-    http::StatusCode,
-    response::{IntoResponse, Response},
-};
-use base64::Engine as _;
-use base64::engine::general_purpose::STANDARD;
-use reqwest;
-use serde_json::json;
-use std::collections::HashMap;
-
-/// Standard MCP error response shape, following Anthropic MCP protocol and Rust best practices.
-#[derive(Debug, Serialize)]
-pub struct MCPError {
-    #[serde(rename = "type")]
-    #[doc = r#"Always "error" for MCP error responses."#]
-    pub error_type: String,
-
-    #[doc = r#"Error detail object (always present)."#]
-    pub error: MCPErrorDetail,
-}
-
-#[derive(Debug, Serialize)]
-pub struct MCPErrorDetail {
-    #[serde(rename = "type")]
-    #[doc = r#"Machine-readable error type (e.g., "fdic_proxy_error", "invalid_request_error")."#]
-    pub kind: String,
-
-    #[doc = r#"Human-readable error message."#]
-    pub message: String,
-
-    #[doc = r#"Optional HTTP status code."#]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub status: Option<u16>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[doc = r#"Optional additional error details (e.g., FDIC error details)."#]
-    pub detail: Option<String>,
-
-    #[doc = r#"Optional error source (e.g., which parameter was invalid)."#]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub source: Option<serde_json::Value>,
-
-    #[doc = r#"Optional metadata (e.g., timestamp)."#]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub meta: Option<serde_json::Value>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[doc = r#"Optionally include the full FDIC error object for advanced debugging."#]
-    pub fdic_raw: Option<serde_json::Value>,
-}
-
-/// Standard MCP success response shape, following Anthropic MCP protocol and Rust best practices.
-#[derive(Debug, Serialize)]
-pub struct MCPResponse<T> {
-    #[serde(rename = "type")]
-    #[doc = r#"Always "success" for MCP success responses."#]
-    pub response_type: String,
-
-    #[doc = r#"Main response data (payload)."#]
-    pub data: T,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[doc = r#"Optional metadata (e.g., FDIC index info, parameters, etc.)."#]
-    pub meta: Option<serde_json::Value>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[doc = r#"Aggregate totals and counts for the query, as provided by the upstream FDIC API. Present only if the FDIC response includes a totals object."#]
-    pub totals: Option<serde_json::Value>,
-}
-
 /// Trait for endpoint-specific parameter injection.
-#[allow(dead_code)]
 pub trait QueryParameters {
     const VALID_FIELDS: &'static [&'static str];
 
@@ -194,52 +71,88 @@ pub trait QueryParameters {
     fn common_mut(&mut self) -> &mut CommonParameters;
 }
 
-#[doc = r#"
-- Proxies validated FDIC BankFind query parameters and endpoint-specific parameters to the FDIC BankFind API, executes the proxied HTTP request, and returns a standardized MCP response.
- 
-- This function:
-    - Validates and collects shared/common FDIC parameters (e.g., api_key, filters, fields, etc.)
-    - Injects endpoint-specific parameters via the `QueryParameters` trait
-    - Constructs the query string for the FDIC BankFind API endpoint
-    - Proxies the HTTP request and parses the upstream FDIC response
-    - Wraps the response in the MCP standard format (`MCPResponse` or `MCPError`) with appropriate metadata
-    - Handles all error and edge cases, including FDIC error shapes and malformed responses
+/// Trait to associate a parameter type with its FDIC endpoint name.
+pub trait FdicEndpoint {
+    fn name() -> &'static str;
+}
 
-- Arguments:
-    - `State(config)`: Shared FDIC API configuration
-    - `Query(mut params)`: Extracted and validated query parameters (common + endpoint-specific)
-    - `endpoint`: FDIC BankFind endpoint path (e.g., "demographics")
-
-- Returns:
-    - `Response`: Axum-compatible HTTP response containing either a success or error MCP shape
-
-- Errors:
-    - Returns an `MCPError` response if validation fails, the upstream FDIC API returns an error, or the response is malformed.
-"#]
-pub async fn list_endpoint<Q>(State(config): State<FDICApiConfig>, Query(mut params): Query<Q>, endpoint: &str) -> Response
+/// Proxies FDIC BankFind query parameters and endpoint-specific parameters to the FDIC BankFind API, executes the proxied HTTP request.
+/// Returns the result or our local FdicProxyError.
+pub async fn get_fdic_bank_find_mcp_response<Q>(config: &FdicApiConfig, params: &Q) -> Result<CallToolResult, rmcp::Error>
 where
-    Q: QueryParameters,
+    Q: QueryParameters + FdicEndpoint + Clone + Send + Sync,
 {
-    // Validate and collect shared FDIC parameters
+    // Clone params to allow modification without affecting caller's original
+    let mut params = params.clone();
     let common = params.common_mut();
-    if let Err(e) = validate_common_params(common, Q::VALID_FIELDS) {
-        return e.into_response();
+
+    // Apply validation and normalization to parameters before sending to FDIC API
+    // Normalize filters (uppercase everything except quoted substrings)
+    if common.filters.is_some() {
+        common.filters = crate::param_utils::normalize_filters(&common.filters);
     }
+
+    // Normalize and validate fields if present
+    if common.fields.is_some() {
+        match crate::param_utils::normalize_fields(&common.fields, Q::VALID_FIELDS) {
+            Ok(normalized) => common.fields = normalized,
+            Err(err) => {
+                log::warn!("Invalid fields parameter: {}", err);
+                return Err(rmcp::Error::from(ErrorData::new(
+                    ErrorCode::INVALID_PARAMS,
+                    format!("Invalid FDIC API field parameter: {}", err),
+                    None,
+                )));
+            }
+        }
+    }
+
+    // Normalize and validate sort_by if present
+    if common.sort_by.is_some() {
+        match crate::param_utils::normalize_sort_by(&common.sort_by, Q::VALID_FIELDS) {
+            Ok(normalized) => common.sort_by = normalized,
+            Err(err) => {
+                log::warn!("Invalid sort_by parameter: {}", err);
+                return Err(rmcp::Error::from(ErrorData::new(
+                    ErrorCode::INVALID_PARAMS,
+                    format!("Invalid FDIC API sort_by parameter: {}", err),
+                    None,
+                )));
+            }
+        }
+    }
+
+    // Normalize sort_order if present (must be ASC or DESC)
+    if common.sort_order.is_some() {
+        match crate::param_utils::normalize_sort_order(&common.sort_order) {
+            Ok(normalized) => common.sort_order = normalized,
+            Err(err) => {
+                log::warn!("Invalid sort_order parameter: {}", err);
+                return Err(rmcp::Error::from(ErrorData::new(
+                    ErrorCode::INVALID_PARAMS,
+                    format!("Invalid FDIC API sort_order parameter: {}", err),
+                    None,
+                )));
+            }
+        }
+    }
+
     let mut query = HashMap::new();
-    if let Some(v) = common.api_key.clone() {
-        query.insert("api_key".into(), v);
+    // Add common parameters if they exist (uppercasing relevant fields)
+    if let Some(v) = &common.api_key {
+        query.insert("api_key".into(), v.clone());
     }
     if let Some(v) = &common.filters {
-        query.insert("filters".into(), v.clone());
+        query.insert("filters".into(), v.to_uppercase());
     }
     if let Some(v) = &common.fields {
-        query.insert("fields".into(), v.clone());
+        query.insert("fields".into(), v.to_uppercase());
     }
     if let Some(v) = &common.sort_by {
-        query.insert("sort_by".into(), v.clone());
+        query.insert("sort_by".into(), v.to_uppercase());
     }
     if let Some(v) = &common.sort_order {
-        query.insert("sort_order".into(), v.clone());
+        query.insert("sort_order".into(), v.to_uppercase());
     }
     if let Some(v) = common.limit.map(|n| n.to_string()) {
         query.insert("limit".into(), v);
@@ -261,117 +174,120 @@ where
     params.insert_endpoint_specific(&mut query);
 
     let client = reqwest::Client::new();
-    let url = format!("{}/{}", config.base_url.trim_end_matches('/'), endpoint);
-    let res = match client.get(&url).query(&query).send().await {
-        Ok(r) => r,
-        Err(e) => {
-            let err = MCPError {
-                error_type: "error".to_string(),
-                error: MCPErrorDetail {
-                    kind: "fdic_proxy_error".to_string(),
-                    message: format!("FDIC API unreachable: {}", e),
-                    status: Some(StatusCode::BAD_GATEWAY.as_u16()),
-                    detail: None,
-                    source: None,
-                    meta: None,
-                    fdic_raw: None,
-                },
-            };
-            return (StatusCode::BAD_GATEWAY, Json(err)).into_response();
-        }
-    };
+    let url = format!("{}/{}", config.base_url.trim_end_matches('/'), Q::name());
 
-    let status = StatusCode::from_u16(res.status().as_u16()).unwrap_or(StatusCode::BAD_GATEWAY);
-    let bytes = match res.bytes().await {
-        Ok(b) => b,
-        Err(e) => {
-            let err = MCPError {
-                error_type: "error".to_string(),
-                error: MCPErrorDetail {
-                    kind: "fdic_proxy_error".to_string(),
-                    message: format!("FDIC API response error: {}", e),
-                    status: Some(StatusCode::BAD_GATEWAY.as_u16()),
-                    detail: None,
-                    source: None,
-                    meta: None,
-                    fdic_raw: None,
-                },
-            };
-            return (StatusCode::BAD_GATEWAY, Json(err)).into_response();
-        }
-    };
+    log::debug!("Sending FDIC request: URL={}, Query={:?}", url, query);
 
-    // Try to parse FDIC JSON error or data
-    if let Ok(val) = serde_json::from_slice::<serde_json::Value>(&bytes) {
-        let meta = val.get("meta");
-        let data = val.get("data");
-        let totals = val.get("totals");
-        if meta.is_some() && data.is_some() {
-            let resp = MCPResponse {
-                response_type: "success".to_string(),
-                data: data.unwrap().clone(),
-                meta: meta.cloned(),
-                totals: totals.cloned(),
-            };
-            return (status, Json(resp)).into_response();
+    // --- Execute Request ---
+    let res = client
+        .get(&url)
+        .query(&query)
+        .send()
+        .await
+        .map_err(|e| reqwest_to_rmcp_error(e))?;
+
+    let status = res.status();
+    log::debug!("Received FDIC response status: {}", status);
+
+    // Enforce Content-Length limit if present
+    let body_limit = get_fdic_max_allowed_content_length();
+    if let Some(content_length) = res.content_length() {
+        if content_length > body_limit as u64 {
+            log::error!("FDIC response Content-Length {} exceeds limit {}", content_length, body_limit);
+            return Err(rmcp::Error::from(ErrorData::new(
+                ErrorCode::INTERNAL_ERROR,
+                format!("FDIC API response body too large ({} bytes, limit is {})", content_length, body_limit),
+                Some(json!({
+                    "content_length": content_length,
+                    "limit": body_limit,
+                })),
+            )));
         }
-        // FDIC error shape: { "errors": [ ... ] }
-        if let Some(errors) = val.get("errors") {
-            // Use the first error if present
-            let fdic_error = errors
-                .get(0)
-                .cloned()
-                .unwrap_or_else(|| json!({"message": "Unknown FDIC error"}));
-            let message = fdic_error
-                .get("title")
-                .and_then(|v| v.as_str())
-                .unwrap_or("FDIC API error")
-                .to_string();
-            let detail = fdic_error
-                .get("detail")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string());
-            let status_code = fdic_error
-                .get("status")
-                .and_then(|v| v.as_u64())
-                .map(|n| n as u16);
-            let source = fdic_error.get("source").cloned();
-            let meta_val = fdic_error.get("meta").cloned();
-            let err = MCPError {
-                error_type: "error".to_string(),
-                error: MCPErrorDetail {
-                    kind: "fdic_proxy_error".to_string(),
-                    message,
-                    status: status_code,
-                    detail,
-                    source,
-                    meta: meta_val,
-                    fdic_raw: Some(fdic_error.clone()),
-                },
-            };
-            return (status, Json(err)).into_response();
-        }
-        // If not a recognized FDIC shape, return as data
-        let resp = MCPResponse { response_type: "success".to_string(), data: val, meta: None, totals: None };
-        return (status, Json(resp)).into_response();
     }
+    let bytes = res.bytes().await.map_err(|e| reqwest_to_rmcp_error(e))?;
 
-    // Fallback for non-JSON
-    let fallback = match String::from_utf8(bytes.to_vec()) {
-        Ok(text) => text,
-        Err(_) => STANDARD.encode(&bytes),
+    // --- Parse Response ---
+    match serde_json::from_slice::<serde_json::Value>(&bytes) {
+        Ok(val) => {
+            log::debug!("Successfully parsed FDIC JSON response");
+            if status.is_client_error() || status.is_server_error() {
+                let message = val
+                    .get("message")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("Unknown FDIC API error")
+                    .to_string();
+                log::warn!("FDIC API returned error status {}: {}", status, message);
+                let custom_code = format!("FDIC_API_ERROR_{}", status.as_u16());
+                let error_data = ErrorData::new(
+                    ErrorCode::INTERNAL_ERROR,
+                    message,
+                    Some(json!({
+                        "source": "fdic_api",
+                        "original_code": custom_code,
+                        "status": status.as_u16(),
+                        "fdic_raw": val
+                    })),
+                );
+
+                Err(rmcp::Error::from(error_data))
+            } else {
+                let content = Content::json(val).map_err(|e| rmcp::Error::from(e))?;
+                Ok(CallToolResult::success(vec![content]))
+            }
+        }
+        Err(e) => {
+            log::error!("Failed to parse FDIC response as JSON: {}. Status: {}", e, status);
+            Err(serde_json_to_rmcp_error(e))
+        }
+    }
+}
+
+/// Returns the configured body size limit for FDIC API responses (in bytes).
+/// Reads FDIC_MAX_RESPONSE_CONTENT_LENGTH from the environment, or uses the default.
+fn get_fdic_max_allowed_content_length() -> usize {
+    std::env::var("FDIC_MAX_RESPONSE_CONTENT_LENGTH")
+        .ok()
+        .and_then(|val| val.parse::<usize>().ok())
+        .unwrap_or(FDIC_MAX_RESPONSE_CONTENT_LENGTH)
+}
+
+// Map reqwest errors to rmcp::Error
+fn reqwest_to_rmcp_error(e: reqwest::Error) -> rmcp::Error {
+    let message = e.to_string();
+    let status = e.status().map(|s| s.as_u16());
+    let custom_code_str = match e {
+        _ if e.is_connect() => "NETWORK_CONNECTION_ERROR",
+        _ if e.is_timeout() => "NETWORK_TIMEOUT_ERROR",
+        _ if e.is_request() => "HTTP_REQUEST_ERROR",
+        _ if e.is_status() => "HTTP_STATUS_ERROR",
+        _ if e.is_body() | e.is_decode() => "HTTP_RESPONSE_BODY_ERROR",
+        _ => "FDIC_PROXY_ERROR",
     };
-    let err = MCPError {
-        error_type: "error".to_string(),
-        error: MCPErrorDetail {
-            kind: "fdic_proxy_error".to_string(),
-            message: "FDIC API returned non-JSON response".to_string(),
-            status: Some(StatusCode::BAD_GATEWAY.as_u16()),
-            detail: None,
-            source: None,
-            meta: Some(json!({"raw_response": fallback})),
-            fdic_raw: None,
-        },
-    };
-    (StatusCode::BAD_GATEWAY, Json(err)).into_response()
+
+    let error_data = ErrorData::new(
+        ErrorCode::INTERNAL_ERROR,
+        message,
+        Some(json!({
+            "source": "reqwest",
+            "original_code": custom_code_str,
+            "status": status,
+        })),
+    );
+
+    rmcp::Error::from(error_data)
+}
+
+// Map serde_json errors to FdicProxyError
+fn serde_json_to_rmcp_error(e: serde_json::Error) -> rmcp::Error {
+    let error_data = ErrorData::new(
+        ErrorCode::INVALID_PARAMS,
+        e.to_string(),
+        Some(json!({
+            "source": "serde_json",
+            "original_code": "JSON_PARSING_ERROR",
+            "line": e.line(),
+            "column": e.column(),
+        })),
+    );
+    rmcp::Error::from(error_data)
 }

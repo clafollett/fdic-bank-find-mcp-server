@@ -31,7 +31,7 @@ I want `main` to end up as the top level function after all imports and internal
 ```rust
 // Internal imports (std, crate)
 use std::collections::HashMap;
-use crate::config::FDICApiConfig;
+use crate::config::FdicApiConfig;
 
 // Public/external imports (alphabetized)
 use axum::{extract::{Query, State}, http::StatusCode, response::IntoResponse, response::Response};
