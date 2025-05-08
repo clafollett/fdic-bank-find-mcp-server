@@ -7,8 +7,8 @@ use dotenvy::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use serde_yaml::{Deserializer, Mapping, Value as YamlValue};
-use std::{fs, path::PathBuf};
 use std::collections::HashSet;
+use std::{fs, path::PathBuf};
 use tera::{Context, Tera};
 use tracing::{debug, error, trace};
 use tracing_subscriber::{EnvFilter, fmt};
@@ -28,6 +28,14 @@ pub struct Cli {
     /// Output directory for generated handlers
     #[arg(long, default_value = concat!(env!("CARGO_MANIFEST_DIR"), "/src/handlers"))]
     pub handler_dir: PathBuf,
+
+    /// Output path for generated OpenAPI JSON (openapi.json)
+    #[arg(long, default_value = concat!(env!("CARGO_MANIFEST_DIR"), "/public/openapi.json"))]
+    pub openapi_json_path: PathBuf,
+
+    /// Whether to render the OpenAPI JSON file (default: true)
+    #[arg(long, default_value_t = true)]
+    pub render_openapi_json: bool,
 }
 
 /// Canonical struct for extracted property info
@@ -168,6 +176,7 @@ fn main() -> Result<()> {
             .unwrap_or_default();
         let parameters_type = format!("{endpoint_cap}Parameters");
         let properties_type = format!("{endpoint_cap}Properties");
+        let response_type = format!("{endpoint_cap}Response");
         let properties_schema = build_properties_schema(&row_properties);
         let response_schema = build_response_schema(&properties_type);
         let valid_fields: Vec<String> = row_properties
@@ -185,6 +194,7 @@ fn main() -> Result<()> {
             "fn_name": format!("{}_{}", verb, endpoint.to_lowercase()),
             "parameters_type": parameters_type,
             "properties_type": properties_type,
+            "response_type": response_type,
             "envelope_properties": serde_json::to_value(&envelope_properties).unwrap(),
             "properties": serde_json::to_value(&row_properties).unwrap(),
             "properties_for_handler": row_properties.iter().map(|p| p.name.to_ascii_uppercase()).collect::<Vec<_>>(),
@@ -247,33 +257,25 @@ fn main() -> Result<()> {
     let mod_out_path = cli.handler_dir.join("mod.rs");
     fs::write(&mod_out_path, mod_rendered)?;
     debug!("Generated handler mod.rs: {}", mod_out_path.display());
+
+    if cli.render_openapi_json {
+        // Use endpoint_data for OpenAPI generation (single source of truth)
+        generate_openapi_json(&all_endpoints, &cli.openapi_json_path, &schemas)?;
+        debug!("Generated OpenAPI JSON: {}", cli.openapi_json_path.display());
+    }
+
+    // Generate per-endpoint schema files for agent/resource introspection
+    generate_endpoint_schema_files(&all_endpoints)?;
+
     Ok(())
 }
 
 // =============================
-// Public Functions (alphabetical)
+// Private Functions (alphabetical)
 // =============================
 
-/// Converts internal ParameterInfo to OpenAPI parameter object.
-/// This ensures the generated OpenAPI JSON matches the OpenAPI spec pattern for parameters.
-fn parameter_info_to_openapi(param: &ParameterInfo) -> serde_json::Value {
-    let mut param_obj = serde_json::Map::new();
-    param_obj.insert("in".to_string(), serde_json::json!("query"));
-    param_obj.insert("name".to_string(), serde_json::json!(param.name));
-    if !param.description.is_empty() {
-        param_obj.insert("description".to_string(), serde_json::json!(param.description.clone()));
-    }
-    param_obj.insert("required".to_string(), serde_json::json!(param.required));
-    if !param.example.is_empty() {
-        param_obj.insert("example".to_string(), serde_json::json!(param.example.clone()));
-    }
-    // The schema field must be an object
-    param_obj.insert("schema".to_string(), param.schema.clone());
-    serde_json::Value::Object(param_obj)
-}
-
 /// Extracts the metadata and totals schemas from a loaded swagger.yaml Value and adds them to the schemas map.
-pub fn add_metadata_and_totals_schemas(swagger_yaml: &serde_yaml::Value, schemas: &mut serde_json::Map<String, serde_json::Value>) {
+fn add_metadata_and_totals_schemas(swagger_yaml: &serde_yaml::Value, schemas: &mut serde_json::Map<String, serde_json::Value>) {
     let components = swagger_yaml
         .get("components")
         .and_then(|c| c.get("schemas"));
@@ -294,7 +296,7 @@ pub fn add_metadata_and_totals_schemas(swagger_yaml: &serde_yaml::Value, schemas
 }
 
 /// Extract all parameter info from a serde_yaml::Value (OpenAPI param)
-pub fn extract_parameter_info(param: &YamlValue) -> Option<ParameterInfo> {
+fn extract_parameter_info(param: &YamlValue) -> Option<ParameterInfo> {
     let pm = param.as_mapping()?;
     let name = get_str_field(pm, "name");
     let description_raw = get_str_field(pm, "description");
@@ -336,9 +338,71 @@ pub fn extract_parameter_info(param: &YamlValue) -> Option<ParameterInfo> {
     })
 }
 
-// =============================
-// Small field extraction helpers
-// =============================
+/// Extracts the actual row/item properties for the Properties struct from the YAML doc.
+/// Uses properties.data.properties if present, otherwise falls back to top-level properties.
+fn extract_row_properties(selected_doc: &serde_yaml::Value) -> Vec<PropertyInfo> {
+    selected_doc
+        .get("properties")
+        .and_then(|props| props.get("data"))
+        .and_then(|data| data.get("properties"))
+        .and_then(serde_yaml::Value::as_mapping)
+        .map(|mapping| extract_properties(mapping))
+        .unwrap_or_else(|| {
+            selected_doc
+                .get("properties")
+                .and_then(serde_yaml::Value::as_mapping)
+                .map(|mapping| extract_properties(mapping))
+                .unwrap_or_default()
+        })
+}
+
+/// Generates per-endpoint schema files for agent/resource introspection.
+/// For each endpoint in the given slice, writes a schema file to public/schemas/{endpoint}.json
+/// The schema file now describes the full response envelope, including:
+///   - meta: an object (placeholder, typically contains query metadata)
+///   - data: an array of field objects (as described by PropertyInfo)
+///   - totals: an object (placeholder, for aggregate totals if present)
+/// This gives agents the complete response shape, not just the data fields.
+fn generate_endpoint_schema_files(all_endpoints: &[serde_json::Value]) -> anyhow::Result<()> {
+    use std::fs;
+    use std::path::Path;
+    let schemas_dir = Path::new("public/schemas");
+    fs::create_dir_all(schemas_dir)?;
+    for endpoint_obj in all_endpoints {
+        let endpoint = endpoint_obj["endpoint"].as_str().unwrap();
+        let properties: Vec<crate::PropertyInfo> = serde_json::from_value(endpoint_obj["properties"].clone()).unwrap_or_default();
+        let mut fields = Vec::new();
+        for prop in &properties {
+            let mut field = serde_json::json!({
+                "name": prop.name,
+                "type": prop.openapi_type,
+                "rust_type": prop.rust_type,
+                "description": prop.description,
+                "title": prop.title,
+                "example": prop.example,
+                "required": prop.required,
+            });
+            if let Some(elastic_type) = &prop.elastic_type {
+                field["elastic_type"] = serde_json::json!(elastic_type);
+            }
+            if let Some(enum_vals) = prop.schema.get("enum") {
+                field["enum"] = enum_vals.clone();
+            }
+            fields.push(field);
+        }
+        // The envelope: meta (object), data (array of fields), totals (object)
+        let schema_obj = serde_json::json!({
+            "meta": { "description": "Metadata about the query, parameters, and FDIC index info. Structure may vary by endpoint." },
+            "data": { "type": "array", "items": { "fields": fields } },
+            "totals": { "description": "Aggregate totals and counts for the query, if present." }
+        });
+        let out_path = schemas_dir.join(format!("{}.json", endpoint.to_lowercase()));
+        let mut out_file = fs::File::create(&out_path)?;
+        serde_json::to_writer_pretty(&mut out_file, &schema_obj)?;
+        println!("Wrote schema for {} to {}", endpoint, out_path.display());
+    }
+    Ok(())
+}
 
 fn get_str_field<'a>(map: &'a serde_yaml::Mapping, key: &str) -> String {
     map.get(&YamlValue::String(key.to_string()))
@@ -358,10 +422,6 @@ fn get_value_field(map: &serde_yaml::Mapping, key: &str) -> YamlValue {
         .cloned()
         .unwrap_or(YamlValue::Null)
 }
-
-// =============================
-// Private/Helper Functions (alphabetical)
-// =============================
 
 /// Builds a map of property schemas from a slice of PropertyInfo.
 fn build_properties_schema(properties: &[PropertyInfo]) -> serde_json::Map<String, serde_json::Value> {
@@ -669,6 +729,74 @@ fn extract_parameters_for_handler(swagger_doc: &YamlValue, path_obj: &Mapping) -
     parameters
 }
 
+/// Generates the OpenAPI JSON file from endpoint data.
+fn generate_openapi_json(
+    endpoint_data: &Vec<serde_json::Value>, openapi_json_path: &PathBuf, schemas: &serde_json::Map<String, serde_json::Value>,
+) -> anyhow::Result<()> {
+    use serde_json::{Map, Value};
+    use std::fs::File;
+    use std::io::Write;
+
+    // Build OpenAPI doc structure
+    let mut paths = Map::new();
+
+    // Add shared metadata and totals schemas
+    let mut openapi_schemas = schemas.clone();
+
+    for ed in endpoint_data {
+        let endpoint = ed.get("endpoint").and_then(Value::as_str).unwrap();
+        let response_type = ed.get("response_type").and_then(Value::as_str).unwrap();
+        let properties_type = ed.get("properties_type").and_then(Value::as_str).unwrap();
+        let response_schema = ed.get("response_schema").unwrap();
+        let properties_schema = ed.get("properties_schema").unwrap();
+
+        // Add schemas
+        openapi_schemas.insert(response_type.to_string(), response_schema.clone());
+        openapi_schemas.insert(properties_type.to_string(), properties_schema.clone());
+
+        // Find parameters for this endpoint in swagger_doc (flattened, idiomatic)
+        let parameters_json = ed.get("parameters").unwrap();
+
+        // Add endpoint path
+        let path_entry = serde_json::json!({
+            "get": {
+                "operationId": format!("get_{}", endpoint),
+                "summary": format!("MCP Server proxied request to the FDIC Bank Find /{} API Endpoint", endpoint),
+                "parameters": parameters_json,
+                "responses": {
+                    "200": {
+                        "description": format!("Successful {} response", endpoint),
+                        "content": {
+                            "application/json": {
+                                "schema": {"$ref": format!("#/components/schemas/{}", response_type)}
+                            }
+                        }
+                    },
+                    "400": {"description": "Bad input parameter"},
+                    "500": {"description": "Internal Server Error"},
+                    "502": {"description": "Bad Gateway"}
+                }
+            }
+        });
+        paths.insert(format!("/{}", endpoint), path_entry);
+    }
+
+    let openapi_doc = serde_json::json!({
+        "openapi": "3.0.3",
+        "info": {
+            "title": "FDIC BankFind MCP API",
+            "version": "1.0.0"
+        },
+        "paths": paths,
+        "components": {
+            "schemas": openapi_schemas
+        }
+    });
+    let mut file = File::create(openapi_json_path)?;
+    file.write_all(serde_json::to_string_pretty(&openapi_doc)?.as_bytes())?;
+    Ok(())
+}
+
 /// Maps OpenAPI types and formats to Rust types for code generation.
 fn openapi_type_to_rust_type(openapi_type: &str, format: Option<&str>) -> &'static str {
     match (openapi_type, format) {
@@ -680,6 +808,24 @@ fn openapi_type_to_rust_type(openapi_type: &str, format: Option<&str>) -> &'stat
         ("boolean", _) => "bool",
         _ => "String",
     }
+}
+
+/// Converts internal ParameterInfo to OpenAPI parameter object.
+/// This ensures the generated OpenAPI JSON matches the OpenAPI spec pattern for parameters.
+fn parameter_info_to_openapi(param: &ParameterInfo) -> serde_json::Value {
+    let mut param_obj = serde_json::Map::new();
+    param_obj.insert("in".to_string(), serde_json::json!("query"));
+    param_obj.insert("name".to_string(), serde_json::json!(param.name));
+    if !param.description.is_empty() {
+        param_obj.insert("description".to_string(), serde_json::json!(param.description.clone()));
+    }
+    param_obj.insert("required".to_string(), serde_json::json!(param.required));
+    if !param.example.is_empty() {
+        param_obj.insert("example".to_string(), serde_json::json!(param.example.clone()));
+    }
+    // The schema field must be an object
+    param_obj.insert("schema".to_string(), param.schema.clone());
+    serde_json::Value::Object(param_obj)
 }
 
 /// Resolve a $ref string (e.g. "#/components/parameters/fileFormat") into a serde_yaml::Value
@@ -746,22 +892,4 @@ fn sanitize_markdown(input: &str) -> String {
         out.push('\n');
     }
     out.trim_end().to_string()
-}
-
-/// Extracts the actual row/item properties for the Properties struct from the YAML doc.
-/// Uses properties.data.properties if present, otherwise falls back to top-level properties.
-fn extract_row_properties(selected_doc: &serde_yaml::Value) -> Vec<PropertyInfo> {
-    selected_doc
-        .get("properties")
-        .and_then(|props| props.get("data"))
-        .and_then(|data| data.get("properties"))
-        .and_then(serde_yaml::Value::as_mapping)
-        .map(|mapping| extract_properties(mapping))
-        .unwrap_or_else(|| {
-            selected_doc
-                .get("properties")
-                .and_then(serde_yaml::Value::as_mapping)
-                .map(|mapping| extract_properties(mapping))
-                .unwrap_or_default()
-        })
 }

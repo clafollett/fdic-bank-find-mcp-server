@@ -12,7 +12,7 @@ pub mod {{ ep.endpoint }};
 {%- endif %}
 
 use crate::config::FdicApiConfig;
-use rmcp::{ServerHandler, model::*, tool};
+use rmcp::{ServerHandler, Error, model::*, service::*, tool};
 
 pub const FDIC_BASE_URL: &str = "https://banks.data.fdic.gov/api";
 
@@ -24,6 +24,7 @@ impl FdicBankFindMcpServer {
         FdicBankFindMcpServer::default()
     }
 }
+
 #[tool(tool_box)]
 impl FdicBankFindMcpServer {
     /// Returns MCP server status for Inspector/health validation
@@ -57,7 +58,10 @@ impl ServerHandler for FdicBankFindMcpServer {
         // Set up explicit capabilities for tools and resources
         let mut tools_capability = ToolsCapability::default();
         tools_capability.list_changed = Some(true);
-        
+
+        let mut resources_capability = ResourcesCapability::default();
+        resources_capability.list_changed = Some(true);
+
         let info = ServerInfo {
             protocol_version: ProtocolVersion::V_2024_11_05,
             capabilities: ServerCapabilities {
@@ -65,7 +69,7 @@ impl ServerHandler for FdicBankFindMcpServer {
                 logging: None,
                 completions: None,
                 prompts: None,
-                resources: None,
+                resources: Some(resources_capability),
                 tools: Some(tools_capability),
             },
             server_info: Implementation::from_build_env(),
@@ -74,5 +78,63 @@ impl ServerHandler for FdicBankFindMcpServer {
 
         eprintln!("[FDIC MCP] Returning ServerInfo with enabled tools and resources: {:?}", info);
         info
+    }
+
+    /// Implements MCP resource enumeration for all schema resources (one per endpoint)
+    fn list_resources(
+        &self, _request: Option<PaginatedRequestParam>, _context: RequestContext<RoleServer>,
+    ) -> impl Future<Output = Result<ListResourcesResult, Error>> + Send + '_ {
+        use rmcp::model::{Annotated, RawResource};
+        let resources = vec![
+            {%- for ep in endpoints %}
+            Annotated {
+                raw: RawResource {
+                    uri: format!("/schema/{}", "{{ ep.endpoint }}"),
+                    name: "{{ ep.endpoint }}".to_string(),
+                    description: Some("JSON schema for the /{{ ep.endpoint }} endpoint (fields, types, docs, envelope)".to_string()),
+                    mime_type: Some("application/json".to_string()),
+                    size: None,
+                },
+                annotations: Default::default(),
+            },
+            {%- endfor %}
+        ];
+        std::future::ready(Ok(ListResourcesResult { resources, next_cursor: None }))
+    }
+
+    /// Implements MCP resource fetching for schema resources by URI
+    fn read_resource(
+        &self,
+        request: ReadResourceRequestParam,
+        _context: RequestContext<RoleServer>,
+    ) -> impl Future<Output = Result<ReadResourceResult, Error>> + Send + '_ {
+        use rmcp::model::{ResourceContents, ErrorData, ReadResourceResult};
+        let uri = request.uri;
+        let prefix = "/schema/";
+        let result = if let Some(endpoint) = uri.strip_prefix(prefix) {
+            let schema_json = match endpoint.to_lowercase().as_str() {
+                "demographics" => include_str!("../../public/schemas/demographics.json"),
+                "failures" => include_str!("../../public/schemas/failures.json"),
+                "history" => include_str!("../../public/schemas/history.json"),
+                "institutions" => include_str!("../../public/schemas/institutions.json"),
+                "locations" => include_str!("../../public/schemas/locations.json"),
+                "sod" => include_str!("../../public/schemas/sod.json"),
+                "summary" => include_str!("../../public/schemas/summary.json"),
+                _ => return std::future::ready(Err(Error::from(ErrorData::resource_not_found(
+                    format!("Schema not found for endpoint '{}': unknown endpoint", endpoint),
+                    None,
+                )))),
+            };
+            let resource = ResourceContents::text(schema_json, format!("/schema/{}", endpoint.to_lowercase()));
+            Ok(ReadResourceResult {
+                contents: vec![resource],
+            })
+        } else {
+            Err(Error::from(ErrorData::resource_not_found(
+                format!("Unknown resource URI: {}", uri),
+                None,
+            )))
+        };
+        std::future::ready(result)
     }
 }

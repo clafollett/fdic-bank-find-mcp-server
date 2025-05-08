@@ -25,8 +25,8 @@ use crate::config::FdicApiConfig;
 // External imports (alphabetized)
 use rmcp::handler::server::tool::IntoCallToolResult;
 use rmcp::model::*;
-use serde::{Deserialize, Serialize};
 use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tracing::info;
 use utoipa::ToSchema;
@@ -89,9 +89,9 @@ pub struct {{ properties_type }} {
 
 #[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct {{ endpoint_cap }}Response {
-    pub data: Vec<{{ properties_type }}>,
+    pub data: Vec<serde_json::Value>,
     pub meta: ResponseMeta,
-    pub total: u64,
+    pub totals: ResponseTotals,
 }
 
 impl IntoContents for {{ endpoint_cap }}Response {

@@ -1,0 +1,1625 @@
+{
+  "data": {
+    "items": {
+      "fields": [
+        {
+          "description": "System Transaction Number",
+          "example": "",
+          "name": "TRANSNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "System Transaction Number",
+          "type": "number"
+        },
+        {
+          "description": "Activity Event Code",
+          "example": "",
+          "name": "CHANGECODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Activity Event Code",
+          "type": "number"
+        },
+        {
+          "description": "Activity Event Code Description This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CHANGECODE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Activity Event Code Description (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "A date indicating when an institution's change/event is processed.",
+          "example": "",
+          "name": "PROCDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Process Date",
+          "type": "string"
+        },
+        {
+          "description": "Effective Date",
+          "example": "",
+          "name": "EFFDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Effective Date",
+          "type": "string"
+        },
+        {
+          "description": "Effective Date",
+          "example": "",
+          "name": "ENDDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Effective Date",
+          "type": "string"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries.",
+          "example": "",
+          "name": "UNINUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC's unique number",
+          "type": "number"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries. This value maps to the main office for  the acquiring Institution in a merger, acquisition, etc.",
+          "example": "",
+          "name": "ACQ_UNINUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC's unique number of who is Acquiring",
+          "type": "number"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries. This value maps to the main office for  the divesting Institution in a merger, acquisition, etc.",
+          "example": "",
+          "name": "OUT_UNINUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC's unique number of who is Divesting",
+          "type": "number"
+        },
+        {
+          "description": "Codes include FI (Financial Institution), BR (Branch), and PA",
+          "example": "",
+          "name": "ORG_ROLE_CDE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Organization Role Code",
+          "type": "string"
+        },
+        {
+          "description": "Type of Report",
+          "example": "",
+          "name": "REPORT_TYPE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Report Type",
+          "type": "number"
+        },
+        {
+          "description": "TBD This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "TBD (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Bank Insurance Status",
+          "example": "",
+          "name": "BANK_INSURED",
+          "required": false,
+          "rust_type": "String",
+          "title": "Bank Insurance Status",
+          "type": "string"
+        },
+        {
+          "description": "Activity Event Code",
+          "example": "",
+          "name": "ACQ_CHANGECODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Activity Event Code",
+          "type": "number"
+        },
+        {
+          "description": "Acquiring Institution's Effective Date",
+          "example": "",
+          "name": "ACQ_ORG_EFF_DTE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Effective Date",
+          "type": "string"
+        },
+        {
+          "description": "The legal name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ACQ_INSTNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "ACQ_CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC Certificate #",
+          "type": "number"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "ACQ_CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "A unique number assigned by the Office of the Comptroller of the Currency (OCC) used to identify institutions that it has chartered and regulates (i.e. national  banks).",
+          "example": "",
+          "name": "ACQ_CHARTER",
+          "required": false,
+          "rust_type": "f32",
+          "title": "OCC Charter Number",
+          "type": "number"
+        },
+        {
+          "description": "All Chartering Agencies - State and Federal  Comptroller of the Currency - Chartering authority for nationally chartered commercial banks and for federally chartered savings associations (The Office of Thrift Supervision (OTS) before 7/21/11)  State (includes U.S. Territories) - Chartering authority for institutions that are not chartered by the OCC or OTS",
+          "example": "",
+          "name": "ACQ_CHARTAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Acquiring Chartering Agency",
+          "type": "string"
+        },
+        {
+          "description": "A numeric value associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "ACQ_FDICREGION",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Supervisory Region Number",
+          "type": "number"
+        },
+        {
+          "description": "A description associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "ACQ_FDICREGION_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Supervisory Region Description",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "ACQ_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "ACQ_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "State in which the  acquiring institution's main office or one if its branches are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ACQ_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "ACQ_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "ACQ_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches receives mail.",
+          "example": "",
+          "name": "ACQ_MADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "ACQ_MCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State",
+          "example": "",
+          "name": "ACQ_MSTATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State Abbbreviation",
+          "example": "",
+          "name": "ACQ_MSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State Abbbreviation",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "ACQ_MZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "ACQ_MZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "TBD This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ACQ_CLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "TBD (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "ACQ_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "ACQ_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Deposit Insurance Fund (DIF), Bank Insurance Fund (BIF), Savings Association Insurance Fund (SAIF)",
+          "example": "",
+          "name": "ACQ_INSAGENT1",
+          "required": false,
+          "rust_type": "String",
+          "title": "Insurance Fund Membership",
+          "type": "string"
+        },
+        {
+          "description": "As a result of the establishment of a single Deposit Insurance Fund (DIF) effective April 1, 2006, the Secondary Insurance fund is no longer applicable. previously both bif and saif bank insurance fund - institutions that are members of the bank insurance fund savings association insurance fund - Institutions that are members of the Savings Association Insurance Fund",
+          "example": "",
+          "name": "ACQ_INSAGENT2",
+          "required": false,
+          "rust_type": "String",
+          "title": "Secondary Insurance Fund",
+          "type": "string"
+        },
+        {
+          "description": "A code indicating the federal regulatory agency that provides primary supervision over an institution. OCC=Office of the Comptroller of Currency; FDIC=Federal Deposit Insurance Corporation; FRB=Federal Reserve Board; NCUA=National Credit Union Association; OTS=Office of Thrift Supervision. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ACQ_REGAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Acquiring Primary Regulator (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power",
+          "example": "",
+          "name": "ACQ_TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power",
+          "type": "string"
+        },
+        {
+          "description": "Surviving Location Address Latitude",
+          "example": "",
+          "name": "ACQ_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Surviving Location Address Latitude",
+          "example": "",
+          "name": "ACQ_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "The legal name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OUT_INSTNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "OUT_CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC Certificate #",
+          "type": "number"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "OUT_CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "A unique number assigned by the Office of the Comptroller of the Currency (OCC) used to identify institutions that it has chartered and regulates (i.e. national  banks).",
+          "example": "",
+          "name": "OUT_CHARTER",
+          "required": false,
+          "rust_type": "f32",
+          "title": "OCC Charter Number",
+          "type": "number"
+        },
+        {
+          "description": "All Chartering Agencies - State and Federal  Comptroller of the Currency - Chartering authority for nationally chartered commercial banks and for federally chartered savings associations (The Office of Thrift Supervision (OTS) before 7/21/11)  State (includes U.S. Territories) - Chartering authority for institutions that are not chartered by the OCC or OTS",
+          "example": "",
+          "name": "OUT_CHARTAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Outgoing Chartering Agency",
+          "type": "string"
+        },
+        {
+          "description": "A numeric value associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "OUT_FDICREGION",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Supervisory Region Number",
+          "type": "number"
+        },
+        {
+          "description": "A description associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "OUT_FDICREGION_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Supervisory Region Description",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "OUT_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "OUT_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "State in which the the headquarters are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands.",
+          "example": "",
+          "name": "OUT_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "OUT_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "OUT_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches receives mail.",
+          "example": "",
+          "name": "OUT_MADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "OUT_MCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State",
+          "example": "",
+          "name": "OUT_MSTATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State Abbbreviation",
+          "example": "",
+          "name": "OUT_MSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State Abbbreviation",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "OUT_MZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "OUT_MZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "TBD This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OUT_CLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "TBD (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "OUT_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "OUT_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Deposit Insurance Fund (DIF), Bank Insurance Fund (BIF), Savings Association Insurance Fund (SAIF)",
+          "example": "",
+          "name": "OUT_INSAGENT1",
+          "required": false,
+          "rust_type": "String",
+          "title": "Insurance Fund Membership",
+          "type": "string"
+        },
+        {
+          "description": "As a result of the establishment of a single Deposit Insurance Fund (DIF) effective April 1, 2006, the Secondary Insurance fund is no longer applicable. previously both bif and saif bank insurance fund - institutions that are members of the bank insurance fund savings association insurance fund - Institutions that are members of the Savings Association Insurance Fund",
+          "example": "",
+          "name": "OUT_INSAGENT2",
+          "required": false,
+          "rust_type": "String",
+          "title": "Secondary Insurance Fund",
+          "type": "string"
+        },
+        {
+          "description": "A code indicating the federal regulatory agency that provides primary supervision over an institution. OCC=Office of the Comptroller of Currency; FDIC=Federal Deposit Insurance Corporation; FRB=Federal Reserve Board; NCUA=National Credit Union Association; OTS=Office of Thrift Supervision. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OUT_REGAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Outgoing Primary Regulator (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power",
+          "example": "",
+          "name": "OUT_TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power",
+          "type": "string"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "OUT_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "OUT_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Activity Event Code",
+          "example": "",
+          "name": "SUR_CHANGECODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Activity Event Code",
+          "type": "number"
+        },
+        {
+          "description": "Activity Event Code Description This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "SUR_CHANGECODE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Activity Event Code Description (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The legal name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "SUR_INSTNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "SUR_CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC Certificate #",
+          "type": "number"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "SUR_CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "A unique number assigned by the Office of the Comptroller of the Currency (OCC) used to identify institutions that it has chartered and regulates (i.e. national  banks).",
+          "example": "",
+          "name": "SUR_CHARTER",
+          "required": false,
+          "rust_type": "f32",
+          "title": "OCC Charter Number",
+          "type": "number"
+        },
+        {
+          "description": "All Chartering Agencies - State and Federal  Comptroller of the Currency - Chartering authority for nationally chartered commercial banks and for federally chartered savings associations (The Office of Thrift Supervision (OTS) before 7/21/11)  State (includes U.S. Territories) - Chartering authority for institutions that are not chartered by the OCC or OTS",
+          "example": "",
+          "name": "SUR_CHARTAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Surviving Chartering Agency",
+          "type": "string"
+        },
+        {
+          "description": "A numeric value associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "SUR_FDICREGION",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Supervisory Region Number",
+          "type": "number"
+        },
+        {
+          "description": "A description associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "SUR_FDICREGION_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Supervisory Region Description",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches receives mail.",
+          "example": "",
+          "name": "SUR_MADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "SUR_MCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State",
+          "example": "",
+          "name": "SUR_MSTATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State Abbreviation",
+          "example": "",
+          "name": "SUR_MSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State Abbreviation",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "SUR_MZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "SUR_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "SUR_CLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "TBD",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "SUR_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "SUR_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Deposit Insurance Fund (DIF), Bank Insurance Fund (BIF), Savings Association Insurance Fund (SAIF)",
+          "example": "",
+          "name": "SUR_INSAGENT1",
+          "required": false,
+          "rust_type": "String",
+          "title": "Insurance Fund Membership",
+          "type": "string"
+        },
+        {
+          "description": "As a result of the establishment of a single Deposit Insurance Fund (DIF) effective April 1, 2006, the Secondary Insurance fund is no longer applicable. previously both bif and saif bank insurance fund - institutions that are members of the bank insurance fund savings association insurance fund - Institutions that are members of the Savings Association Insurance Fund",
+          "example": "",
+          "name": "SUR_INSAGENT2",
+          "required": false,
+          "rust_type": "String",
+          "title": "Secondary Insurance Fund",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "SUR_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "SUR_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "State in which the the headquarters are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "SUR_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "SUR_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "A code indicating the federal regulatory agency that provides primary supervision over an institution. OCC=Office of the Comptroller of Currency; FDIC=Federal Deposit Insurance Corporation; FRB=Federal Reserve Board; NCUA=National Credit Union Association; OTS=Office of Thrift Supervision.",
+          "example": "",
+          "name": "SUR_REGAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Surviving Primary Regulator",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power",
+          "example": "",
+          "name": "SUR_TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power",
+          "type": "string"
+        },
+        {
+          "description": "Surviving Location Address Latitude",
+          "example": "",
+          "name": "SUR_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Surviving Location Address Latitude",
+          "example": "",
+          "name": "SUR_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "FRM_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "FRM_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "A code indicating the federal regulatory agency that provides primary supervision over an institution. OCC=Office of the Comptroller of Currency; FDIC=Federal Deposit Insurance Corporation; FRB=Federal Reserve Board; NCUA=National Credit Union Association; OTS=Office of Thrift Supervision. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_REGAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "From Primary Regulator (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "State in which the the headquarters are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands.",
+          "example": "",
+          "name": "FRM_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "FRM_CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "FRM_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "All Chartering Agencies - State and Federal  Comptroller of the Currency - Chartering authority for nationally chartered commercial banks and for federally chartered savings associations (The Office of Thrift Supervision (OTS) before 7/21/11)  State (includes U.S. Territories) - Chartering authority for institutions that are not chartered by the OCC or OTS This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_CHARTAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "From/Before Chartering Agency (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "TBD This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_CLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "TBD (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "FRM_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "FRM_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "The legal name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_INSTNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "FRM_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "FRM_CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Previous FDIC Certificate #",
+          "type": "number"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "FRM_OFF_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "FRM_OFF_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "FRM_OFF_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "FRM_OFF_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "State in which the the headquarters are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands.",
+          "example": "",
+          "name": "FRM_OFF_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "FRM_OFF_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "FRM_OFF_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "Service Type",
+          "example": "",
+          "name": "FRM_OFF_SERVTYPE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Service Type",
+          "type": "number"
+        },
+        {
+          "description": "Service Type Description",
+          "example": "",
+          "name": "FRM_OFF_SERVTYPE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Service Type Description",
+          "type": "string"
+        },
+        {
+          "description": "Office State",
+          "example": "",
+          "name": "FRM_OFF_STATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office State",
+          "type": "string"
+        },
+        {
+          "description": "Name of the branch. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "FRM_OFF_NAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office Name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The branch's corresponding office number.",
+          "example": "",
+          "name": "FRM_OFF_NUM",
+          "required": false,
+          "rust_type": "String",
+          "title": "Branch Number",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power",
+          "example": "",
+          "name": "FRM_OFF_TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "FRM_OFF_CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "FRM_OFF_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "FRM_OFF_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "FRM_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "FRM_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC Certificate #",
+          "type": "number"
+        },
+        {
+          "description": "The legal name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "INSTNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "All Chartering Agencies - State and Federal  Comptroller of the Currency - Chartering authority for nationally chartered commercial banks and for federally chartered savings associations (The Office of Thrift Supervision (OTS) before 7/21/11)  State (includes U.S. Territories) - Chartering authority for institutions that are not chartered by the OCC or OTS This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CHARTAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Chartering Agency (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code which identifies the major and minor categories of an institution.",
+          "example": "",
+          "name": "CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Numeric code",
+          "type": "number"
+        },
+        {
+          "description": "A numeric value associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "FDICREGION",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Supervisory Region Number",
+          "type": "number"
+        },
+        {
+          "description": "A description associated with the name of an FDIC supervisory region",
+          "example": "",
+          "name": "FDICREGION_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Supervisory Region Description",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Deposit Insurance Fund (DIF), Bank Insurance Fund (BIF), Savings Association Insurance Fund (SAIF)",
+          "example": "",
+          "name": "INSAGENT1",
+          "required": false,
+          "rust_type": "String",
+          "title": "Insurance Fund Membership",
+          "type": "string"
+        },
+        {
+          "description": "As a result of the establishment of a single Deposit Insurance Fund (DIF) effective April 1, 2006, the Secondary Insurance fund is no longer applicable. previously both bif and saif bank insurance fund - institutions that are members of the bank insurance fund savings association insurance fund - Institutions that are members of the Savings Association Insurance Fund",
+          "example": "",
+          "name": "INSAGENT2",
+          "required": false,
+          "rust_type": "String",
+          "title": "Secondary Insurance Fund",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches receives mail.",
+          "example": "",
+          "name": "MADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing Street Address",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "MCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State",
+          "example": "",
+          "name": "MSTATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State",
+          "type": "string"
+        },
+        {
+          "description": "Mailing State",
+          "example": "",
+          "name": "MSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Mailing State",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "MZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "MZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "State in which the the headquarters are physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha code (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "State in which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "STATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical State",
+          "type": "string"
+        },
+        {
+          "description": "Trust Power This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "TRUST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Trust Power (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "A code indicating the federal regulatory agency that provides primary supervision over an institution. OCC=Office of the Comptroller of Currency; FDIC=Federal Deposit Insurance Corporation; FRB=Federal Reserve Board; NCUA=National Credit Union Association; OTS=Office of Thrift Supervision. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "REGAGENT",
+          "required": false,
+          "rust_type": "String",
+          "title": "Primary Regulator (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Service Type",
+          "example": "",
+          "name": "SERVTYPE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Service Type",
+          "type": "number"
+        },
+        {
+          "description": "Service Type Description",
+          "example": "",
+          "name": "SERVTYPE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Service Type Description",
+          "type": "string"
+        },
+        {
+          "description": "County where the institution is physically located (abbreviated if the county name exceeds 16 characters).",
+          "example": "",
+          "name": "OFF_CNTYNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "The branch's corresponding office number.",
+          "example": "",
+          "name": "OFF_NUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Branch Number",
+          "type": "number"
+        },
+        {
+          "description": "TBD",
+          "example": "",
+          "name": "OFF_CNTYNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TBD",
+          "type": "number"
+        },
+        {
+          "description": "Street address at which the institution or one of its branches is physically located.",
+          "example": "",
+          "name": "OFF_PADDR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Physical Street Address",
+          "type": "string"
+        },
+        {
+          "description": "Office State",
+          "example": "",
+          "name": "OFF_PSTATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office State",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or its branch office.",
+          "example": "",
+          "name": "OFF_PZIP5",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        },
+        {
+          "description": "Zip Code Extension",
+          "example": "",
+          "name": "OFF_PZIPREST",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code Extension",
+          "type": "string"
+        },
+        {
+          "description": "The legal name of the office. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OFF_NAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "State in which the institution or one of its branches is physically located. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OFF_PSTALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "City in which an institution's headquarters or one of its branches is physically located. Either the entire name or part of the name of a specific city may be entered to produce an Institution List.",
+          "example": "",
+          "name": "OFF_PCITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "Service Type",
+          "example": "",
+          "name": "OFF_SERVTYPE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Service Type",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "OFF_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Location Address Latitude",
+          "example": "",
+          "name": "OFF_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "Service Type Description This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "OFF_SERVTYPE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Service Type Description (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Office Established Date",
+          "example": "",
+          "name": "ESTDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office Established Date",
+          "type": "string"
+        },
+        {
+          "description": "Office Acquired Date",
+          "example": "",
+          "name": "ACQDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office Acquired Date",
+          "type": "string"
+        },
+        {
+          "description": "Financial Institution Effective Date",
+          "example": "",
+          "name": "FI_EFFDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Financial Institution Effective Date",
+          "type": "string"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries.",
+          "example": "",
+          "name": "FI_UNINUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC's unique number",
+          "type": "number"
+        },
+        {
+          "description": "Organization Status Flag",
+          "example": "",
+          "name": "ORG_STAT_FLG",
+          "required": false,
+          "rust_type": "String",
+          "title": "Organization Status Flag",
+          "type": "string"
+        },
+        {
+          "description": "The latitude of the physical address.",
+          "example": "",
+          "name": "LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "The longitude of the physical address.",
+          "example": "",
+          "name": "LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        }
+      ]
+    },
+    "type": "array"
+  },
+  "meta": {
+    "description": "Metadata about the query, parameters, and FDIC index info. Structure may vary by endpoint."
+  },
+  "totals": {
+    "description": "Aggregate totals and counts for the query, if present."
+  }
+}

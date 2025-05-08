@@ -1,0 +1,374 @@
+{
+  "data": {
+    "items": {
+      "fields": [
+        {
+          "description": "The street address in which an institution or branch office is physically located.",
+          "example": "",
+          "name": "ADDRESS",
+          "required": false,
+          "rust_type": "String",
+          "title": "Street Address",
+          "type": "string"
+        },
+        {
+          "description": "A classification code assigned by the FDIC based on the institution's charter type (commercial bank or savings institution), charter agent (state or federal), Federal Reserve membership status (Fed member, Fed non-member) and its primary federal regulator (state chartered institutions are subject to both federal and state supervision). N - Commercial bank, national (federal) charter, Fed member, and supervised by the Office of the Comptroller of the Currency (OCC); NM - Commercial bank, state charter, Fed non-member, and supervised by the Federal Deposit Insurance Corporation (FDIC); OI - Insured U.S. branch of a foreign chartered institution (IBA) and supervised by the OCC or FDIC; SB – Federal savings banks, federal charter, supervised by the OCC or before July 21,2011 the Office of Thrift Supervision (OTS); SI - State chartered stock savings banks, supervised by the FDIC; SL - State chartered stock savings and loan associations, supervised by the FDIC or before July 21,2011 the OTS; SM - Commercial bank, state charter, Fed member, and supervised by the Federal Reserve Bank (FRB); NC – Noninsured non-deposit commercial banks and/or trust companies regulated by the OCC, a state, or a territory; NS - Noninsured stock savings bank supervised by a state or territory; CU - state or federally chartered credit unions supervised by the National Credit Union Association (NCUA).",
+          "enum": [
+            "N",
+            "NM",
+            "OI",
+            "SA",
+            "SB",
+            "SM"
+          ],
+          "example": "",
+          "name": "BKCLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution Class",
+          "type": "string"
+        },
+        {
+          "description": "Name of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget.",
+          "example": "",
+          "name": "CBSA",
+          "required": false,
+          "rust_type": "String",
+          "title": "Core Based Statistical Area Name",
+          "type": "string"
+        },
+        {
+          "description": "Name of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget.",
+          "example": "",
+          "name": "CBSA_DIV",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Divisions Name",
+          "type": "string"
+        },
+        {
+          "description": "A flag (1=Yes) indicating member of a Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget.",
+          "enum": [
+            0,
+            1
+          ],
+          "example": "",
+          "name": "CBSA_DIV_FLG",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Divisions Flag",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget.",
+          "example": "",
+          "name": "CBSA_DIV_NO",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Divisions Number",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget",
+          "example": "",
+          "name": "CBSA_METRO",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Division Number",
+          "type": "string"
+        },
+        {
+          "description": "A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget",
+          "example": "",
+          "name": "CBSA_METRO_FLG",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Division Flag",
+          "type": "string"
+        },
+        {
+          "description": "Name of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget",
+          "example": "",
+          "name": "CBSA_METRO_NAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Metropolitan Division Name",
+          "type": "string"
+        },
+        {
+          "description": "A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget",
+          "enum": [
+            0,
+            1
+          ],
+          "example": "",
+          "name": "CBSA_MICRO_FLG",
+          "required": false,
+          "rust_type": "String",
+          "title": "Micropolitan Division Flag",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget.",
+          "example": "",
+          "name": "CBSA_NO",
+          "required": false,
+          "rust_type": "String",
+          "title": "Core Based Statistical Areas",
+          "type": "string"
+        },
+        {
+          "description": "A unique number assigned by the FDIC used to identify institutions and for the issuance of insurance certificates.",
+          "example": "",
+          "name": "CERT",
+          "required": false,
+          "rust_type": "String",
+          "title": "FDIC Certificate #",
+          "type": "string"
+        },
+        {
+          "description": "The city in which an institution or branch office is physically located.",
+          "example": "",
+          "name": "CITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "City",
+          "type": "string"
+        },
+        {
+          "description": "The county name in which an institution or branch office is physically located.",
+          "example": "",
+          "name": "COUNTY",
+          "required": false,
+          "rust_type": "String",
+          "title": "County",
+          "type": "string"
+        },
+        {
+          "description": "Name of the Combined Statistical Area (CSA) as defined by the US Census Bureau.",
+          "example": "",
+          "name": "CSA",
+          "required": false,
+          "rust_type": "String",
+          "title": "Combined Statistical Area Name",
+          "type": "string"
+        },
+        {
+          "description": "Flag (1=Yes) indicating member of a Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget",
+          "enum": [
+            0,
+            1
+          ],
+          "example": "",
+          "name": "CSA_FLG",
+          "required": false,
+          "rust_type": "String",
+          "title": "Combined Statistical Area Flag  (Branch)",
+          "type": "string"
+        },
+        {
+          "description": "Numeric code of the Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget",
+          "example": "",
+          "name": "CSA_NO",
+          "required": false,
+          "rust_type": "String",
+          "title": "Combined Statistical Area Number  (Branch)",
+          "type": "string"
+        },
+        {
+          "description": "The date on which the branch began operations.",
+          "example": "",
+          "name": "ESTYMD",
+          "required": false,
+          "rust_type": "String",
+          "title": "Branch Established Date",
+          "type": "string"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries. This value maps the branch back to the parent financial institution.",
+          "example": "",
+          "name": "FI_UNINUM",
+          "required": false,
+          "rust_type": "String",
+          "title": "FDIC's unique number",
+          "type": "string"
+        },
+        {
+          "description": "The latitude of the physical address.",
+          "example": "",
+          "name": "LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "The longitude of the physical address.",
+          "example": "",
+          "name": "LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Location Address Latitude",
+          "type": "number"
+        },
+        {
+          "description": "A numeric flag used to indicate whether an institution is primarily a minority owned institution.",
+          "example": "",
+          "name": "MDI_STATUS_CODE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Minority Status Code",
+          "type": "string"
+        },
+        {
+          "description": "A descriptive flag used to indicate type of minority owned institution.",
+          "example": "",
+          "name": "MDI_STATUS_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Minority Status Description",
+          "type": "string"
+        },
+        {
+          "description": "Flag (1=Yes) indicating this location is the main office for the institution.",
+          "enum": [
+            0,
+            1
+          ],
+          "example": "",
+          "name": "MAINOFF",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Main Office",
+          "type": "number"
+        },
+        {
+          "description": "The legal title or name of the institution. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "NAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Institution Name (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Branch office name.",
+          "example": "",
+          "name": "OFFNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Office Name",
+          "type": "string"
+        },
+        {
+          "description": "An institution's branch office number used internally by FDIC.",
+          "example": "",
+          "name": "OFFNUM",
+          "required": false,
+          "rust_type": "String",
+          "title": "Branch Number",
+          "type": "string"
+        },
+        {
+          "description": "The day the institution information was updated.",
+          "example": "",
+          "name": "RUNDATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "Run Date",
+          "type": "string"
+        },
+        {
+          "description": "Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch",
+          "enum": [
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "example": "",
+          "name": "SERVTYPE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "Service Type Code",
+          "type": "number"
+        },
+        {
+          "description": "Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "SERVTYPE_DESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "Service Type Code Description (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The state abbreviation of the location of the institution's main office.",
+          "example": "",
+          "name": "STALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Alpha Code",
+          "type": "string"
+        },
+        {
+          "description": "A five digit number representing the state and county in which the institution is physically located.  The first two digits represent the FIPS state numeric code and the last three digits represent the FIPS county numeric code.",
+          "example": "",
+          "name": "STCNTY",
+          "required": false,
+          "rust_type": "String",
+          "title": "State and County Number",
+          "type": "string"
+        },
+        {
+          "description": "State in which the  branch is physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands.",
+          "example": "",
+          "name": "STNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Branch State",
+          "type": "string"
+        },
+        {
+          "description": "FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries.",
+          "example": "",
+          "name": "UNINUM",
+          "required": false,
+          "rust_type": "String",
+          "title": "FDIC's Unique Number",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices.",
+          "example": "",
+          "name": "ZIP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code",
+          "type": "string"
+        }
+      ]
+    },
+    "type": "array"
+  },
+  "meta": {
+    "description": "Metadata about the query, parameters, and FDIC index info. Structure may vary by endpoint."
+  },
+  "totals": {
+    "description": "Aggregate totals and counts for the query, if present."
+  }
+}

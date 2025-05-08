@@ -85,6 +85,14 @@ pub struct ResponseMeta {
     pub total: Option<u64>,
 }
 
+/// Represents the 'totals' object in FDIC API responses (present in all successful endpoint responses).
+/// This struct is generic and should be used for any endpoint that returns a 'totals' object.
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
+pub struct ResponseTotals {
+    /// Total number of records matching the query (may be missing for some endpoints)
+    pub count: Option<u64>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct ResponseMetaIndex {
     #[serde(rename = "createTimestamp")]
@@ -245,19 +253,18 @@ where
                         "fdic_raw": val
                     })),
                 );
-
-                Err(rmcp::Error::from(error_data))
-            } else {
-                let parsed: R = serde_json::from_value(val).map_err(|e| {
-                    rmcp::model::ErrorData::new(
-                        rmcp::model::ErrorCode::INTERNAL_ERROR,
-                        format!("Failed to deserialize FDIC API response: {e}"),
-                        None,
-                    )
-                })?;
-
-                Ok(parsed)
+                return Err(rmcp::Error::from(error_data));
             }
+
+            let parsed: R = serde_json::from_value(val).map_err(|e| {
+                rmcp::model::ErrorData::new(
+                    rmcp::model::ErrorCode::INTERNAL_ERROR,
+                    format!("Failed to deserialize FDIC API response: {e}"),
+                    None,
+                )
+            })?;
+
+            Ok(parsed)
         }
         Err(e) => {
             log::error!("Failed to parse FDIC response as JSON: {}. Status: {}", e, status);

@@ -8,8 +8,8 @@ use crate::config::FdicApiConfig;
 // External imports (alphabetized)
 use rmcp::handler::server::tool::IntoCallToolResult;
 use rmcp::model::*;
-use serde::{Deserialize, Serialize};
 use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tracing::info;
 use utoipa::ToSchema;
@@ -402,9 +402,9 @@ pub struct SodProperties {
 
 #[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct SodResponse {
-    pub data: Vec<SodProperties>,
+    pub data: Vec<serde_json::Value>,
     pub meta: ResponseMeta,
-    pub total: u64,
+    pub totals: ResponseTotals,
 }
 
 impl IntoContents for SodResponse {
