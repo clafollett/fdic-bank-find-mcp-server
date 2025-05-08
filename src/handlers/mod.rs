@@ -108,7 +108,27 @@ impl ServerHandler for FdicBankFindMcpServer {
                 tools: Some(tools_capability),
             },
             server_info: Implementation::from_build_env(),
-            instructions: Some("FDIC Bank Find MCP Server (Unofficial) - https://banks.data.fdic.gov/docs/".into()),
+            instructions: Some(r#"{
+  "fdic_mcp_agent_rules": {
+    "critical": "Never assume field, filter, or sort compatibility across endpoints. Always check the endpoint schema.",
+    "field_usage": "Use only fields present in the current endpoint schema. Confirm field is allowed for filter, sort, or output.",
+    "field_naming_warning": "The field 'STATE' is valid ONLY in certain endpoints (e.g., 'history', 'sod'). It is NOT present in 'institutions' or 'locations'—use 'STALP' or 'STNAME' for those. Always anchor field usage to the specific endpoint schema. Never cross fields between endpoints.",
+    "schema_discovery": "Valid fields for each endpoint can always be discovered programmatically via the MCP resources capability. Use the /schema endpoints (see list_resources) to fetch the full schema for any endpoint—never guess or hardcode field lists.",
+    "query_validation_checklist": [
+      "Field exists in endpoint schema",
+      "Field is allowed for intended operation (filter/sort/output)",
+      "Uppercase only field names, not values, except where endpoint docs specify otherwise.",
+      "Never use a field from another endpoint"
+    ],
+    "error_handling": "On query error, re-validate schema and adjust. Never retry unchanged queries.",
+    "pitfall": "Most common error: using a field from another endpoint or for an unsupported operation.",
+    "fdic_filter_syntax": "FDIC 'filters' use an elasticsearch-like query language. For multi-value OR and AND conditions, use parentheses to group conditions, e.g., (STALP:IL OR STALP:WI). Comma-separated lists (e.g., STALP:IL,WI) do NOT work as an OR. Use AND to combine multiple filters. Avoid using OR/AND or parentheses outside of documented patterns. See https://banks.data.fdic.gov/docs for full syntax.",
+    "fdic_error_handling": "Full FDIC error payloads (title, detail, links, meta, etc.) are returned in error responses for agent debugging and correction. Always inspect the 'fdic_raw' field for actionable details.",
+    "fdic_filter_case_sensitivity": "FDIC BankFind API filter values are CASE SENSITIVE. You must match the exact case as stored in FDIC records (e.g., CITY:Chicago, not CITY:CHICAGO or CITY:chicago).",
+    "fdic_filter_quoting": "Multi-word filter values MUST be wrapped in double quotes (e.g., STNAME:\"West Virginia\"). Single-word values do NOT require quotes but are still case sensitive (e.g., CITY:Chicago).",
+    "fdic_filter_examples": "Examples: CITY:Chicago (matches), CITY:chicago (no match), CITY:CHICAGO (no match), STNAME:\"West Virginia\" (matches), STNAME:West Virginia (syntax error or no match)."
+  }
+}"#.into()),
         };
 
         eprintln!("[FDIC MCP] Returning ServerInfo with enabled tools and resources: {:?}", info);

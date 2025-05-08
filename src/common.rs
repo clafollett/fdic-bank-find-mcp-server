@@ -168,16 +168,16 @@ where
         query.insert("api_key".into(), v.clone());
     }
     if let Some(v) = &common.filters {
-        query.insert("filters".into(), v.to_uppercase());
+        query.insert("filters".into(), v.clone());
     }
     if let Some(v) = &common.fields {
-        query.insert("fields".into(), v.to_uppercase());
+        query.insert("fields".into(), v.clone());
     }
     if let Some(v) = &common.sort_by {
-        query.insert("sort_by".into(), v.to_uppercase());
+        query.insert("sort_by".into(), v.clone());
     }
     if let Some(v) = &common.sort_order {
-        query.insert("sort_order".into(), v.to_uppercase());
+        query.insert("sort_order".into(), v.clone());
     }
     if let Some(v) = common.limit.map(|n| n.to_string()) {
         query.insert("limit".into(), v);
@@ -236,11 +236,19 @@ where
         Ok(val) => {
             log::debug!("Successfully parsed FDIC JSON response");
             if status.is_client_error() || status.is_server_error() {
-                let message = val
-                    .get("message")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("Unknown FDIC API error")
-                    .to_string();
+                // Try to extract the most informative error message from FDIC error response
+                let title = val.get("title").and_then(|v| v.as_str());
+                let detail = val.get("detail").and_then(|v| v.as_str());
+                let message = match (title, detail) {
+                    (Some(t), Some(d)) => format!("{}: {}", t, d),
+                    (Some(t), None) => t.to_string(),
+                    (None, Some(d)) => d.to_string(),
+                    _ => val
+                        .get("message")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("Unknown FDIC API error")
+                        .to_string(),
+                };
                 log::warn!("FDIC API returned error status {}: {}", status, message);
                 let custom_code = format!("FDIC_API_ERROR_{}", status.as_u16());
                 let error_data = ErrorData::new(
