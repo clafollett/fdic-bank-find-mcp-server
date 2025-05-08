@@ -2,18 +2,21 @@
 //! Auto-generated handler for FDIC BankFind API `/locations` endpoint.
 
 // Internal imports (std, crate)
-use crate::common::{CommonParameters, FdicEndpoint, QueryParameters, get_fdic_bank_find_mcp_response};
+use crate::common::*;
 use crate::config::FdicApiConfig;
 
 // External imports (alphabetized)
+use rmcp::handler::server::tool::IntoCallToolResult;
 use rmcp::model::*;
 use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
 use std::collections::HashMap;
 use tracing::info;
+use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/locations` endpoint.
 /// Spec: location_properties.yaml
-#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 pub struct LocationsParameters {
     /// Shared FDIC query parameters
     #[serde(flatten)]
@@ -67,8 +70,9 @@ impl QueryParameters for LocationsParameters {
         "ZIP",
     ];
 
-    #[allow(unused_variables)]
+    #[allow(unused_variables)] // the `query` parameter is unused if there are no endpoint-specific parameters
     fn insert_endpoint_specific(&self, query: &mut HashMap<String, String>) {
+        
     }
 
     fn common_mut(&mut self) -> &mut CommonParameters {
@@ -78,166 +82,135 @@ impl QueryParameters for LocationsParameters {
 
 /// Auto-generated properties struct for `/locations` endpoint.
 /// Spec: location_properties.yaml
-#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct LocationsProperties {
-    #[doc = r#"Title: Street Address"#]
-    #[doc = r#"Description: The street address in which an institution or branch office is physically located."#]
+    #[schemars(description = r#"Street Address - The street address in which an institution or branch office is physically located."#)]
     pub address: Option<String>,
 
-    #[doc = r#"Title: Institution Class"#]
-    #[doc = r#"Description: A classification code assigned by the FDIC based on the institution's charter type (commercial bank or savings institution), charter agent (state or federal), Federal Reserve membership status (Fed member, Fed non-member) and its primary federal regulator (state chartered institutions are subject to both federal and state supervision). N - Commercial bank, national (federal) charter, Fed member, and supervised by the Office of the Comptroller of the Currency (OCC); NM - Commercial bank, state charter, Fed non-member, and supervised by the Federal Deposit Insurance Corporation (FDIC); OI - Insured U.S. branch of a foreign chartered institution (IBA) and supervised by the OCC or FDIC; SB – Federal savings banks, federal charter, supervised by the OCC or before July 21,2011 the Office of Thrift Supervision (OTS); SI - State chartered stock savings banks, supervised by the FDIC; SL - State chartered stock savings and loan associations, supervised by the FDIC or before July 21,2011 the OTS; SM - Commercial bank, state charter, Fed member, and supervised by the Federal Reserve Bank (FRB); NC – Noninsured non-deposit commercial banks and/or trust companies regulated by the OCC, a state, or a territory; NS - Noninsured stock savings bank supervised by a state or territory; CU - state or federally chartered credit unions supervised by the National Credit Union Association (NCUA)."#]
+    #[schemars(description = r#"Institution Class - A classification code assigned by the FDIC based on the institution's charter type (commercial bank or savings institution), charter agent (state or federal), Federal Reserve membership status (Fed member, Fed non-member) and its primary federal regulator (state chartered institutions are subject to both federal and state supervision). N - Commercial bank, national (federal) charter, Fed member, and supervised by the Office of the Comptroller of the Currency (OCC); NM - Commercial bank, state charter, Fed non-member, and supervised by the Federal Deposit Insurance Corporation (FDIC); OI - Insured U.S. branch of a foreign chartered institution (IBA) and supervised by the OCC or FDIC; SB – Federal savings banks, federal charter, supervised by the OCC or before July 21,2011 the Office of Thrift Supervision (OTS); SI - State chartered stock savings banks, supervised by the FDIC; SL - State chartered stock savings and loan associations, supervised by the FDIC or before July 21,2011 the OTS; SM - Commercial bank, state charter, Fed member, and supervised by the Federal Reserve Bank (FRB); NC – Noninsured non-deposit commercial banks and/or trust companies regulated by the OCC, a state, or a territory; NS - Noninsured stock savings bank supervised by a state or territory; CU - state or federally chartered credit unions supervised by the National Credit Union Association (NCUA)."#)]
     pub bkclass: Option<String>,
 
-    #[doc = r#"Title: Core Based Statistical Area Name"#]
-    #[doc = r#"Description: Name of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget."#]
+    #[schemars(description = r#"Core Based Statistical Area Name - Name of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget."#)]
     pub cbsa: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Divisions Name"#]
-    #[doc = r#"Description: Name of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#]
+    #[schemars(description = r#"Metropolitan Divisions Name - Name of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#)]
     pub cbsa_div: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Divisions Flag"#]
-    #[doc = r#"Description: A flag (1=Yes) indicating member of a Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#]
+    #[schemars(description = r#"Metropolitan Divisions Flag - A flag (1=Yes) indicating member of a Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#)]
     pub cbsa_div_flg: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Divisions Number"#]
-    #[doc = r#"Description: Numeric code of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#]
+    #[schemars(description = r#"Metropolitan Divisions Number - Numeric code of the Core Based Statistical Division as defined by the US Census Bureau Office of Management and Budget."#)]
     pub cbsa_div_no: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Division Number"#]
-    #[doc = r#"Description: Numeric code of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Metropolitan Division Number - Numeric code of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#)]
     pub cbsa_metro: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Division Flag"#]
-    #[doc = r#"Description: A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Metropolitan Division Flag - A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#)]
     pub cbsa_metro_flg: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Division Name"#]
-    #[doc = r#"Description: Name of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Metropolitan Division Name - Name of the Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#)]
     pub cbsa_metro_name: Option<String>,
 
-    #[doc = r#"Title: Micropolitan Division Flag"#]
-    #[doc = r#"Description: A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Micropolitan Division Flag - A flag (1=Yes) used to indicate whether an branch is in a Metropolitan Statistical Area as defined by the US Census Bureau Office of Management and Budget"#)]
     pub cbsa_micro_flg: Option<String>,
 
-    #[doc = r#"Title: Core Based Statistical Areas"#]
-    #[doc = r#"Description: Numeric code of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget."#]
+    #[schemars(description = r#"Core Based Statistical Areas - Numeric code of the Core Based Statistical Area (CBSA) as defined by the US Census Bureau Office of Management and Budget."#)]
     pub cbsa_no: Option<String>,
 
-    #[doc = r#"Title: FDIC Certificate #"#]
-    #[doc = r#"Description: A unique number assigned by the FDIC used to identify institutions and for the issuance of insurance certificates."#]
+    #[schemars(description = r#"FDIC Certificate # - A unique number assigned by the FDIC used to identify institutions and for the issuance of insurance certificates."#)]
     pub cert: Option<String>,
 
-    #[doc = r#"Title: City"#]
-    #[doc = r#"Description: The city in which an institution or branch office is physically located."#]
+    #[schemars(description = r#"City - The city in which an institution or branch office is physically located."#)]
     pub city: Option<String>,
 
-    #[doc = r#"Title: County"#]
-    #[doc = r#"Description: The county name in which an institution or branch office is physically located."#]
+    #[schemars(description = r#"County - The county name in which an institution or branch office is physically located."#)]
     pub county: Option<String>,
 
-    #[doc = r#"Title: Combined Statistical Area Name"#]
-    #[doc = r#"Description: Name of the Combined Statistical Area (CSA) as defined by the US Census Bureau."#]
+    #[schemars(description = r#"Combined Statistical Area Name - Name of the Combined Statistical Area (CSA) as defined by the US Census Bureau."#)]
     pub csa: Option<String>,
 
-    #[doc = r#"Title: Combined Statistical Area Flag  (Branch)"#]
-    #[doc = r#"Description: Flag (1=Yes) indicating member of a Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Combined Statistical Area Flag  (Branch) - Flag (1=Yes) indicating member of a Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget"#)]
     pub csa_flg: Option<String>,
 
-    #[doc = r#"Title: Combined Statistical Area Number  (Branch)"#]
-    #[doc = r#"Description: Numeric code of the Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget"#]
+    #[schemars(description = r#"Combined Statistical Area Number  (Branch) - Numeric code of the Combined Statistical Area (CSA) as defined by the US Census Bureau Office of Management and Budget"#)]
     pub csa_no: Option<String>,
 
-    #[doc = r#"Title: Branch Established Date"#]
-    #[doc = r#"Description: The date on which the branch began operations."#]
+    #[schemars(description = r#"Branch Established Date - The date on which the branch began operations."#)]
     pub estymd: Option<String>,
 
-    #[doc = r#"Title: FDIC's unique number"#]
-    #[doc = r#"Description: FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries. This value maps the branch back to the parent financial institution."#]
+    #[schemars(description = r#"FDIC's unique number - FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries. This value maps the branch back to the parent financial institution."#)]
     pub fi_uninum: Option<String>,
 
-    #[doc = r#"Title: Location Address Latitude"#]
-    #[doc = r#"Description: The latitude of the physical address."#]
+    #[schemars(description = r#"Location Address Latitude - The latitude of the physical address."#)]
     pub latitude: Option<f32>,
 
-    #[doc = r#"Title: Location Address Latitude"#]
-    #[doc = r#"Description: The longitude of the physical address."#]
+    #[schemars(description = r#"Location Address Latitude - The longitude of the physical address."#)]
     pub longitude: Option<f32>,
 
-    #[doc = r#"Title: Minority Status Code"#]
-    #[doc = r#"Description: A numeric flag used to indicate whether an institution is primarily a minority owned institution."#]
+    #[schemars(description = r#"Minority Status Code - A numeric flag used to indicate whether an institution is primarily a minority owned institution."#)]
     pub mdi_status_code: Option<String>,
 
-    #[doc = r#"Title: Minority Status Description"#]
-    #[doc = r#"Description: A descriptive flag used to indicate type of minority owned institution."#]
+    #[schemars(description = r#"Minority Status Description - A descriptive flag used to indicate type of minority owned institution."#)]
     pub mdi_status_desc: Option<String>,
 
-    #[doc = r#"Title: Main Office"#]
-    #[doc = r#"Description: Flag (1=Yes) indicating this location is the main office for the institution."#]
+    #[schemars(description = r#"Main Office - Flag (1=Yes) indicating this location is the main office for the institution."#)]
     pub mainoff: Option<f32>,
 
-    #[doc = r#"Title: Institution Name (Search-Eligible)"#]
-    #[doc = r#"Description: The legal title or name of the institution. This field can be used for search and filtering."#]
+    #[schemars(description = r#"Institution Name (Search-Eligible) - The legal title or name of the institution. This field can be used for search and filtering."#)]
     pub name: Option<String>,
 
-    #[doc = r#"Title: Office Name"#]
-    #[doc = r#"Description: Branch office name."#]
+    #[schemars(description = r#"Office Name - Branch office name."#)]
     pub offname: Option<String>,
 
-    #[doc = r#"Title: Branch Number"#]
-    #[doc = r#"Description: An institution's branch office number used internally by FDIC."#]
+    #[schemars(description = r#"Branch Number - An institution's branch office number used internally by FDIC."#)]
     pub offnum: Option<String>,
 
-    #[doc = r#"Title: Run Date"#]
-    #[doc = r#"Description: The day the institution information was updated."#]
+    #[schemars(description = r#"Run Date - The day the institution information was updated."#)]
     pub rundate: Option<String>,
 
-    #[doc = r#"Title: Service Type Code"#]
-    #[doc = r#"Description: Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch"#]
+    #[schemars(description = r#"Service Type Code - Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch"#)]
     pub servtype: Option<f32>,
 
-    #[doc = r#"Title: Service Type Code Description (Search-Eligible)"#]
-    #[doc = r#"Description: Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch This field can be used for search and filtering."#]
+    #[schemars(description = r#"Service Type Code Description (Search-Eligible) - Define the various types of offices of FDIC-insured institutions. 11 - Full Service - Brick and Mortar; 12 - Full Service - Retail; 13 - Full Service - Home Banking; 14 - Full Service Mobile Office; 15 - Full Service Home/Phone Banking; 16 - Full Service Seasonal Office; 21 - Limited Service - Administrative; 22 - Limited Service - Military Facility; 23 - Limited Service - Drive Thru/Detached Facility; 24 - Limited Service - Loan Production; 25 - Limited Service - Consumer Credit; 26 - Limited Service - Contractual; 27 - Limited Service - Messenger; 28 - Limited Service - Retail; 29 - Limited Service - Mobile/Seasonal; 30 - Limited Service - Trust; 99 - Limited Service - Other Office/Branch This field can be used for search and filtering."#)]
     pub servtype_desc: Option<String>,
 
-    #[doc = r#"Title: State Alpha Code"#]
-    #[doc = r#"Description: The state abbreviation of the location of the institution's main office."#]
+    #[schemars(description = r#"State Alpha Code - The state abbreviation of the location of the institution's main office."#)]
     pub stalp: Option<String>,
 
-    #[doc = r#"Title: State and County Number"#]
-    #[doc = r#"Description: A five digit number representing the state and county in which the institution is physically located.  The first two digits represent the FIPS state numeric code and the last three digits represent the FIPS county numeric code."#]
+    #[schemars(description = r#"State and County Number - A five digit number representing the state and county in which the institution is physically located.  The first two digits represent the FIPS state numeric code and the last three digits represent the FIPS county numeric code."#)]
     pub stcnty: Option<String>,
 
-    #[doc = r#"Title: Branch State"#]
-    #[doc = r#"Description: State in which the  branch is physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands."#]
+    #[schemars(description = r#"Branch State - State in which the  branch is physically located. The FDIC Act defines state as any State of the United States, the District of Columbia, and any territory of the United States, Puerto Rico, Guam, American Samoa, the Trust Territory of the Pacific Islands, the Virgin Island, and the Northern Mariana Islands."#)]
     pub stname: Option<String>,
 
-    #[doc = r#"Title: FDIC's Unique Number"#]
-    #[doc = r#"Description: FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries."#]
+    #[schemars(description = r#"FDIC's Unique Number - FDIC's unique identifier number for holding companies, banks, branches and nondeposit subsidiaries."#)]
     pub uninum: Option<String>,
 
-    #[doc = r#"Title: Zip Code"#]
-    #[doc = r#"Description: The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices."#]
+    #[schemars(description = r#"Zip Code - The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices."#)]
     pub zip: Option<String>,
 
 }
 
-/// Auto-generated response envelope struct for `/locations` endpoint.
-/// Spec: location_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct LocationsResponse {
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    pub data: Option<String>,
+    pub data: Vec<LocationsProperties>,
+    pub meta: ResponseMeta,
+    pub total: u64,
+}
 
+impl IntoContents for LocationsResponse {
+    fn into_contents(self) -> Vec<Content> {
+        // Convert the response into a Vec<Content> as expected by MCP
+        // Panics only if serialization fails, which should be impossible for valid structs
+        vec![Content::json(self).expect("Failed to serialize LocationsResponse to Content")]
+    }
 }
 
 /// FDIC BankFind API `/locations` endpoint handler
 /// Get Institution Locations
 /// Returns locations/branches of financial institutions.
 /// **All string parameter values (except `api_key` and `filename`) are uppercased before proxying.**
-#[allow(dead_code)]
 #[doc = r#" - `api_key` (String, optional): Api key used for api.fdic.gov - `filters` (String, optional): The filter for the location search. All values must be entered in UPPERCASE. - `fields` (String, optional): Comma delimited list of fields to return. All values must be entered in UPPERCASE.
 NAME,UNINUM,SERVTYPE,RUNDATE,CITY,STNAME,ZIP,COUNTY - `sort_by` (String, optional): Field name by which to sort returned data. All values must be entered in UPPERCASE.
 NAME - `sort_order` (String, optional): Indicator if ascending (ASC) or descending (DESC). All values must be entered in UPPERCASE.
@@ -255,11 +228,7 @@ Responses:
     503: Service Unavailable
     504: Gateway Timeout
 Tag: Structure"#]
-pub async fn locations_handler(
-    config: &FdicApiConfig,
-    params: &LocationsParameters,
-) -> Result<CallToolResult, rmcp::Error> {
-   
+pub async fn locations_handler(config: &FdicApiConfig, params: &LocationsParameters) -> Result<CallToolResult, rmcp::Error> {
     // Log incoming request parameters and request details as structured JSON
     info!(
         target = "handler",
@@ -270,10 +239,10 @@ pub async fn locations_handler(
         params = serde_json::to_string(params).unwrap()
     );
 
-    let resp = get_fdic_bank_find_mcp_response(config, params).await;
+    let resp = get_fdic_bank_find_mcp_response::<_, LocationsResponse>(config, params).await;
 
     // Log outgoing FDIC API request as structured JSON
-    resp
+    resp.and_then(|r| r.into_call_tool_result())
 }
 
 #[cfg(test)]
@@ -288,6 +257,7 @@ mod tests {
         };
         let _ = serde_json::to_string(&params).unwrap();
     }
+
     #[test]
     fn test_properties_struct_serialization() {
         let props = LocationsProperties {

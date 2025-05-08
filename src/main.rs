@@ -5,10 +5,14 @@ mod handlers;
 mod param_utils;
 
 // Internal imports (std, crate)
+use crate::handlers::FdicBankFindMcpServer;
 
 // External imports (alphabetized)
 use dotenvy::dotenv;
+use tracing_appender::non_blocking::WorkerGuard;
+use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber;
+use tracing_subscriber::fmt::writer::MakeWriterExt;
 
 use rmcp::{
     ServiceExt,
@@ -24,9 +28,25 @@ use tokio_util::sync::CancellationToken;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("=== FDIC MCP main() reached ===");
     dotenv().ok();
+
+    // === Dual Logging Setup (configurable) ===
+    // Get log directory from env (default: "logs")
+    let log_dir = std::env::var("FDIC_MCP_LOG_DIR").unwrap_or_else(|_| "logs".to_string());
+    std::fs::create_dir_all(&log_dir)?;
+
+    // 1. File logger (daily rotation)
+    let file_appender = RollingFileAppender::new(Rotation::DAILY, &log_dir, "fdic-mcp.log");
+    let (file_writer, _file_guard): (_, WorkerGuard) = tracing_appender::non_blocking(file_appender);
+
+    // 2. Stderr logger (non-blocking)
+    let (stderr_writer, _stderr_guard): (_, WorkerGuard) = tracing_appender::non_blocking(std::io::stderr());
+
+    // 3. Combine writers using .and()
+    let multi_writer = file_writer.and(stderr_writer);
+
     tracing_subscriber::fmt()
         .json()
-        .with_writer(std::io::stderr) // Redirect to stderr to avoid interfering with MCP stdio transport
+        .with_writer(multi_writer)
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
@@ -48,8 +68,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 sse_keep_alive: Some(Duration::from_secs(15)),
             };
             let (sse_server, router) = SseServer::new(sse_config);
-            let service_handler = crate::handlers::FdicBankFindMcpToolBox;
-            let _ct = sse_server.with_service(move || service_handler.clone());
+            let _ct = sse_server.with_service(move || FdicBankFindMcpServer::new());
             eprintln!("[FDIC MCP] Starting SSE/Axum server on {}...", addr);
             let listener = tokio::net::TcpListener::bind(addr).await?;
             axum::serve(listener, router).await?;
@@ -62,9 +81,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     // Stdio mode: Inspector/CLI
-    let service_handler = crate::handlers::FdicBankFindMcpToolBox;
-    eprintln!("[FDIC MCP] Instantiated handler");
-    let service = service_handler.serve(transport).await?;
+    eprintln!("[FDIC MCP] Before server()");
+    let service = FdicBankFindMcpServer::new().serve(transport).await?;
     eprintln!("[FDIC MCP] After serve()");
     service.waiting().await?;
     eprintln!("[FDIC MCP] After waiting()");

@@ -6,15 +6,17 @@ use std::collections::HashMap;
 use log;
 use reqwest;
 use rmcp::model::*;
-use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_json::json;
+use utoipa::ToSchema;
 
 /// Maximum allowed FDIC API response Content-Length in bytes.
 /// Configurable via the FDIC_MAX_RESPONSE_CONTENT_LENGTH env variable (default: 5MB).
 pub const FDIC_MAX_RESPONSE_CONTENT_LENGTH: usize = 5 * 1024 * 1024; // 5MB
 
 /// Shared FDIC BankFind API query parameters.
-#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 pub struct CommonParameters {
     #[schemars(description = r#"API key used for api.fdic.gov"#)]
     pub api_key: Option<String>,
@@ -76,11 +78,26 @@ pub trait FdicEndpoint {
     fn name() -> &'static str;
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
+pub struct ResponseMeta {
+    pub index: Option<ResponseMetaIndex>,
+    pub parameters: Option<serde_json::Value>, // Or a more specific struct if you want
+    pub total: Option<u64>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
+pub struct ResponseMetaIndex {
+    #[serde(rename = "createTimestamp")]
+    pub create_timestamp: Option<String>,
+    pub name: Option<String>,
+}
+
 /// Proxies FDIC BankFind query parameters and endpoint-specific parameters to the FDIC BankFind API, executes the proxied HTTP request.
 /// Returns the result or our local FdicProxyError.
-pub async fn get_fdic_bank_find_mcp_response<Q>(config: &FdicApiConfig, params: &Q) -> Result<CallToolResult, rmcp::Error>
+pub async fn get_fdic_bank_find_mcp_response<Q, R>(config: &FdicApiConfig, params: &Q) -> Result<R, rmcp::Error>
 where
     Q: QueryParameters + FdicEndpoint + Clone + Send + Sync,
+    R: Serialize + DeserializeOwned,
 {
     // Clone params to allow modification without affecting caller's original
     let mut params = params.clone();
@@ -231,8 +248,15 @@ where
 
                 Err(rmcp::Error::from(error_data))
             } else {
-                let content = Content::json(val).map_err(|e| rmcp::Error::from(e))?;
-                Ok(CallToolResult::success(vec![content]))
+                let parsed: R = serde_json::from_value(val).map_err(|e| {
+                    rmcp::model::ErrorData::new(
+                        rmcp::model::ErrorCode::INTERNAL_ERROR,
+                        format!("Failed to deserialize FDIC API response: {e}"),
+                        None,
+                    )
+                })?;
+
+                Ok(parsed)
             }
         }
         Err(e) => {

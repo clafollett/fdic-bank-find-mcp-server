@@ -3,12 +3,13 @@
 // MCP auto-generated: Endpoint handler modules
 pub mod demographics;
 pub mod failures;
-pub mod financials;
 pub mod history;
 pub mod institutions;
 pub mod locations;
 pub mod sod;
 pub mod summary;
+// Skipped endpoints due to ENDPOINT_EXCLUSIONS:
+// [EXCLUDED] pub mod financials;
 
 use crate::config::FdicApiConfig;
 use rmcp::{ServerHandler, model::*, tool};
@@ -16,75 +17,75 @@ use rmcp::{ServerHandler, model::*, tool};
 pub const FDIC_BASE_URL: &str = "https://banks.data.fdic.gov/api";
 
 #[derive(Clone, Debug, Default)]
-pub struct FdicBankFindMcpToolBox;
+pub struct FdicBankFindMcpServer;
 
+impl FdicBankFindMcpServer {
+    pub fn new() -> Self {
+        FdicBankFindMcpServer::default()
+    }
+}
 #[tool(tool_box)]
-impl FdicBankFindMcpToolBox {
+impl FdicBankFindMcpServer {
     /// Returns MCP server status for Inspector/health validation
     #[tool(description = "Returns MCP server status for Inspector/health validation")]
     pub async fn ping(&self) -> String {
         "The FDIC Bank Find MCP server is alive!".to_string()
     }
-    #[tool(description = "Returns summary of demographic information")]
+    /// FDIC BankFind API `/demographics` endpoint handler
+    #[tool(description = r#"Get Summary of Demographic Information - Returns summary of demographic information - Demographics"#)]
     pub async fn get_demographics(&self, #[tool(aggr)] params: demographics::DemographicsParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = demographics::demographics_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns details on failed financial institutions.")]
+    /// FDIC BankFind API `/failures` endpoint handler
+    #[tool(description = r#"Get detail on historical bank failures from 1934 to present. - Returns details on failed financial institutions. - Failures"#)]
     pub async fn get_failures(&self, #[tool(aggr)] params: failures::FailuresParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = failures::failures_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns financial information for financial institutions")]
-    pub async fn get_financials(&self, #[tool(aggr)] params: financials::FinancialsParameters) -> Result<CallToolResult, rmcp::Error> {
-        let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
-        let fdic_response = financials::financials_handler(&config, &params).await;
-
-        fdic_response
-    }
-    #[tool(description = "Returns details on structure change events")]
+    /// FDIC BankFind API `/history` endpoint handler
+    #[tool(description = r#"Get Detail on Structure Change Events - Returns details on structure change events - History"#)]
     pub async fn get_history(&self, #[tool(aggr)] params: history::HistoryParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = history::history_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns a list of financial institutions.")]
+    /// FDIC BankFind API `/institutions` endpoint handler
+    #[tool(description = r#"Get Financial Institutions - Returns a list of financial institutions. - Structure"#)]
     pub async fn get_institutions(&self, #[tool(aggr)] params: institutions::InstitutionsParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = institutions::institutions_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns locations/branches of financial institutions.")]
+    /// FDIC BankFind API `/locations` endpoint handler
+    #[tool(description = r#"Get Institution Locations - Returns locations/branches of financial institutions. - Structure"#)]
     pub async fn get_locations(&self, #[tool(aggr)] params: locations::LocationsParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = locations::locations_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns summary of deposits information for institutions")]
+    /// FDIC BankFind API `/sod` endpoint handler
+    #[tool(description = r#"Get Summary of Deposits Information for FDIC Insured Institutions - Returns summary of deposits information for institutions - Summary of Deposits"#)]
     pub async fn get_sod(&self, #[tool(aggr)] params: sod::SodParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = sod::sod_handler(&config, &params).await;
-
         fdic_response
     }
-    #[tool(description = "Returns aggregate financial and structure data, subtotaled by year, regarding finanical institutions.")]
+    /// FDIC BankFind API `/summary` endpoint handler
+    #[tool(description = r#"Get Historical Aggregate Data by Year - Returns aggregate financial and structure data, subtotaled by year, regarding finanical institutions. - Historical"#)]
     pub async fn get_summary(&self, #[tool(aggr)] params: summary::SummaryParameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = summary::summary_handler(&config, &params).await;
-
         fdic_response
     }
+    // Skipped handler wrappers due to ENDPOINT_EXCLUSIONS:
+    // [EXCLUDED] pub async fn financials_handler(...);
 }
 
 #[tool(tool_box)]
-impl ServerHandler for FdicBankFindMcpToolBox {
+impl ServerHandler for FdicBankFindMcpServer {
     fn get_info(&self) -> ServerInfo {
         eprintln!("[FDIC MCP] get_info() called - should show tools!");
 

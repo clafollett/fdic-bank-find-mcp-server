@@ -4,6 +4,12 @@
 {%- for ep in endpoints %}
 pub mod {{ ep.endpoint }};
 {%- endfor %}
+{%- if skipped_endpoints and skipped_endpoints | length > 0 %}
+// Skipped endpoints due to ENDPOINT_EXCLUSIONS:
+{%- for ep in skipped_endpoints %}
+// [EXCLUDED] pub mod {{ ep }};
+{%- endfor %}
+{%- endif %}
 
 use crate::config::FdicApiConfig;
 use rmcp::{ServerHandler, model::*, tool};
@@ -11,10 +17,15 @@ use rmcp::{ServerHandler, model::*, tool};
 pub const FDIC_BASE_URL: &str = "https://banks.data.fdic.gov/api";
 
 #[derive(Clone, Debug, Default)]
-pub struct FdicBankFindMcpToolBox;
+pub struct FdicBankFindMcpServer;
 
+impl FdicBankFindMcpServer {
+    pub fn new() -> Self {
+        FdicBankFindMcpServer::default()
+    }
+}
 #[tool(tool_box)]
-impl FdicBankFindMcpToolBox {
+impl FdicBankFindMcpServer {
     /// Returns MCP server status for Inspector/health validation
     #[tool(description = "Returns MCP server status for Inspector/health validation")]
     pub async fn ping(&self) -> String {
@@ -22,17 +33,24 @@ impl FdicBankFindMcpToolBox {
     }
 
     {%- for ep in endpoints %}
-    #[tool(description = "{{ ep.description }}")]
+    /// FDIC BankFind API `/{{ ep.endpoint }}` endpoint handler
+    #[tool(description = r#"{{ ep.summary }} - {{ ep.description }} - {{ ep.tags.0 }}"#)]
     pub async fn {{ ep.fn_name }}(&self, #[tool(aggr)] params: {{ ep.endpoint }}::{{ ep.endpoint_cap }}Parameters) -> Result<CallToolResult, rmcp::Error> {
         let config = FdicApiConfig { base_url: FDIC_BASE_URL.to_string() };
         let fdic_response = {{ ep.endpoint }}::{{ ep.endpoint }}_handler(&config, &params).await;
-
         fdic_response
-    }{% endfor %}
+    }
+    {%- endfor %}
+    {%- if skipped_endpoints and skipped_endpoints | length > 0 %}
+    // Skipped handler wrappers due to ENDPOINT_EXCLUSIONS:
+    {%- for ep in skipped_endpoints %}
+    // [EXCLUDED] pub async fn {{ ep }}_handler(...);
+    {%- endfor %}
+    {%- endif %}
 }
 
 #[tool(tool_box)]
-impl ServerHandler for FdicBankFindMcpToolBox {
+impl ServerHandler for FdicBankFindMcpServer {
     fn get_info(&self) -> ServerInfo {
         eprintln!("[FDIC MCP] get_info() called - should show tools!");
 

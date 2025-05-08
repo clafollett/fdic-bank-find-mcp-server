@@ -2,18 +2,21 @@
 //! Auto-generated handler for FDIC BankFind API `/sod` endpoint.
 
 // Internal imports (std, crate)
-use crate::common::{CommonParameters, FdicEndpoint, QueryParameters, get_fdic_bank_find_mcp_response};
+use crate::common::*;
 use crate::config::FdicApiConfig;
 
 // External imports (alphabetized)
+use rmcp::handler::server::tool::IntoCallToolResult;
 use rmcp::model::*;
 use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
 use std::collections::HashMap;
 use tracing::info;
+use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/sod` endpoint.
 /// Spec: sod_properties.yaml
-#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 pub struct SodParameters {
     /// Shared FDIC query parameters
     #[serde(flatten)]
@@ -122,8 +125,9 @@ impl QueryParameters for SodParameters {
         "ZIPBR",
     ];
 
-    #[allow(unused_variables)]
+    #[allow(unused_variables)] // the `query` parameter is unused if there are no endpoint-specific parameters
     fn insert_endpoint_specific(&self, query: &mut HashMap<String, String>) {
+        
         if let Some(val) = &self.agg_by {
             query.insert("agg_by".to_string(), val.to_string());
         }
@@ -145,354 +149,276 @@ impl QueryParameters for SodParameters {
 
 /// Auto-generated properties struct for `/sod` endpoint.
 /// Spec: sod_properties.yaml
-#[derive(Clone, Debug, Default, Deserialize, Serialize, schemars::JsonSchema)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct SodProperties {
-    #[doc = r#"Title: ADDRESS (BRANCH)"#]
-    #[doc = r#"Description: ADDRESS (BRANCH)"#]
+    #[schemars(description = r#"ADDRESS (BRANCH) - ADDRESS (BRANCH)"#)]
     pub addresbr: Option<String>,
 
-    #[doc = r#"Title: ADDRESS (Search-Eligible)"#]
-    #[doc = r#"Description: ADDRESS This field can be used for search and filtering."#]
+    #[schemars(description = r#"ADDRESS (Search-Eligible) - ADDRESS This field can be used for search and filtering."#)]
     pub address: Option<String>,
 
-    #[doc = r#"Title: TOTAL ASSETS"#]
-    #[doc = r#"Description: TOTAL ASSETS"#]
+    #[schemars(description = r#"TOTAL ASSETS - TOTAL ASSETS"#)]
     pub asset: Option<f32>,
 
-    #[doc = r#"Title: INSTITUTION CLASS (Search-Eligible)"#]
-    #[doc = r#"Description: INSTITUTION CLASS This field can be used for search and filtering."#]
+    #[schemars(description = r#"INSTITUTION CLASS (Search-Eligible) - INSTITUTION CLASS This field can be used for search and filtering."#)]
     pub bkclass: Option<String>,
 
-    #[doc = r#"Title: MAIN OFFICE DESIGNATION FLAG"#]
-    #[doc = r#"Description: MAIN OFFICE DESIGNATION FLAG"#]
+    #[schemars(description = r#"MAIN OFFICE DESIGNATION FLAG - MAIN OFFICE DESIGNATION FLAG"#)]
     pub bkmo: Option<f32>,
 
-    #[doc = r#"Title: CENCODES C"#]
-    #[doc = r#"Description: CENCODES C"#]
+    #[schemars(description = r#"CENCODES C - CENCODES C"#)]
     pub brcenm: Option<String>,
 
-    #[doc = r#"Title: BRANCH NUMBER"#]
-    #[doc = r#"Description: BRANCH NUMBER"#]
+    #[schemars(description = r#"BRANCH NUMBER - BRANCH NUMBER"#)]
     pub brnum: Option<f32>,
 
-    #[doc = r#"Title: BRANCH SERVICE TYPE"#]
-    #[doc = r#"Description: BRANCH SERVICE TYPE"#]
+    #[schemars(description = r#"BRANCH SERVICE TYPE - BRANCH SERVICE TYPE"#)]
     pub brsertyp: Option<f32>,
 
-    #[doc = r#"Title: REPORT TYPE"#]
-    #[doc = r#"Description: REPORT TYPE"#]
+    #[schemars(description = r#"REPORT TYPE - REPORT TYPE"#)]
     pub call: Option<String>,
 
-    #[doc = r#"Title: COMMUNITY BANK FLAG"#]
-    #[doc = r#"Description: COMMUNITY BANK FLAG"#]
+    #[schemars(description = r#"COMMUNITY BANK FLAG - COMMUNITY BANK FLAG"#)]
     pub cb: Option<f32>,
 
-    #[doc = r#"Title: CBSA DIVISION NAME (BRANCH)"#]
-    #[doc = r#"Description: CBSA DIVISION NAME (BRANCH)"#]
+    #[schemars(description = r#"CBSA DIVISION NAME (BRANCH) - CBSA DIVISION NAME (BRANCH)"#)]
     pub cbsa_div_namb: Option<String>,
 
-    #[doc = r#"Title: FDIC CERT NUMBER"#]
-    #[doc = r#"Description: FDIC CERT NUMBER"#]
+    #[schemars(description = r#"FDIC CERT NUMBER - FDIC CERT NUMBER"#)]
     pub cert: Option<f32>,
 
-    #[doc = r#"Title: CHARTER (Search-Eligible)"#]
-    #[doc = r#"Description: CHARTER This field can be used for search and filtering."#]
+    #[schemars(description = r#"CHARTER (Search-Eligible) - CHARTER This field can be used for search and filtering."#)]
     pub charter: Option<String>,
 
-    #[doc = r#"Title: CHARTER AGENT NAME"#]
-    #[doc = r#"Description: CHARTER AGENT NAME"#]
+    #[schemars(description = r#"CHARTER AGENT NAME - CHARTER AGENT NAME"#)]
     pub chrtagnn: Option<String>,
 
-    #[doc = r#"Title: CHARTER AGENT CODE"#]
-    #[doc = r#"Description: CHARTER AGENT CODE"#]
+    #[schemars(description = r#"CHARTER AGENT CODE - CHARTER AGENT CODE"#)]
     pub chrtagnt: Option<String>,
 
-    #[doc = r#"Title: CITY (MAIN OFFICE) (Search-Eligible)"#]
-    #[doc = r#"Description: CITY (MAIN OFFICE) This field can be used for search and filtering."#]
+    #[schemars(description = r#"CITY (MAIN OFFICE) (Search-Eligible) - CITY (MAIN OFFICE) This field can be used for search and filtering."#)]
     pub city: Option<String>,
 
-    #[doc = r#"Title: PREFERRED CITY (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: PREFERRED CITY (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"PREFERRED CITY (BRANCH) (Search-Eligible) - PREFERRED CITY (BRANCH) This field can be used for search and filtering."#)]
     pub city2br: Option<String>,
 
-    #[doc = r#"Title: CITY (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: CITY (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"CITY (BRANCH) (Search-Eligible) - CITY (BRANCH) This field can be used for search and filtering."#)]
     pub citybr: Option<String>,
 
-    #[doc = r#"Title: CITY-HOLDING CO.- REGULATORY (Search-Eligible)"#]
-    #[doc = r#"Description: CITY-HOLDING CO.- REGULATORY This field can be used for search and filtering."#]
+    #[schemars(description = r#"CITY-HOLDING CO.- REGULATORY (Search-Eligible) - CITY-HOLDING CO.- REGULATORY This field can be used for search and filtering."#)]
     pub cityhcr: Option<String>,
 
-    #[doc = r#"Title: CLASS NUMBER"#]
-    #[doc = r#"Description: CLASS NUMBER"#]
+    #[schemars(description = r#"CLASS NUMBER - CLASS NUMBER"#)]
     pub clcode: Option<f32>,
 
-    #[doc = r#"Title: COUNTRY NAME (MAIN OFFICE)"#]
-    #[doc = r#"Description: COUNTRY NAME (MAIN OFFICE)"#]
+    #[schemars(description = r#"COUNTRY NAME (MAIN OFFICE) - COUNTRY NAME (MAIN OFFICE)"#)]
     pub cntryna: Option<String>,
 
-    #[doc = r#"Title: COUNTRY NAME (BRANCH)"#]
-    #[doc = r#"Description: COUNTRY NAME (BRANCH)"#]
+    #[schemars(description = r#"COUNTRY NAME (BRANCH) - COUNTRY NAME (BRANCH)"#)]
     pub cntrynab: Option<String>,
 
-    #[doc = r#"Title: COUNTY NAME (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: COUNTY NAME (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"COUNTY NAME (BRANCH) (Search-Eligible) - COUNTY NAME (BRANCH) This field can be used for search and filtering."#)]
     pub cntynamb: Option<String>,
 
-    #[doc = r#"Title: FIPS COUNTY CODE (BRANCH)"#]
-    #[doc = r#"Description: FIPS COUNTY CODE (BRANCH)"#]
+    #[schemars(description = r#"FIPS COUNTY CODE (BRANCH) - FIPS COUNTY CODE (BRANCH)"#)]
     pub cntynumb: Option<f32>,
 
-    #[doc = r#"Title: CONSOLIDATED BRANCH NUMBER"#]
-    #[doc = r#"Description: CONSOLIDATED BRANCH NUMBER"#]
+    #[schemars(description = r#"CONSOLIDATED BRANCH NUMBER - CONSOLIDATED BRANCH NUMBER"#)]
     pub consold: Option<f32>,
 
-    #[doc = r#"Title: CSA NUMBER (BRANCH)"#]
-    #[doc = r#"Description: CSA NUMBER (BRANCH)"#]
+    #[schemars(description = r#"CSA NUMBER (BRANCH) - CSA NUMBER (BRANCH)"#)]
     pub csabr: Option<f32>,
 
-    #[doc = r#"Title: CSA NAME (BRANCH)"#]
-    #[doc = r#"Description: CSA NAME (BRANCH)"#]
+    #[schemars(description = r#"CSA NAME (BRANCH) - CSA NAME (BRANCH)"#)]
     pub csanambr: Option<String>,
 
-    #[doc = r#"Title: DENOVO FLAG"#]
-    #[doc = r#"Description: DENOVO FLAG"#]
+    #[schemars(description = r#"DENOVO FLAG - DENOVO FLAG"#)]
     pub denovo: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DOMESTIC DEPOSITS"#]
-    #[doc = r#"Description: TOTAL DOMESTIC DEPOSITS"#]
+    #[schemars(description = r#"TOTAL DOMESTIC DEPOSITS - TOTAL DOMESTIC DEPOSITS"#)]
     pub depdom: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS"#]
-    #[doc = r#"Description: TOTAL DEPOSITS"#]
+    #[schemars(description = r#"TOTAL DEPOSITS - TOTAL DEPOSITS"#)]
     pub depsum: Option<f32>,
 
-    #[doc = r#"Title: DOMESTIC DEPOSITS (SOD)"#]
-    #[doc = r#"Description: DOMESTIC DEPOSITS (SOD)"#]
+    #[schemars(description = r#"DOMESTIC DEPOSITS (SOD) - DOMESTIC DEPOSITS (SOD)"#)]
     pub depsumbr: Option<f32>,
 
-    #[doc = r#"Title: CBSA DIVISION CODE (BRANCH)"#]
-    #[doc = r#"Description: CBSA DIVISION CODE (BRANCH)"#]
+    #[schemars(description = r#"CBSA DIVISION CODE (BRANCH) - CBSA DIVISION CODE (BRANCH)"#)]
     pub divisionb: Option<f32>,
 
-    #[doc = r#"Title: OTS DOCKET NUMBER"#]
-    #[doc = r#"Description: OTS DOCKET NUMBER"#]
+    #[schemars(description = r#"OTS DOCKET NUMBER - OTS DOCKET NUMBER"#)]
     pub docket: Option<f32>,
 
-    #[doc = r#"Title: ESCROW ACCOUNTS - TFR"#]
-    #[doc = r#"Description: ESCROW ACCOUNTS - TFR"#]
+    #[schemars(description = r#"ESCROW ACCOUNTS - TFR - ESCROW ACCOUNTS - TFR"#)]
     pub escrow: Option<f32>,
 
-    #[doc = r#"Title: FDIC REGION NUMBER"#]
-    #[doc = r#"Description: FDIC REGION NUMBER"#]
+    #[schemars(description = r#"FDIC REGION NUMBER - FDIC REGION NUMBER"#)]
     pub fdicdbs: Option<f32>,
 
-    #[doc = r#"Title: FDIC REGION NAME"#]
-    #[doc = r#"Description: FDIC REGION NAME"#]
+    #[schemars(description = r#"FDIC REGION NAME - FDIC REGION NAME"#)]
     pub fdicname: Option<String>,
 
-    #[doc = r#"Title: FRB DISTRICT NUMBER"#]
-    #[doc = r#"Description: FRB DISTRICT NUMBER"#]
+    #[schemars(description = r#"FRB DISTRICT NUMBER - FRB DISTRICT NUMBER"#)]
     pub fed: Option<f32>,
 
-    #[doc = r#"Title: FED DISTRICT NAME"#]
-    #[doc = r#"Description: FED DISTRICT NAME"#]
+    #[schemars(description = r#"FED DISTRICT NAME - FED DISTRICT NAME"#)]
     pub fedname: Option<String>,
 
-    #[doc = r#"Title: MULTI-BANK HOLDING CO"#]
-    #[doc = r#"Description: MULTI-BANK HOLDING CO"#]
+    #[schemars(description = r#"MULTI-BANK HOLDING CO - MULTI-BANK HOLDING CO"#)]
     pub hctmult: Option<String>,
 
-    #[doc = r#"Title: PRIMARY INSURANCE FUND"#]
-    #[doc = r#"Description: PRIMARY INSURANCE FUND"#]
+    #[schemars(description = r#"PRIMARY INSURANCE FUND - PRIMARY INSURANCE FUND"#)]
     pub insagnt1: Option<String>,
 
-    #[doc = r#"Title: DEMAND DEPOSITS IN INSURED BRANCHES"#]
-    #[doc = r#"Description: DEMAND DEPOSITS IN INSURED BRANCHES"#]
+    #[schemars(description = r#"DEMAND DEPOSITS IN INSURED BRANCHES - DEMAND DEPOSITS IN INSURED BRANCHES"#)]
     pub insbrdd: Option<f32>,
 
-    #[doc = r#"Title: TIME & SAVINGS DEPOSITS IN INSURED BRANCHES"#]
-    #[doc = r#"Description: TIME & SAVINGS DEPOSITS IN INSURED BRANCHES"#]
+    #[schemars(description = r#"TIME & SAVINGS DEPOSITS IN INSURED BRANCHES - TIME & SAVINGS DEPOSITS IN INSURED BRANCHES"#)]
     pub insbrts: Option<f32>,
 
-    #[doc = r#"Title: INSURED (Search-Eligible)"#]
-    #[doc = r#"Description: INSURED This field can be used for search and filtering."#]
+    #[schemars(description = r#"INSURED (Search-Eligible) - INSURED This field can be used for search and filtering."#)]
     pub insured: Option<String>,
 
-    #[doc = r#"Title: METRO FLAG (BRANCH)"#]
-    #[doc = r#"Description: METRO FLAG (BRANCH)"#]
+    #[schemars(description = r#"METRO FLAG (BRANCH) - METRO FLAG (BRANCH)"#)]
     pub metrobr: Option<f32>,
 
-    #[doc = r#"Title: MICRO FLAG (BRANCH)"#]
-    #[doc = r#"Description: MICRO FLAG (BRANCH)"#]
+    #[schemars(description = r#"MICRO FLAG (BRANCH) - MICRO FLAG (BRANCH)"#)]
     pub microbr: Option<f32>,
 
-    #[doc = r#"Title: MSA (BRANCH)"#]
-    #[doc = r#"Description: MSA (BRANCH)"#]
+    #[schemars(description = r#"MSA (BRANCH) - MSA (BRANCH)"#)]
     pub msabr: Option<f32>,
 
-    #[doc = r#"Title: MSA NAME (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: MSA NAME (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"MSA NAME (BRANCH) (Search-Eligible) - MSA NAME (BRANCH) This field can be used for search and filtering."#)]
     pub msanamb: Option<String>,
 
-    #[doc = r#"Title: INSTITUTION NAME (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: INSTITUTION NAME (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"INSTITUTION NAME (BRANCH) (Search-Eligible) - INSTITUTION NAME (BRANCH) This field can be used for search and filtering."#)]
     pub namebr: Option<String>,
 
-    #[doc = r#"Title: INSTITUTION NAME (MAIN OFFICE) (Search-Eligible)"#]
-    #[doc = r#"Description: INSTITUTION NAME (MAIN OFFICE) This field can be used for search and filtering."#]
+    #[schemars(description = r#"INSTITUTION NAME (MAIN OFFICE) (Search-Eligible) - INSTITUTION NAME (MAIN OFFICE) This field can be used for search and filtering."#)]
     pub namefull: Option<String>,
 
-    #[doc = r#"Title: BANK HOLDING CO. NAME (Search-Eligible)"#]
-    #[doc = r#"Description: BANK HOLDING CO. NAME This field can be used for search and filtering."#]
+    #[schemars(description = r#"BANK HOLDING CO. NAME (Search-Eligible) - BANK HOLDING CO. NAME This field can be used for search and filtering."#)]
     pub namehcr: Option<String>,
 
-    #[doc = r#"Title: NECTA NAME (BRANCH)"#]
-    #[doc = r#"Description: NECTA NAME (BRANCH)"#]
+    #[schemars(description = r#"NECTA NAME (BRANCH) - NECTA NAME (BRANCH)"#)]
     pub necnamb: Option<String>,
 
-    #[doc = r#"Title: NECTA (BRANCH)"#]
-    #[doc = r#"Description: NECTA (BRANCH)"#]
+    #[schemars(description = r#"NECTA (BRANCH) - NECTA (BRANCH)"#)]
     pub nectabr: Option<String>,
 
-    #[doc = r#"Title: OCC DISTRICT NUMBER"#]
-    #[doc = r#"Description: OCC DISTRICT NUMBER"#]
+    #[schemars(description = r#"OCC DISTRICT NUMBER - OCC DISTRICT NUMBER"#)]
     pub occdist: Option<f32>,
 
-    #[doc = r#"Title: OCC REGION NAME"#]
-    #[doc = r#"Description: OCC REGION NAME"#]
+    #[schemars(description = r#"OCC REGION NAME - OCC REGION NAME"#)]
     pub occname: Option<String>,
 
-    #[doc = r#"Title: PLACE CODE NUMBER (DF)"#]
-    #[doc = r#"Description: PLACE CODE NUMBER (DF)"#]
+    #[schemars(description = r#"PLACE CODE NUMBER (DF) - PLACE CODE NUMBER (DF)"#)]
     pub placenum: Option<f32>,
 
-    #[doc = r#"Title: PRIMARY FEDERAL REGULATOR"#]
-    #[doc = r#"Description: PRIMARY FEDERAL REGULATOR"#]
+    #[schemars(description = r#"PRIMARY FEDERAL REGULATOR - PRIMARY FEDERAL REGULATOR"#)]
     pub regagnt: Option<String>,
 
-    #[doc = r#"Title: FRB ID NUMBER - BHC"#]
-    #[doc = r#"Description: FRB ID NUMBER - BHC"#]
+    #[schemars(description = r#"FRB ID NUMBER - BHC - FRB ID NUMBER - BHC"#)]
     pub rssdhcr: Option<f32>,
 
-    #[doc = r#"Title: FRB ID NUMBER"#]
-    #[doc = r#"Description: FRB ID NUMBER"#]
+    #[schemars(description = r#"FRB ID NUMBER - FRB ID NUMBER"#)]
     pub rssdid: Option<f32>,
 
-    #[doc = r#"Title: SIMS ACQUIRED DATE"#]
-    #[doc = r#"Description: SIMS ACQUIRED DATE"#]
+    #[schemars(description = r#"SIMS ACQUIRED DATE - SIMS ACQUIRED DATE"#)]
     pub sims_acquired_date: Option<String>,
 
-    #[doc = r#"Title: SIMS MATCH CODE (DESCRIPTION)"#]
-    #[doc = r#"Description: SIMS MATCH CODE (DESCRIPTION)"#]
+    #[schemars(description = r#"SIMS MATCH CODE (DESCRIPTION) - SIMS MATCH CODE (DESCRIPTION)"#)]
     pub sims_description: Option<String>,
 
-    #[doc = r#"Title: SIMS ESTABLISHED DATE"#]
-    #[doc = r#"Description: SIMS ESTABLISHED DATE"#]
+    #[schemars(description = r#"SIMS ESTABLISHED DATE - SIMS ESTABLISHED DATE"#)]
     pub sims_established_date: Option<String>,
 
-    #[doc = r#"Title: SIMS GEOGRAPHIC LATITUDE"#]
-    #[doc = r#"Description: SIMS GEOGRAPHIC LATITUDE"#]
+    #[schemars(description = r#"SIMS GEOGRAPHIC LATITUDE - SIMS GEOGRAPHIC LATITUDE"#)]
     pub sims_latitude: Option<f32>,
 
-    #[doc = r#"Title: SIMS GEOGRAPHIC LONGITUDE"#]
-    #[doc = r#"Description: SIMS GEOGRAPHIC LONGITUDE"#]
+    #[schemars(description = r#"SIMS GEOGRAPHIC LONGITUDE - SIMS GEOGRAPHIC LONGITUDE"#)]
     pub sims_longitude: Option<f32>,
 
-    #[doc = r#"Title: SIMS SCORE (PROJECTION)"#]
-    #[doc = r#"Description: SIMS SCORE (PROJECTION)"#]
+    #[schemars(description = r#"SIMS SCORE (PROJECTION) - SIMS SCORE (PROJECTION)"#)]
     pub sims_projection: Option<String>,
 
-    #[doc = r#"Title: SPECGRP DESCRIPTION"#]
-    #[doc = r#"Description: SPECGRP DESCRIPTION"#]
+    #[schemars(description = r#"SPECGRP DESCRIPTION - SPECGRP DESCRIPTION"#)]
     pub specdesc: Option<String>,
 
-    #[doc = r#"Title: INDUSTRY SPECIALIZATION GROUP"#]
-    #[doc = r#"Description: INDUSTRY SPECIALIZATION GROUP"#]
+    #[schemars(description = r#"INDUSTRY SPECIALIZATION GROUP - INDUSTRY SPECIALIZATION GROUP"#)]
     pub specgrp: Option<f32>,
 
-    #[doc = r#"Title: FIPS STATE ALPHA CODE (MAIN OFFICE) (Search-Eligible)"#]
-    #[doc = r#"Description: FIPS STATE ALPHA CODE (MAIN OFFICE) This field can be used for search and filtering."#]
+    #[schemars(description = r#"FIPS STATE ALPHA CODE (MAIN OFFICE) (Search-Eligible) - FIPS STATE ALPHA CODE (MAIN OFFICE) This field can be used for search and filtering."#)]
     pub stalp: Option<String>,
 
-    #[doc = r#"Title: FIPS STATE ALPHA CODE (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: FIPS STATE ALPHA CODE (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"FIPS STATE ALPHA CODE (BRANCH) (Search-Eligible) - FIPS STATE ALPHA CODE (BRANCH) This field can be used for search and filtering."#)]
     pub stalpbr: Option<String>,
 
-    #[doc = r#"Title: FIPS STATE ALPHA CODE - BHC (Search-Eligible)"#]
-    #[doc = r#"Description: FIPS STATE ALPHA CODE - BHC This field can be used for search and filtering."#]
+    #[schemars(description = r#"FIPS STATE ALPHA CODE - BHC (Search-Eligible) - FIPS STATE ALPHA CODE - BHC This field can be used for search and filtering."#)]
     pub stalphcr: Option<String>,
 
-    #[doc = r#"Title: FIPS STATE & COUNTY NO. (MAIN OFFICE)"#]
-    #[doc = r#"Description: FIPS STATE & COUNTY NO. (MAIN OFFICE)"#]
+    #[schemars(description = r#"FIPS STATE & COUNTY NO. (MAIN OFFICE) - FIPS STATE & COUNTY NO. (MAIN OFFICE)"#)]
     pub stcnty: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
+    #[schemars(description = r#" - "#)]
     pub stcntybr: Option<f32>,
 
-    #[doc = r#"Title: FIPS STATE NAME (MAIN OFFICE) (Search-Eligible)"#]
-    #[doc = r#"Description: FIPS STATE NAME (MAIN OFFICE) This field can be used for search and filtering."#]
+    #[schemars(description = r#"FIPS STATE NAME (MAIN OFFICE) (Search-Eligible) - FIPS STATE NAME (MAIN OFFICE) This field can be used for search and filtering."#)]
     pub stname: Option<String>,
 
-    #[doc = r#"Title: STATE NAME (BRANCH) (Search-Eligible)"#]
-    #[doc = r#"Description: STATE NAME (BRANCH) This field can be used for search and filtering."#]
+    #[schemars(description = r#"STATE NAME (BRANCH) (Search-Eligible) - STATE NAME (BRANCH) This field can be used for search and filtering."#)]
     pub stnamebr: Option<String>,
 
-    #[doc = r#"Title: FIPS STATE CODE (BRANCH)"#]
-    #[doc = r#"Description: FIPS STATE CODE (BRANCH)"#]
+    #[schemars(description = r#"FIPS STATE CODE (BRANCH) - FIPS STATE CODE (BRANCH)"#)]
     pub stnumbr: Option<f32>,
 
-    #[doc = r#"Title: UNINUM (BRANCH)"#]
-    #[doc = r#"Description: UNINUM (BRANCH)"#]
+    #[schemars(description = r#"UNINUM (BRANCH) - UNINUM (BRANCH)"#)]
     pub uninumbr: Option<f32>,
 
-    #[doc = r#"Title: UNIT BANK FLAG"#]
-    #[doc = r#"Description: UNIT BANK FLAG"#]
+    #[schemars(description = r#"UNIT BANK FLAG - UNIT BANK FLAG"#)]
     pub unit: Option<f32>,
 
-    #[doc = r#"Title: USA LOCATED INSTITUTION"#]
-    #[doc = r#"Description: USA LOCATED INSTITUTION"#]
+    #[schemars(description = r#"USA LOCATED INSTITUTION - USA LOCATED INSTITUTION"#)]
     pub usa: Option<f32>,
 
-    #[doc = r#"Title: YEAR"#]
-    #[doc = r#"Description: YEAR"#]
+    #[schemars(description = r#"YEAR - YEAR"#)]
     pub year: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
+    #[schemars(description = r#" - "#)]
     pub zip_raw: Option<String>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
+    #[schemars(description = r#" - "#)]
     pub zipbr_raw: Option<String>,
 
-    #[doc = r#"Title: Zip Code (Search-Eligible)"#]
-    #[doc = r#"Description: The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering."#]
+    #[schemars(description = r#"Zip Code (Search-Eligible) - The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering."#)]
     pub zip: Option<String>,
 
-    #[doc = r#"Title: Zip Code (Search-Eligible)"#]
-    #[doc = r#"Description: The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering."#]
+    #[schemars(description = r#"Zip Code (Search-Eligible) - The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering."#)]
     pub zipbr: Option<String>,
 
 }
 
-/// Auto-generated response envelope struct for `/sod` endpoint.
-/// Spec: sod_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct SodResponse {
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    pub data: Option<String>,
+    pub data: Vec<SodProperties>,
+    pub meta: ResponseMeta,
+    pub total: u64,
+}
 
+impl IntoContents for SodResponse {
+    fn into_contents(self) -> Vec<Content> {
+        // Convert the response into a Vec<Content> as expected by MCP
+        // Panics only if serialization fails, which should be impossible for valid structs
+        vec![Content::json(self).expect("Failed to serialize SodResponse to Content")]
+    }
 }
 
 /// FDIC BankFind API `/sod` endpoint handler
 /// Get Summary of Deposits Information for FDIC Insured Institutions
 /// Returns summary of deposits information for institutions
 /// **All string parameter values (except `api_key` and `filename`) are uppercased before proxying.**
-#[allow(dead_code)]
 #[doc = r#" - `api_key` (String, optional): Api key used for api.fdic.gov - `filters` (String, optional): The filter criteria that refines the records included in the result. All values must be entered in UPPERCASE.
 Examples:
 * Filter data by the numeric range
@@ -517,11 +443,7 @@ Responses:
     503: Service Unavailable
     504: Gateway Timeout
 Tag: Summary of Deposits"#]
-pub async fn sod_handler(
-    config: &FdicApiConfig,
-    params: &SodParameters,
-) -> Result<CallToolResult, rmcp::Error> {
-   
+pub async fn sod_handler(config: &FdicApiConfig, params: &SodParameters) -> Result<CallToolResult, rmcp::Error> {
     // Log incoming request parameters and request details as structured JSON
     info!(
         target = "handler",
@@ -532,10 +454,10 @@ pub async fn sod_handler(
         params = serde_json::to_string(params).unwrap()
     );
 
-    let resp = get_fdic_bank_find_mcp_response(config, params).await;
+    let resp = get_fdic_bank_find_mcp_response::<_, SodResponse>(config, params).await;
 
     // Log outgoing FDIC API request as structured JSON
-    resp
+    resp.and_then(|r| r.into_call_tool_result())
 }
 
 #[cfg(test)]
@@ -554,6 +476,7 @@ mod tests {
         };
         let _ = serde_json::to_string(&params).unwrap();
     }
+
     #[test]
     fn test_properties_struct_serialization() {
         let props = SodProperties {

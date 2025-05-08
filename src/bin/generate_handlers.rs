@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use serde_yaml::{Deserializer, Mapping, Value as YamlValue};
 use std::{fs, path::PathBuf};
+use std::collections::HashSet;
 use tera::{Context, Tera};
 use tracing::{debug, error, trace};
 use tracing_subscriber::{EnvFilter, fmt};
@@ -99,6 +100,17 @@ fn main() -> Result<()> {
         .unwrap_or("")
         .to_string();
 
+    // Read endpoint exclusions from .env
+    let exclusions: HashSet<String> = std::env::var("ENDPOINT_EXCLUSIONS")
+        .unwrap_or_default()
+        .split(',')
+        .map(|s| s.trim().to_lowercase())
+        .filter(|s| !s.is_empty())
+        .collect();
+    if !exclusions.is_empty() {
+        println!("[generate_handlers] Excluding endpoints: {:?}", exclusions);
+    }
+
     // For each path in OpenAPI, generate handler/parameters/properties
     trace!("All endpoints to process:");
 
@@ -109,9 +121,16 @@ fn main() -> Result<()> {
     trace!("End of endpoint list");
 
     let mut all_endpoints: Vec<serde_json::Value> = Vec::new();
+    let mut skipped_endpoints: Vec<String> = Vec::new();
     for (path_key, path_item) in paths_map.iter() {
         let path_str = path_key.as_str().expect("Path key should be a string");
         let endpoint = if path_str.starts_with('/') { &path_str[1..] } else { path_str };
+        let endpoint_lc = endpoint.to_lowercase();
+        if exclusions.contains(&endpoint_lc) {
+            println!("[generate_handlers] Skipping excluded endpoint: {}", endpoint);
+            skipped_endpoints.push(endpoint.to_string());
+            continue;
+        }
         let endpoint_cap = endpoint[..1].to_uppercase() + &endpoint[1..];
         let path_obj = path_item.as_mapping().expect("Path item must be mapping");
         let (properties_yaml, spec_file_name) = match extract_properties_yaml_value(&swagger_doc, path_obj, &cli.fdic_yaml_dir, endpoint) {
@@ -130,8 +149,6 @@ fn main() -> Result<()> {
             }
         };
 
-        // Use helper for YAML doc loading
-        let selected_doc = properties_yaml;
         // Use helper for metadata
         let (summary, description, tags) = extract_operation_metadata(path_obj);
         // Extract parameters for handler using canonical extraction (with $ref support)
@@ -142,9 +159,9 @@ fn main() -> Result<()> {
             .map(parameter_info_to_openapi)
             .collect::<Vec<_>>();
         // Extract the actual row/item properties for the Properties struct
-        let row_properties = extract_row_properties(&selected_doc);
+        let row_properties = extract_row_properties(&properties_yaml);
         // Extract envelope properties for the Response struct (meta, data, totals, etc)
-        let envelope_properties = selected_doc
+        let envelope_properties = properties_yaml
             .get("properties")
             .and_then(YamlValue::as_mapping)
             .map(|mapping| extract_properties(mapping))
@@ -223,6 +240,7 @@ fn main() -> Result<()> {
     all_endpoints.sort_by_key(|f| f["endpoint"].as_str().unwrap().to_owned());
     reg_ctx.insert("endpoints", &all_endpoints);
     reg_ctx.insert("fdic_description", &fdic_description);
+    reg_ctx.insert("skipped_endpoints", &skipped_endpoints);
 
     // Also generate handlers/mod.rs from handlers_mod.rs.tera
     let mod_rendered = tera.render("handlers_mod.rs.tera", &reg_ctx)?;
