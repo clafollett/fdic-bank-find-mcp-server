@@ -1,8 +1,5 @@
-//! Shared parameter validation and transformation utilities for FDIC MCP handlers.
-//! These functions ensure consistent validation and uppercasing of query parameters across all endpoint handlers.
-use crate::common::CommonParameters;
-use axum::http::StatusCode;
-use axum::response::IntoResponse;
+//! Shared parameter utilities for FDIC MCP handlers.
+//! All validation is now deferred to the FDIC BankFind API. Only proxy/transformation helpers remain.
 use std::collections::HashSet;
 
 /// Normalizes and uppercases a comma-delimited list of fields against the allowed set.
@@ -32,22 +29,61 @@ pub fn normalize_fields(fields: &Option<String>, valid_fields: &[&str]) -> Resul
     }
 }
 
-/// Uppercases filters string, except quoted substrings.
+/// Uppercases only field names (before the colon) in FDIC filters, never values (after the colon).
+/// Leaves all values untouched, regardless of quotes. E.g.:
+///   CITY:Chicago => CITY:Chicago
+///   CITY:"Chicago" AND STATE:IL => CITY:"Chicago" AND STATE:IL
 pub fn normalize_filters(filters: &Option<String>) -> Option<String> {
     if let Some(filters) = filters {
-        let mut up = String::with_capacity(filters.len());
-        let mut in_quote = false;
-        for c in filters.chars() {
-            match c {
-                '"' => {
-                    in_quote = !in_quote;
-                    up.push(c);
+        let mut out = String::with_capacity(filters.len());
+        let mut chars = filters.chars().peekable();
+        while let Some(&c) = chars.peek() {
+            // Copy whitespace and parens as-is
+            if c.is_whitespace() || c == '(' || c == ')' {
+                out.push(c);
+                chars.next();
+                continue;
+            }
+            // Try to parse FIELD:VALUE
+            let mut field = String::new();
+            while let Some(&next_c) = chars.peek() {
+                if next_c == ':' {
+                    break;
                 }
-                c if !in_quote => up.push(c.to_ascii_uppercase()),
-                c => up.push(c),
+                if next_c.is_whitespace() || next_c == '(' || next_c == ')' {
+                    break;
+                }
+                field.push(next_c);
+                chars.next();
+            }
+            if !field.is_empty() && chars.peek() == Some(&':') {
+                // Found FIELD: pattern
+                out.push_str(&field.to_ascii_uppercase());
+                out.push(':');
+                chars.next(); // consume the colon
+                // Copy value verbatim until whitespace, paren, or end
+                let mut in_quotes = false;
+                while let Some(&val_c) = chars.peek() {
+                    if val_c == '"' {
+                        in_quotes = !in_quotes;
+                    }
+                    if !in_quotes && (val_c.is_whitespace() || val_c == '(' || val_c == ')') {
+                        break;
+                    }
+                    out.push(val_c);
+                    chars.next();
+                }
+            } else {
+                // Not a field:value, just copy one char and move on
+                if !field.is_empty() {
+                    out.push_str(&field);
+                } else {
+                    out.push(c);
+                    chars.next();
+                }
             }
         }
-        Some(up)
+        Some(out)
     } else {
         None
     }
@@ -82,94 +118,56 @@ pub fn normalize_sort_order(sort_order: &Option<String>) -> Result<Option<String
     }
 }
 
-/// Uppercases a parameter if present.
-pub fn uppercase_param(param: &Option<String>) -> Option<String> {
-    param.as_ref().map(|s| s.to_ascii_uppercase())
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-/// Validates that an optional limit does not exceed a maximum. Returns Ok(()) if valid, Err(message) if exceeded.
-pub fn validate_limit(limit: Option<u32>, max: u32) -> Result<(), String> {
-    if let Some(lim) = limit {
-        if lim > max {
-            return Err(format!("limit must be <= {}", max));
-        }
+    #[test]
+    fn test_normalize_filters_preserves_quoted_city() {
+        let input = Some("CITY:\"Chicago\" AND ACTIVE:1".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("CITY:\"Chicago\" AND ACTIVE:1".to_string()));
     }
-    Ok(())
-}
 
-/// Validate and normalize all common parameters in one shot.
-#[allow(dead_code)]
-pub fn validate_common_params(common: &mut CommonParameters, valid_fields: &[&str]) -> Result<(), (StatusCode, impl IntoResponse)> {
-    use crate::common::{MCPError, MCPErrorDetail};
-    // limit
-    validate_limit(common.limit, 10000).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // sort_order
-    common.sort_order = normalize_sort_order(&common.sort_order).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // sort_by
-    common.sort_by = normalize_sort_by(&common.sort_by, valid_fields).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // fields
-    common.fields = normalize_fields(&common.fields, valid_fields).map_err(|msg| {
-        let err = MCPError {
-            error_type: "error".to_string(),
-            error: MCPErrorDetail {
-                kind: "invalid_request_error".to_string(),
-                message: msg,
-                status: Some(StatusCode::BAD_REQUEST.as_u16()),
-                detail: None,
-                source: None,
-                meta: None,
-                fdic_raw: None,
-            },
-        };
-        (StatusCode::BAD_REQUEST, axum::Json(err))
-    })?;
-    // filters
-    common.filters = normalize_filters(&common.filters);
-    // format, filename uppercase
-    common.file_format = uppercase_param(&common.file_format);
-    common.file_download = common.file_download;
-    common.file_name = common.file_name.clone();
-    Ok(())
+    #[test]
+    fn test_normalize_filters_uppercases_unquoted_city() {
+        let input = Some("CITY:Chicago AND ACTIVE:1".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("CITY:Chicago AND ACTIVE:1".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_filters_preserves_case_inside_quotes() {
+        let input = Some("CITY:\"cHiCaGo\" AND ACTIVE:1".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("CITY:\"cHiCaGo\" AND ACTIVE:1".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_filters_handles_multiple_quotes() {
+        let input = Some("CITY:\"Chicago\" AND STATE:\"IL\"".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("CITY:\"Chicago\" AND STATE:\"IL\"".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_filters_empty() {
+        let input: Option<String> = None;
+        let output = normalize_filters(&input);
+        assert_eq!(output, None);
+    }
+
+    #[test]
+    fn test_normalize_filters_nested_quotes() {
+        let input = Some("CITY:\"Chi\"cago\" AND ACTIVE:1".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("CITY:\"Chi\"cago\" AND ACTIVE:1".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_filters_whitespace_and_ops() {
+        let input = Some("  AND  (  )  ".to_string());
+        let output = normalize_filters(&input);
+        assert_eq!(output, Some("  AND  (  )  ".to_string()));
+    }
 }

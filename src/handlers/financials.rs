@@ -1,32 +1,41 @@
 //! Do not edit by hand.
-//! Auto-generated handler for FDIC BankFind API `/financials` endpoint.// Internal imports (std, crate)
-use std::collections::HashMap;
-use crate::config::FDICApiConfig;
-use crate::common::{list_endpoint, CommonParameters, QueryParameters};
+//! Auto-generated handler for FDIC BankFind API `/financials` endpoint.
+
+// Internal imports (std, crate)
+use crate::common::*;
+use crate::config::FdicApiConfig;
 
 // External imports (alphabetized)
-use axum::{extract::{Query, State}, response::Response};
+use rmcp::handler::server::tool::IntoCallToolResult;
+use rmcp::model::*;
 use serde::{Deserialize, Serialize};
-use tracing::{info, debug};
+use schemars::JsonSchema;
+use std::collections::HashMap;
+use tracing::info;
+use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/financials` endpoint.
 /// Spec: risview_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 pub struct FinancialsParameters {
     /// Shared FDIC query parameters
     #[serde(flatten)]
     pub common: CommonParameters,
-    #[doc = r#"The field by which data will be aggregated. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: CERT"#]
+    #[schemars(description = r#"The field by which data will be aggregated. All values must be entered in UPPERCASE."#)]
     pub agg_by: Option<String>,
-    #[doc = r#"The field(s) for which aggregations will be counted for each unique term. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: REPDTE"#]
+    #[schemars(description = r#"The field(s) for which aggregations will be counted for each unique term. All values must be entered in UPPERCASE."#)]
     pub agg_term_fields: Option<String>,
-    #[doc = r#"The field(s) for which aggregations will be summed or aggregated. All values must be entered in UPPERCASE."#]
-    #[doc = r#"Example: ASSET"#]
+    #[schemars(description = r#"The field(s) for which aggregations will be summed or aggregated. All values must be entered in UPPERCASE."#)]
     pub agg_sum_fields: Option<String>,
-    #[doc = r#"The limit on how many aggregated results will be displayed"#]
+    #[schemars(description = r#"The limit on how many aggregated results will be displayed"#)]
     pub agg_limit: Option<i32>,
+}
+
+// Implement FdicEndpoint for generic handler
+impl FdicEndpoint for FinancialsParameters {
+    fn name() -> &'static str {
+        "financials"
+    }
 }
 
 // Implement QueryParameters for generic handler
@@ -2411,8 +2420,9 @@ impl QueryParameters for FinancialsParameters {
         "SCMUNIHF",
     ];
 
-    #[allow(unused_variables)]
+    #[allow(unused_variables)] // the `query` parameter is unused if there are no endpoint-specific parameters
     fn insert_endpoint_specific(&self, query: &mut HashMap<String, String>) {
+        
         if let Some(val) = &self.agg_by {
             query.insert("agg_by".to_string(), val.to_string());
         }
@@ -2434,11911 +2444,7161 @@ impl QueryParameters for FinancialsParameters {
 
 /// Auto-generated properties struct for `/financials` endpoint.
 /// Spec: risview_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct FinancialsProperties {
-    #[doc = r#"Title: Activity Event Code"#]
-    #[doc = r#"Description: Structure activity event code. Merger or closing codes only."#]
-    #[serde(rename="ACTEVT")]
+    #[schemars(description = r#"Activity Event Code - Structure activity event code. Merger or closing codes only."#)]
     pub actevt: Option<String>,
 
-    #[doc = r#"Title: Total assets"#]
-    #[doc = r#"Description: The sum of all assets owned by the institution including cash, loans, securities, bank premises and other assets. This total does not include off-balance-sheet accounts."#]
-    #[serde(rename="ASSET")]
+    #[schemars(description = r#"Total assets - The sum of all assets owned by the institution including cash, loans, securities, bank premises and other assets. This total does not include off-balance-sheet accounts."#)]
     pub asset: Option<f32>,
 
-    #[doc = r#"Title: BRANCHING"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution has branches. 0 means no branches and 1 means it has branches."#]
-    #[serde(rename="BRANCH")]
+    #[schemars(description = r#"BRANCHING - A flag used to indicate whether an institution has branches. 0 means no branches and 1 means it has branches."#)]
     pub branch: Option<f32>,
 
-    #[doc = r#"Title: Call Form Number"#]
-    #[doc = r#"Description: TBD"#]
-    #[serde(rename="CALLFORM")]
+    #[schemars(description = r#"Call Form Number - TBD"#)]
     pub callform: Option<f32>,
 
-    #[doc = r#"Title: Community Bank"#]
-    #[doc = r#"Description: FDIC community banks are identified based on criteria defined in the FDIC Community Banking Study. Using detailed balance sheet and geographic data, the study defines communtiy banks in terms of their traditional relationship banking and limited geographic scope of operations"#]
-    #[serde(rename="CB")]
+    #[schemars(description = r#"Community Bank - FDIC community banks are identified based on criteria defined in the FDIC Community Banking Study. Using detailed balance sheet and geographic data, the study defines communtiy banks in terms of their traditional relationship banking and limited geographic scope of operations"#)]
     pub cb: Option<String>,
 
-    #[doc = r#"Title: Core Based Statistical Division Number"#]
-    #[doc = r#"Description: A metropolitan division is a county or group of counties within a core based statistical area that contains a population of at least 2.5 million. A metropolitan division consists of one or more main/secondary countues that represent an employment center or centers, plus adjacent conuties associated withe the main county or counties through commuting ties."#]
-    #[serde(rename="CBSADIV")]
+    #[schemars(description = r#"Core Based Statistical Division Number - A metropolitan division is a county or group of counties within a core based statistical area that contains a population of at least 2.5 million. A metropolitan division consists of one or more main/secondary countues that represent an employment center or centers, plus adjacent conuties associated withe the main county or counties through commuting ties."#)]
     pub cbsadiv: Option<f32>,
 
-    #[doc = r#"Title: Core Based Statistical Division Name"#]
-    #[doc = r#"Description: A statistical geographic entity consisting of the county or counties associated with at least one core (urbanized area or urban cluster) of at least 10,000 population, plus adjacent counties having a high degree of social and economic integration with the core as measured through commuting ties with the counties containing the core."#]
-    #[serde(rename="CBSANAME")]
+    #[schemars(description = r#"Core Based Statistical Division Name - A statistical geographic entity consisting of the county or counties associated with at least one core (urbanized area or urban cluster) of at least 10,000 population, plus adjacent counties having a high degree of social and economic integration with the core as measured through commuting ties with the counties containing the core."#)]
     pub cbsaname: Option<String>,
 
-    #[doc = r#"Title: Multi State Offices Flag"#]
-    #[doc = r#"Description: Multi State Offices Flag"#]
-    #[serde(rename="STMULT")]
+    #[schemars(description = r#"Multi State Offices Flag - Multi State Offices Flag"#)]
     pub stmult: Option<String>,
 
-    #[doc = r#"Title: ADDRESS"#]
-    #[doc = r#"Description: ADDRESS"#]
-    #[serde(rename="ADDRESS")]
+    #[schemars(description = r#"ADDRESS - ADDRESS"#)]
     pub address: Option<String>,
 
-    #[doc = r#"Title: Community Bank Ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CBLRIND")]
+    #[schemars(description = r#"Community Bank Ratio - "#)]
     pub cblrind: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD1T3")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 1-3 YEARS - "#)]
     pub cd1t3: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD1T3R")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 1-3 YEARS RATIO - "#)]
     pub cd1t3r: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 3 MONTH OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3LES")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 3 MONTH OR LESS - "#)]
     pub cd3les: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 3 MONTH OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3LESR")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY REPRICING OF 3 MONTH OR LESS RATIO - "#)]
     pub cd3lesr: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY REPRICING OF 3 MONTH OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3LESS")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY REPRICING OF 3 MONTH OR LESS - "#)]
     pub cd3less: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY REPRICING OF 3 MONTH OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3LESSR")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY REPRICING OF 3 MONTH OR LESS RATIO - "#)]
     pub cd3lessr: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING OVER 3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CDOV3")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING OVER 3 YEARS - "#)]
     pub cdov3: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING OVER 3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CDOV3R")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING OVER 3 YEARS RATIO - "#)]
     pub cdov3r: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING OVER 3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CDOV3S")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING OVER 3 YEARS - "#)]
     pub cdov3s: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING OVER 3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CDOV3SR")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING OVER 3 YEARS RATIO - "#)]
     pub cdov3sr: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING 3-12 MONTHS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3T12")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING 3-12 MONTHS - "#)]
     pub cd3t12: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING 3-12 MONTHS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3T12R")]
+    #[schemars(description = r#"TIME DEP $250,000 OR MORE REMAINING MATURITY OR REPRICING 3-12 MONTHS RATIO - "#)]
     pub cd3t12r: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 3-12 MONTHS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3T12S")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 3-12 MONTHS - "#)]
     pub cd3t12s: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 3-12 MONTHS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD3T12SR")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 3-12 MONTHS RATIO - "#)]
     pub cd3t12sr: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD1T3S")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 1-3 YEARS - "#)]
     pub cd1t3s: Option<f32>,
 
-    #[doc = r#"Title: TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CD1T3SR")]
+    #[schemars(description = r#"TIME DEP $250,000 OR LESS REMAINING MATURITY OR REPRICING 1-3 YEARS RATIO - "#)]
     pub cd1t3sr: Option<f32>,
 
-    #[doc = r#"Title: FDIC Certificate #"#]
-    #[doc = r#"Description: A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates."#]
-    #[serde(rename="CERT")]
+    #[schemars(description = r#"FDIC Certificate # - A unique NUMBER assigned by the FDIC used to identify institutions and for the issuance of insurance certificates."#)]
     pub cert: Option<f32>,
 
-    #[doc = r#"Title: Directly owned by another bank (CERT)"#]
-    #[doc = r#"Description: FDIC certificate number of the parent bank or savings institution with which the reported institution’s financial data has been consolidated. Beginning in March 1997, both the Thrift Financial Reports and Call Reports are completed on a fully consolidated basis.  Previously, the consolidation of subsidiary depository institutions was prohibited.  Now, parent institutions are required to file consolidated reports, while their subsidiary financial institutions are still required to file separate reports.  Click on the certificate number to identify the parent bank or thrift."#]
-    #[serde(rename="CERTCONS")]
+    #[schemars(description = r#"Directly owned by another bank (CERT) - FDIC certificate number of the parent bank or savings institution with which the reported institution’s financial data has been consolidated. Beginning in March 1997, both the Thrift Financial Reports and Call Reports are completed on a fully consolidated basis.  Previously, the consolidation of subsidiary depository institutions was prohibited.  Now, parent institutions are required to file consolidated reports, while their subsidiary financial institutions are still required to file separate reports.  Click on the certificate number to identify the parent bank or thrift."#)]
     pub certcons: Option<String>,
 
-    #[doc = r#"Title: City of High Holder (Search-Eligible)"#]
-    #[doc = r#"Description: City in which the headquarters of the institution's regulatory high holder are physically located. This field can be used for search and filtering."#]
-    #[serde(rename="CITYHCR")]
+    #[schemars(description = r#"City of High Holder (Search-Eligible) - City in which the headquarters of the institution's regulatory high holder are physically located. This field can be used for search and filtering."#)]
     pub cityhcr: Option<String>,
 
-    #[doc = r#"Title: Classcode"#]
-    #[doc = r#"Description: A number that sub-categorizes a major class of institutions. 3 = National bank, Federal Reserve System (FRS) member; 13 = State commercial bank, FRS member; 15 = State savings, co-op, or insdustrial bank, FRS member; 21 = State commercial bank, not FRS member; 23 = State savings, co-op, or industrial bank, not FRS member; 25 = State mutual commercial bank, not FRS member; 33 =  Federal chartered stock savings bank; 34 = Federal chartered mutual savings bank; 35 = State chartered stock savings and loan association; 36 = State chartered mutual savings and loan association; 37 = Federal chartered stock savings and loan association; 38 = Federal chartered mutual savings and loan association; 41 = State chartered stock savings bank; 42 = State chartered mutual savings bank; 43 = Federal chartered stock savings bank (historical); 44 = Federal chartered mutual savings bank (historical); 50 = OCC chartered nondeposit and/or noninsured trust companies; 51 = Noninsured commercial bank; 52 = Noninsured domestic offices of foreign bank (International Banking Act); 53 = Noninsured industrial bank; 54 = State chartered nondeposit and/or noninsured trust company, not FRS member; 55 = State chartered domestic branches of foreign banks; 56 = OCC chartered domestic branches of foreign banks; 57 = New York investment company; 58 = State chartered nondeposit and/or noninsured trust company, FRS member; 59 = OTS chartered nondeposit and/or noninsured trust company, 61 = Noninsured private bank; 62 = Noninsured loan workout bank, OCC chartered; 63 = Noninsured loan workout bank, state chartered, FRS member; 64 = Noninsured loan workout bank, state chartered, not FRS member; 65 = Other holding company; 71 = Transfer agent; 81 = Noninsured stock savings bank; 82 = Noninsured mutual savings bank; 85 = Noninsured stock savings and loan association; 86 = Noninsured mutual savings and loan association; 89 = Noninsured insurance company; 91 = State chartered credit unions; 92 = Federal chartered credit unions; 93 = Privately insured state credit union."#]
-    #[serde(rename="CLCODE")]
+    #[schemars(description = r#"Classcode - A number that sub-categorizes a major class of institutions. 3 = National bank, Federal Reserve System (FRS) member; 13 = State commercial bank, FRS member; 15 = State savings, co-op, or insdustrial bank, FRS member; 21 = State commercial bank, not FRS member; 23 = State savings, co-op, or industrial bank, not FRS member; 25 = State mutual commercial bank, not FRS member; 33 =  Federal chartered stock savings bank; 34 = Federal chartered mutual savings bank; 35 = State chartered stock savings and loan association; 36 = State chartered mutual savings and loan association; 37 = Federal chartered stock savings and loan association; 38 = Federal chartered mutual savings and loan association; 41 = State chartered stock savings bank; 42 = State chartered mutual savings bank; 43 = Federal chartered stock savings bank (historical); 44 = Federal chartered mutual savings bank (historical); 50 = OCC chartered nondeposit and/or noninsured trust companies; 51 = Noninsured commercial bank; 52 = Noninsured domestic offices of foreign bank (International Banking Act); 53 = Noninsured industrial bank; 54 = State chartered nondeposit and/or noninsured trust company, not FRS member; 55 = State chartered domestic branches of foreign banks; 56 = OCC chartered domestic branches of foreign banks; 57 = New York investment company; 58 = State chartered nondeposit and/or noninsured trust company, FRS member; 59 = OTS chartered nondeposit and/or noninsured trust company, 61 = Noninsured private bank; 62 = Noninsured loan workout bank, OCC chartered; 63 = Noninsured loan workout bank, state chartered, FRS member; 64 = Noninsured loan workout bank, state chartered, not FRS member; 65 = Other holding company; 71 = Transfer agent; 81 = Noninsured stock savings bank; 82 = Noninsured mutual savings bank; 85 = Noninsured stock savings and loan association; 86 = Noninsured mutual savings and loan association; 89 = Noninsured insurance company; 91 = State chartered credit unions; 92 = Federal chartered credit unions; 93 = Privately insured state credit union."#)]
     pub clcode: Option<f32>,
 
-    #[doc = r#"Title: Closed Institution Flag"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution has been closed. 0 is institution not closed. 1 is institution closed."#]
-    #[serde(rename="CLOSED")]
+    #[schemars(description = r#"Closed Institution Flag - A flag used to indicate whether an institution has been closed. 0 is institution not closed. 1 is institution closed."#)]
     pub closed: Option<f32>,
 
-    #[doc = r#"Title: FIPS CMSA Code"#]
-    #[doc = r#"Description: The Federal Information Processing Standards Consolidated Metropolitan Statistical Area Code is a number representing the institution location. A CMSA consists of two or more contiguous MSAs with a combined population of over 1 million."#]
-    #[serde(rename="CMSA")]
+    #[schemars(description = r#"FIPS CMSA Code - The Federal Information Processing Standards Consolidated Metropolitan Statistical Area Code is a number representing the institution location. A CMSA consists of two or more contiguous MSAs with a combined population of over 1 million."#)]
     pub cmsa: Option<f32>,
 
-    #[doc = r#"Title: FIPS Country Code"#]
-    #[doc = r#"Description: The Federal Information Processing Standards Alphabetic Code of the country in which the institution is physically located."#]
-    #[serde(rename="CNTRYALP")]
+    #[schemars(description = r#"FIPS Country Code - The Federal Information Processing Standards Alphabetic Code of the country in which the institution is physically located."#)]
     pub cntryalp: Option<String>,
 
-    #[doc = r#"Title: FIPS Country Number"#]
-    #[doc = r#"Description: The Federal Information Processing Standards Numeric Code of the country in which the institution is physically located."#]
-    #[serde(rename="CNTRYNUM")]
+    #[schemars(description = r#"FIPS Country Number - The Federal Information Processing Standards Numeric Code of the country in which the institution is physically located."#)]
     pub cntrynum: Option<f32>,
 
-    #[doc = r#"Title: FIPS County Number"#]
-    #[doc = r#"Description: The Federal Information Processing Standards Numeric Code of the county in which the institution is physically located."#]
-    #[serde(rename="CNTYNUM")]
+    #[schemars(description = r#"FIPS County Number - The Federal Information Processing Standards Numeric Code of the county in which the institution is physically located."#)]
     pub cntynum: Option<f32>,
 
-    #[doc = r#"Title: Combined Statistical Area"#]
-    #[doc = r#"Description: U.S. CENSUS BUREAU OFFICE OF MANANGEMENT AND BUDGET DEFINES                                   THE COMBINED STATISTICAL AREA (CSA) AS A GEOGRAPHIC ENTITY                                         CONSISTING OF TWO OR MORE ADJACENT CORE BASED STATISTICAL AREAS                                  (CBSAS) WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST 15.                                     PAIRS OF CBSAS WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST                                  25 COMBINE AUTOMATICALLY.  PAIRS OF CBSAS WITH EMPLOYMENT                                        INTERCHANGE MEASURES OF AT LEAST 15, BUT LESS THAN 25, MAY                                        COMBINE IF LOCAL OPTION IN BOTH AREAS FAVOR COMBINATION. "#]
-    #[serde(rename="CSA")]
+    #[schemars(description = r#"Combined Statistical Area - U.S. CENSUS BUREAU OFFICE OF MANANGEMENT AND BUDGET DEFINES                                   THE COMBINED STATISTICAL AREA (CSA) AS A GEOGRAPHIC ENTITY                                         CONSISTING OF TWO OR MORE ADJACENT CORE BASED STATISTICAL AREAS                                  (CBSAS) WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST 15.                                     PAIRS OF CBSAS WITH EMPLOYMENT INTERCHANGE MEASURES OF AT LEAST                                  25 COMBINE AUTOMATICALLY.  PAIRS OF CBSAS WITH EMPLOYMENT                                        INTERCHANGE MEASURES OF AT LEAST 15, BUT LESS THAN 25, MAY                                        COMBINE IF LOCAL OPTION IN BOTH AREAS FAVOR COMBINATION. "#)]
     pub csa: Option<String>,
 
-    #[doc = r#"Title: Denovo Institution"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is a new institution (not a recharter). This flag is set quarterly. For instance, if REPDTE is 3/31/98 and DENOVO equals 1, the institution was a denovo during the first quarter of 1998."#]
-    #[serde(rename="DENOVO")]
+    #[schemars(description = r#"Denovo Institution - A flag used to indicate whether an institution is a new institution (not a recharter). This flag is set quarterly. For instance, if REPDTE is 3/31/98 and DENOVO equals 1, the institution was a denovo during the first quarter of 1998."#)]
     pub denovo: Option<String>,
 
-    #[doc = r#"Title: Total deposits"#]
-    #[doc = r#"Description: The sum of all deposits including demand deposits, money market deposits, other savings deposits, time deposits and deposits in foreign offices."#]
-    #[serde(rename="DEP")]
+    #[schemars(description = r#"Total deposits - The sum of all deposits including demand deposits, money market deposits, other savings deposits, time deposits and deposits in foreign offices."#)]
     pub dep: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPR")]
+    #[schemars(description = r#"TOTAL DEPOSITS RATIO - "#)]
     pub depr: Option<f32>,
 
-    #[doc = r#"Title: Deposits held in domestic offices"#]
-    #[doc = r#"Description: The sum of all domestic office deposits, including demand deposits, money market deposits, other savings deposits and time deposits."#]
-    #[serde(rename="DEPDOM")]
+    #[schemars(description = r#"Deposits held in domestic offices - The sum of all domestic office deposits, including demand deposits, money market deposits, other savings deposits and time deposits."#)]
     pub depdom: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITS HELD IN DOM OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPDOMR")]
+    #[schemars(description = r#"DEPOSITS HELD IN DOM OFF RATIO - "#)]
     pub depdomr: Option<f32>,
 
-    #[doc = r#"Title: Division Flag"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is in a CBSA division. 0 is institution is not in a CBSA division. 1 is institution is in a CBSA division."#]
-    #[serde(rename="DIVISION")]
+    #[schemars(description = r#"Division Flag - A flag used to indicate whether an institution is in a CBSA division. 0 is institution is not in a CBSA division. 1 is institution is in a CBSA division."#)]
     pub division: Option<f32>,
 
-    #[doc = r#"Title: Docket Number"#]
-    #[doc = r#"Description: A unique identification number assigned to institutions chartered by the office of thrift supervision or that become members of the federal home loan system."#]
-    #[serde(rename="DOCKET")]
+    #[schemars(description = r#"Docket Number - A unique identification number assigned to institutions chartered by the office of thrift supervision or that become members of the federal home loan system."#)]
     pub docket: Option<f32>,
 
-    #[doc = r#"Title: International Activity Flag"#]
-    #[doc = r#"Description: A FLAG USED TO INDICATE WHETHER AN INSTITUTION OPERATES ONE OR                                   MORE EDGE ACT OR AGREEMENT CORPORATIONS.  AN EDGE ACT CORPORATION                                 IS A FEDERALLY CHARTERED DOMESTIC ORGANIZATION THAT IS ALLOWED TO                                ENGAGE ONLY IN INTERNATIONAL BANKING OR OTHER FINANCIAL                                          TRANSACTIONS RELATED TO INTERNATIONAL BUSINESS.  AN AGREEMENT CORPORATION IS RESTRICTED, IN GENERAL, TO INTERNATIONAL BANKING OPERATIONS. 0 = NO AFFILIATIONS WITH EDGE ACT CORPORATIONS.                                                                                    1 = AFFILIATED WITH EDGE ACT CORPORATIONS."#]
-    #[serde(rename="EDGECODE")]
+    #[schemars(description = r#"International Activity Flag - A FLAG USED TO INDICATE WHETHER AN INSTITUTION OPERATES ONE OR                                   MORE EDGE ACT OR AGREEMENT CORPORATIONS.  AN EDGE ACT CORPORATION                                 IS A FEDERALLY CHARTERED DOMESTIC ORGANIZATION THAT IS ALLOWED TO                                ENGAGE ONLY IN INTERNATIONAL BANKING OR OTHER FINANCIAL                                          TRANSACTIONS RELATED TO INTERNATIONAL BUSINESS.  AN AGREEMENT CORPORATION IS RESTRICTED, IN GENERAL, TO INTERNATIONAL BANKING OPERATIONS. 0 = NO AFFILIATIONS WITH EDGE ACT CORPORATIONS.                                                                                    1 = AFFILIATED WITH EDGE ACT CORPORATIONS."#)]
     pub edgecode: Option<f32>,
 
-    #[doc = r#"Title: Entity Type"#]
-    #[doc = r#"Description: A three digit number indicating the major type or category of an  institution. The entity code is used to categorize an institution by type of financial organization."#]
-    #[serde(rename="ENTTYPE")]
+    #[schemars(description = r#"Entity Type - A three digit number indicating the major type or category of an  institution. The entity code is used to categorize an institution by type of financial organization."#)]
     pub enttype: Option<f32>,
 
-    #[doc = r#"Title: Equity capital"#]
-    #[doc = r#"Description: Total equity capital (includes preferred and common stock, surplus and undivided profits)."#]
-    #[serde(rename="EQ")]
+    #[schemars(description = r#"Equity capital - Total equity capital (includes preferred and common stock, surplus and undivided profits)."#)]
     pub eq: Option<f32>,
 
-    #[doc = r#"Title: Equity capital"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQ2")]
+    #[schemars(description = r#"Equity capital - "#)]
     pub eq2: Option<f32>,
 
-    #[doc = r#"Title: EQUITY CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQR")]
+    #[schemars(description = r#"EQUITY CAPITAL RATIO - "#)]
     pub eqr: Option<f32>,
 
-    #[doc = r#"Title: Failed Institution Flag"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution has failed. Failures include assisted mergers and payoffs."#]
-    #[serde(rename="FAILED")]
+    #[schemars(description = r#"Failed Institution Flag - A flag used to indicate whether an institution has failed. Failures include assisted mergers and payoffs."#)]
     pub failed: Option<f32>,
 
-    #[doc = r#"Title: FDIC Compliance Area"#]
-    #[doc = r#"Description: A number used to identify the compliance area in which an institution is located."#]
-    #[serde(rename="FDICAREA")]
+    #[schemars(description = r#"FDIC Compliance Area - A number used to identify the compliance area in which an institution is located."#)]
     pub fdicarea: Option<f32>,
 
-    #[doc = r#"Title: FDIC Compliance Territory"#]
-    #[doc = r#"Description: An abbreviation of the current compliance territory where an institution is located (FDIC Compliance Territory). All periods are displayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#]
-    #[serde(rename="FDICTERR")]
+    #[schemars(description = r#"FDIC Compliance Territory - An abbreviation of the current compliance territory where an institution is located (FDIC Compliance Territory). All periods are displayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#)]
     pub fdicterr: Option<String>,
 
-    #[doc = r#"Title: DCA Field Office"#]
-    #[doc = r#"Description: The name of the compliance field office to which an institution is assigned. All periods are diplayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#]
-    #[serde(rename="FLDOFDCA")]
+    #[schemars(description = r#"DCA Field Office - The name of the compliance field office to which an institution is assigned. All periods are diplayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#)]
     pub fldofdca: Option<String>,
 
-    #[doc = r#"Title: FFIEC Call Report 31 Filer"#]
-    #[doc = r#"Description: A flag (1=yes,0=no) that indicates whether and institution filed an FFIEC 031 Call Report. Commercial banks with domestic and foreign offices are required to file such a report."#]
-    #[serde(rename="FORM31")]
+    #[schemars(description = r#"FFIEC Call Report 31 Filer - A flag (1=yes,0=no) that indicates whether and institution filed an FFIEC 031 Call Report. Commercial banks with domestic and foreign offices are required to file such a report."#)]
     pub form31: Option<String>,
 
-    #[doc = r#"Title: Bank Holding Company Type"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is a member of a multibank holding company 1=yes, 0=no"#]
-    #[serde(rename="HCTMULT")]
+    #[schemars(description = r#"Bank Holding Company Type - A flag used to indicate whether an institution is a member of a multibank holding company 1=yes, 0=no"#)]
     pub hctmult: Option<String>,
 
-    #[doc = r#"Title: Bank Not Member of Hold Company"#]
-    #[doc = r#"Description: A flag used to indicated whether an institution is an independent bank. 0 is member of a bank hold company. 1 is not a member of a bank holding company."#]
-    #[serde(rename="HCTNONE")]
+    #[schemars(description = r#"Bank Not Member of Hold Company - A flag used to indicated whether an institution is an independent bank. 0 is member of a bank hold company. 1 is not a member of a bank holding company."#)]
     pub hctnone: Option<f32>,
 
-    #[doc = r#"Title: Secondary Insurer"#]
-    #[doc = r#"Description: The secondary insurer, insurance agent, or insurance status of an institution."#]
-    #[serde(rename="INSAGNT2")]
+    #[schemars(description = r#"Secondary Insurer - The secondary insurer, insurance agent, or insurance status of an institution."#)]
     pub insagnt2: Option<String>,
 
-    #[doc = r#"Title: TBD"#]
-    #[doc = r#"Description: TBD"#]
-    #[serde(rename="INSBIF")]
+    #[schemars(description = r#"TBD - TBD"#)]
     pub insbif: Option<f32>,
 
-    #[doc = r#"Title: Deposit Insurance Fund member"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is insured under the Deposit Insurance Fund (DIF).  As of April 1, 2006 the Bank Insurance Fund (BIF) was merged together with the Savings Institution Insurance Fund (SAIF) to create a single Deposit Insurance Fund (DIF).  All FDIC insured BIF and SAIF member institutions that are still active or open are now insured members of DIF.    0 = No, not DIF insured and 1 = Yes, DIF insured.  Note that institutions that became inactive prior to April 1006 will also have zero value."#]
-    #[serde(rename="INSDIF")]
+    #[schemars(description = r#"Deposit Insurance Fund member - A flag used to indicate whether an institution is insured under the Deposit Insurance Fund (DIF).  As of April 1, 2006 the Bank Insurance Fund (BIF) was merged together with the Savings Institution Insurance Fund (SAIF) to create a single Deposit Insurance Fund (DIF).  All FDIC insured BIF and SAIF member institutions that are still active or open are now insured members of DIF.    0 = No, not DIF insured and 1 = Yes, DIF insured.  Note that institutions that became inactive prior to April 1006 will also have zero value."#)]
     pub insdif: Option<String>,
 
-    #[doc = r#"Title: Agricultural lending institution indicator"#]
-    #[doc = r#"Description: An indicator specifying whether an institution is primarily an agricultural lending institution."#]
-    #[serde(rename="INSTAG")]
+    #[schemars(description = r#"Agricultural lending institution indicator - An indicator specifying whether an institution is primarily an agricultural lending institution."#)]
     pub instag: Option<String>,
 
-    #[doc = r#"Title: Credit Card Institutions"#]
-    #[doc = r#"Description: Institutions with total loans greater than 50% of total assets and credit card loans greater than 50% of total loans, including loans that have been securitized and sold."#]
-    #[serde(rename="INSTCRCD")]
+    #[schemars(description = r#"Credit Card Institutions - Institutions with total loans greater than 50% of total assets and credit card loans greater than 50% of total loans, including loans that have been securitized and sold."#)]
     pub instcrcd: Option<String>,
 
-    #[doc = r#"Title: SAIF Insured"#]
-    #[doc = r#"Description: Institutions who are members of the Savings Association Insurance Fund. As of April 1, 2006 SAIF was merged together with the Bank Insurance Fund (BIF) to create a single Deposit Insurance Fund (DIF).  All FDIC insured SAIF member institutions, that are still active or open, are now insured members of DIF."#]
-    #[serde(rename="INSSAIF")]
+    #[schemars(description = r#"SAIF Insured - Institutions who are members of the Savings Association Insurance Fund. As of April 1, 2006 SAIF was merged together with the Bank Insurance Fund (BIF) to create a single Deposit Insurance Fund (DIF).  All FDIC insured SAIF member institutions, that are still active or open, are now insured members of DIF."#)]
     pub inssaif: Option<f32>,
 
-    #[doc = r#"Title: MINORITY OWNED INSTITUTIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MINORITY")]
+    #[schemars(description = r#"MINORITY OWNED INSTITUTIONS - "#)]
     pub minority: Option<f32>,
 
-    #[doc = r#"Title: Ownership Type"#]
-    #[doc = r#"Description: Banking institutions fall into one of two ownership types, stock or non-stock. An institution which sells stock to raise capital is called a stock institution. It is owned by the shareholders who benefit from profits earned by the institution. A non-stock institution, or mutual institution, is owned and controlled solely by its depositors. A mutual does not issue capital stock."#]
-    #[serde(rename="MUTUAL")]
+    #[schemars(description = r#"Ownership Type - Banking institutions fall into one of two ownership types, stock or non-stock. An institution which sells stock to raise capital is called a stock institution. It is owned by the shareholders who benefit from profits earned by the institution. A non-stock institution, or mutual institution, is owned and controlled solely by its depositors. A mutual does not issue capital stock."#)]
     pub mutual: Option<f32>,
 
-    #[doc = r#"Title: Bank Holding Company (Regulatory Top Holder) (Search-Eligible)"#]
-    #[doc = r#"Description: Regulatory top holder is assigned by the Federal Reserve Board based on ownership and control percentages. Note: Information on bank holding companies is only as of quarter-end. Regulatory top holder is any company that directly or indirectly owns, controls or has power to vote 25 percent or more of a bank's or direct holding company's shares or  controls in any manner the election of a majority of the directors or trustees of a bank or direct holding company or  exercises a controlling influence over the management or policies of a bank or direct holding company.   Information on Thrift Holding Companies that own Savings Associations but do not own banks is not currently available in the ID System.  Source: Federal Reserve Board National Information Center data base. This field can be used for search and filtering."#]
-    #[serde(rename="NAMEHCR")]
+    #[schemars(description = r#"Bank Holding Company (Regulatory Top Holder) (Search-Eligible) - Regulatory top holder is assigned by the Federal Reserve Board based on ownership and control percentages. Note: Information on bank holding companies is only as of quarter-end. Regulatory top holder is any company that directly or indirectly owns, controls or has power to vote 25 percent or more of a bank's or direct holding company's shares or  controls in any manner the election of a majority of the directors or trustees of a bank or direct holding company or  exercises a controlling influence over the management or policies of a bank or direct holding company.   Information on Thrift Holding Companies that own Savings Associations but do not own banks is not currently available in the ID System.  Source: Federal Reserve Board National Information Center data base. This field can be used for search and filtering."#)]
     pub namehcr: Option<String>,
 
-    #[doc = r#"Title: Net income"#]
-    #[doc = r#"Description: Net interest income plus total noninterest income plus realized gains (losses) on securities and extraordinary items, less total noninterest expense, loan loss provisions and income taxes."#]
-    #[serde(rename="NETINC")]
+    #[schemars(description = r#"Net income - Net interest income plus total noninterest income plus realized gains (losses) on securities and extraordinary items, less total noninterest expense, loan loss provisions and income taxes."#)]
     pub netinc: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME - RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINCR")]
+    #[schemars(description = r#"NET INCOME - RATIO - "#)]
     pub netincr: Option<f32>,
 
-    #[doc = r#"Title: Net income - quarterly"#]
-    #[doc = r#"Description: Quarterly net interest income plus total noninterest income plus realized gains (losses) on securities and extraordinary items, less total noninterest expense, loan loss provisions and income taxes."#]
-    #[serde(rename="NETINCQ")]
+    #[schemars(description = r#"Net income - quarterly - Quarterly net interest income plus total noninterest income plus realized gains (losses) on securities and extraordinary items, less total noninterest expense, loan loss provisions and income taxes."#)]
     pub netincq: Option<f32>,
 
-    #[doc = r#"Title: Net income - quarterly"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINCQA")]
+    #[schemars(description = r#"Net income - quarterly - "#)]
     pub netincqa: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME - QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINCQR")]
+    #[schemars(description = r#"NET INCOME - QUARTERLY RATIO - "#)]
     pub netincqr: Option<f32>,
 
-    #[doc = r#"Title: Number of Domestic Offices"#]
-    #[doc = r#"Description: The number of domestic offices (including headquarters) operated by active institutions in the 50 states of the U.S.A."#]
-    #[serde(rename="OFFDOM")]
+    #[schemars(description = r#"Number of Domestic Offices - The number of domestic offices (including headquarters) operated by active institutions in the 50 states of the U.S.A."#)]
     pub offdom: Option<f32>,
 
-    #[doc = r#"Title: Number of Foreign Offices"#]
-    #[doc = r#"Description: The number of foreign offices (outside the U.S.) operated by the institution."#]
-    #[serde(rename="OFFFOR")]
+    #[schemars(description = r#"Number of Foreign Offices - The number of foreign offices (outside the U.S.) operated by the institution."#)]
     pub offfor: Option<f32>,
 
-    #[doc = r#"Title: Number of US Offices"#]
-    #[doc = r#"Description: The number of offices operated by an FDIC-insured institution in all commonwealths and terrirtories of the US, along with those in freely associated states under the Compact of Free Association"#]
-    #[serde(rename="OFFOA")]
+    #[schemars(description = r#"Number of US Offices - The number of offices operated by an FDIC-insured institution in all commonwealths and terrirtories of the US, along with those in freely associated states under the Compact of Free Association"#)]
     pub offoa: Option<f32>,
 
-    #[doc = r#"Title: Directly owned by another bank (CERT)"#]
-    #[doc = r#"Description: The PARCERT number identifies the subsidiary institutions parent certificate number. Beginning in March 1997, both the Thrift Financial Reports and Call Reports are completed on a fully consolidated basis.  Previously, the consolidation of subsidiary depository institutions was prohibited.  Now, parent institutions are required to file consolidated reports, while their subsidiary financial institutions are still required to file separate reports."#]
-    #[serde(rename="PARCERT")]
+    #[schemars(description = r#"Directly owned by another bank (CERT) - The PARCERT number identifies the subsidiary institutions parent certificate number. Beginning in March 1997, both the Thrift Financial Reports and Call Reports are completed on a fully consolidated basis.  Previously, the consolidation of subsidiary depository institutions was prohibited.  Now, parent institutions are required to file consolidated reports, while their subsidiary financial institutions are still required to file separate reports."#)]
     pub parcert: Option<String>,
 
-    #[doc = r#"Title: Report Date (Search-Eligible)"#]
-    #[doc = r#"Description: The last day of the financial reporting period selected. This field can be used for search and filtering."#]
-    #[serde(rename="L_REPDTE")]
+    #[schemars(description = r#"Report Date (Search-Eligible) - The last day of the financial reporting period selected. This field can be used for search and filtering."#)]
     pub l_repdte: Option<String>,
 
-    #[doc = r#"Title: Report Date (Search-Eligible)"#]
-    #[doc = r#"Description: The last day of the financial reporting period selected. This field can be used for search and filtering."#]
-    #[serde(rename="REPDTE_RAW")]
+    #[schemars(description = r#"Report Date (Search-Eligible) - The last day of the financial reporting period selected. This field can be used for search and filtering."#)]
     pub repdte_raw: Option<String>,
 
-    #[doc = r#"Title: Report Date (Search-Eligible)"#]
-    #[doc = r#"Description: The last day of the financial reporting period selected. This field can be used for search and filtering."#]
-    #[serde(rename="REPDTE")]
+    #[schemars(description = r#"Report Date (Search-Eligible) - The last day of the financial reporting period selected. This field can be used for search and filtering."#)]
     pub repdte: Option<String>,
 
-    #[doc = r#"Title: REPORT YEAR (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="REPYEAR")]
+    #[schemars(description = r#"REPORT YEAR (Search-Eligible) - This field can be used for search and filtering."#)]
     pub repyear: Option<String>,
 
-    #[doc = r#"Title: Report Date"#]
-    #[doc = r#"Description: The financial reporting period selected in CCYYMM format."#]
-    #[serde(rename="RISDATE")]
+    #[schemars(description = r#"Report Date - The financial reporting period selected in CCYYMM format."#)]
     pub risdate: Option<String>,
 
-    #[doc = r#"Title: Return on assets (ROA)"#]
-    #[doc = r#"Description: Net income after taxes and extraordinary items (annualized) as a percent of average total assets."#]
-    #[serde(rename="ROA")]
+    #[schemars(description = r#"Return on assets (ROA) - Net income after taxes and extraordinary items (annualized) as a percent of average total assets."#)]
     pub roa: Option<f32>,
 
-    #[doc = r#"Title: Pretax return on assets"#]
-    #[doc = r#"Description: Annualized pre-tax net income as a percent of average assets. Note: Includes extraordinary items and other adjustments, net of taxes."#]
-    #[serde(rename="ROAPTX")]
+    #[schemars(description = r#"Pretax return on assets - Annualized pre-tax net income as a percent of average assets. Note: Includes extraordinary items and other adjustments, net of taxes."#)]
     pub roaptx: Option<f32>,
 
-    #[doc = r#"Title: Quarterly Pretax return on assets"#]
-    #[doc = r#"Description: Quarterly pre-tax net income as a percent of average assets. Note: Includes extraordinary items and other adjustments, net of taxes."#]
-    #[serde(rename="ROAPTXQ")]
+    #[schemars(description = r#"Quarterly Pretax return on assets - Quarterly pre-tax net income as a percent of average assets. Note: Includes extraordinary items and other adjustments, net of taxes."#)]
     pub roaptxq: Option<f32>,
 
-    #[doc = r#"Title: Quarterly return on assets"#]
-    #[doc = r#"Description: Quarterly net income after taxes and extraordinary items as a percent of average total assets."#]
-    #[serde(rename="ROAQ")]
+    #[schemars(description = r#"Quarterly return on assets - Quarterly net income after taxes and extraordinary items as a percent of average total assets."#)]
     pub roaq: Option<f32>,
 
-    #[doc = r#"Title: Return on Equity (ROE)"#]
-    #[doc = r#"Description: Annualized net income as a percent of average equity on a consolidated basis.     Note: If retained earnings are  negative, the ratio is shown as NA."#]
-    #[serde(rename="ROE")]
+    #[schemars(description = r#"Return on Equity (ROE) - Annualized net income as a percent of average equity on a consolidated basis.     Note: If retained earnings are  negative, the ratio is shown as NA."#)]
     pub roe: Option<f32>,
 
-    #[doc = r#"Title: Quarterly return on equity"#]
-    #[doc = r#"Description: Quarterly net income (including gains or losses on securities and extraordinary items) as a percentage of average total equity capital."#]
-    #[serde(rename="ROEQ")]
+    #[schemars(description = r#"Quarterly return on equity - Quarterly net income (including gains or losses on securities and extraordinary items) as a percentage of average total equity capital."#)]
     pub roeq: Option<f32>,
 
-    #[doc = r#"Title: RSSDID - High Regulatory Holder (Search-Eligible)"#]
-    #[doc = r#"Description: The unique number assigned by the Federal Reserve Board to the regulatory high holding company of the institution. This field can be used for search and filtering."#]
-    #[serde(rename="RSSDHCR")]
+    #[schemars(description = r#"RSSDID - High Regulatory Holder (Search-Eligible) - The unique number assigned by the Federal Reserve Board to the regulatory high holding company of the institution. This field can be used for search and filtering."#)]
     pub rssdhcr: Option<String>,
 
-    #[doc = r#"Title: Asset Concentration Hierarchy"#]
-    #[doc = r#"Description: An indicator of an institution's primary specialization in terms of asset concentration"#]
-    #[serde(rename="SPECGRP")]
+    #[schemars(description = r#"Asset Concentration Hierarchy - An indicator of an institution's primary specialization in terms of asset concentration"#)]
     pub specgrp: Option<f32>,
 
-    #[doc = r#"Title: Asset Concentration Hierarchy Description"#]
-    #[doc = r#"Description: An indicator of an institution's primary specialization in terms of asset concentration Description"#]
-    #[serde(rename="SPECGRPDESC")]
+    #[schemars(description = r#"Asset Concentration Hierarchy Description - An indicator of an institution's primary specialization in terms of asset concentration Description"#)]
     pub specgrpdesc: Option<String>,
 
-    #[doc = r#"Title: Regulatory holding company state location (Search-Eligible)"#]
-    #[doc = r#"Description: State location of the regulatory high holding company (either direct or indirect owner). This field can be used for search and filtering."#]
-    #[serde(rename="STALPHCR")]
+    #[schemars(description = r#"Regulatory holding company state location (Search-Eligible) - State location of the regulatory high holding company (either direct or indirect owner). This field can be used for search and filtering."#)]
     pub stalphcr: Option<String>,
 
-    #[doc = r#"Title: Subchapter S Corporations"#]
-    #[doc = r#"Description: The Small Business Job Protection Act of 1996 changed the Internal Revenue Code to allow financial institutions to elect Subchapter S corporation status, beginning in 1997. Banks are required to indicate on the Call Report whether there is currently in effect an election to file under Subchapter S. Thrifts have a similar requirement as of March 1998.  The most important IRS requirements to elect and maintain Subchapter S status are: There can be no more than 75 eligible shareholders and no more than one class of stock. (In general, shareholders can only be individuals, estates, and certain types of trusts. Certain retirement plans and charitable organizations will be eligible in 1998.) All shareholders must consent.  Banks and thrifts converting to Subchapter S status must use the specific charge-off method for tax purposes rather than the reserve method of accounting for bad debts and recapture tax bad debt reserves over a period of six years, if the reserve method had been used prior to conversion. (Note: even though the specific charge-off method is required for tax purposes, an adequate allowance for loan and lease losses must still be maintained on the financial statements and Call Reports.) Banks and thrifts are subject to a built-in gains (BIG) tax, if the aggregate fair market value of assets is greater than their aggregate adjusted bases on the date of conversion to Subchapter S status.     [Banks are required to indicate separately on the Call Report in December of each year, the deferred portion of income taxes reported in net income. For Subchapter S banks, some or all of their deferred tax assets and liabilities may be eliminated upon conversion to Subchapter S status; however, deferred taxes related to the BIG tax and the recapture of bad debt reserves must be recognized.].   A Subchapter S corporation is treated as a pass-through entity, similar to a partnership, for federal income tax purposes. It is generally not subject to any federal income taxes at the corporate level. Its taxable income flows through to its shareholders in proportion to their stock ownership, and the shareholders generally pay federal income taxes on their share of this taxable income. This can have the effect of reducing institutions' reported income tax expense and increasing their after-tax earnings..   The election of Subchapter S status may result in an increase in shareholders' personal tax liabilities. Therefore, S corporations typically increase the amount of earnings distributed as dividends to compensate for higher personal taxes."#]
-    #[serde(rename="SUBCHAPS")]
+    #[schemars(description = r#"Subchapter S Corporations - The Small Business Job Protection Act of 1996 changed the Internal Revenue Code to allow financial institutions to elect Subchapter S corporation status, beginning in 1997. Banks are required to indicate on the Call Report whether there is currently in effect an election to file under Subchapter S. Thrifts have a similar requirement as of March 1998.  The most important IRS requirements to elect and maintain Subchapter S status are: There can be no more than 75 eligible shareholders and no more than one class of stock. (In general, shareholders can only be individuals, estates, and certain types of trusts. Certain retirement plans and charitable organizations will be eligible in 1998.) All shareholders must consent.  Banks and thrifts converting to Subchapter S status must use the specific charge-off method for tax purposes rather than the reserve method of accounting for bad debts and recapture tax bad debt reserves over a period of six years, if the reserve method had been used prior to conversion. (Note: even though the specific charge-off method is required for tax purposes, an adequate allowance for loan and lease losses must still be maintained on the financial statements and Call Reports.) Banks and thrifts are subject to a built-in gains (BIG) tax, if the aggregate fair market value of assets is greater than their aggregate adjusted bases on the date of conversion to Subchapter S status.     [Banks are required to indicate separately on the Call Report in December of each year, the deferred portion of income taxes reported in net income. For Subchapter S banks, some or all of their deferred tax assets and liabilities may be eliminated upon conversion to Subchapter S status; however, deferred taxes related to the BIG tax and the recapture of bad debt reserves must be recognized.].   A Subchapter S corporation is treated as a pass-through entity, similar to a partnership, for federal income tax purposes. It is generally not subject to any federal income taxes at the corporate level. Its taxable income flows through to its shareholders in proportion to their stock ownership, and the shareholders generally pay federal income taxes on their share of this taxable income. This can have the effect of reducing institutions' reported income tax expense and increasing their after-tax earnings..   The election of Subchapter S status may result in an increase in shareholders' personal tax liabilities. Therefore, S corporations typically increase the amount of earnings distributed as dividends to compensate for higher personal taxes."#)]
     pub subchaps: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: Beyond having trust powers granted and exercised, institutions with fiduciary assets accounts, income, or other reportable fiduciary related service"#]
-    #[serde(rename="TRACT")]
+    #[schemars(description = r#" - Beyond having trust powers granted and exercised, institutions with fiduciary assets accounts, income, or other reportable fiduciary related service"#)]
     pub tract: Option<f32>,
 
-    #[doc = r#"Title: Trust Powers"#]
-    #[doc = r#"Description: A flag used to indicate an institution's Trust Powers Granted status. 0 = No Trust Power Granted 1 = Trust Power Granted Where Trust Power has been granted specific codes are: 00 - Trust powers not know 10 - Full trust powers granted 11 - Full trust powers granted, exercised 12 - Full trust powers granted, not exercised 20 - Limited trust powers granted 21 - Limited trust powers granted, exercised 22 - Limited trust powers granted, not exercised 30 - Trust powers not granted 31 - Trust powers not granted, but exercised"#]
-    #[serde(rename="TRUST")]
+    #[schemars(description = r#"Trust Powers - A flag used to indicate an institution's Trust Powers Granted status. 0 = No Trust Power Granted 1 = Trust Power Granted Where Trust Power has been granted specific codes are: 00 - Trust powers not know 10 - Full trust powers granted 11 - Full trust powers granted, exercised 12 - Full trust powers granted, not exercised 20 - Limited trust powers granted 21 - Limited trust powers granted, exercised 22 - Limited trust powers granted, not exercised 30 - Trust powers not granted 31 - Trust powers not granted, but exercised"#)]
     pub trust: Option<String>,
 
-    #[doc = r#"Title: BANKS LIABILITY ON ACCEPTANCES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ACEPT")]
+    #[schemars(description = r#"BANKS LIABILITY ON ACCEPTANCES - "#)]
     pub acept: Option<f32>,
 
-    #[doc = r#"Title: ACTIVE INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ACTIVE")]
+    #[schemars(description = r#"ACTIVE INSTITUTION FLAG - "#)]
     pub active: Option<f32>,
 
-    #[doc = r#"Title: INSTITUTION CLASS (Search-Eligible)"#]
-    #[doc = r#"Description: A classification code assigned by the FDIC based on the institution's charter type (commercial bank or savings institution), charter agent (state or federal), Federal Reserve membership status (Fed member, Fed non-member) and its primary federal regulator (state chartered institutions are subject to both federal and state supervision). N - Commercial bank, national (federal) charter, Fed member, and supervised by the Office of the Comptroller of the Currency (OCC); NM - Commercial bank, state charter, Fed non-member, and supervised by the Federal Deposit Insurance Corporation (FDIC); OI - Insured U.S. branch of a foreign chartered institution (IBA) and supervised by the OCC or FDIC; SB – Federal savings banks, federal charter, supervised by the OCC or before July 21,2011 the Office of Thrift Supervision (OTS); SI - State chartered stock savings banks, supervised by the FDIC; SL - State chartered stock savings and loan associations, supervised by the FDIC or before July 21,2011 the OTS; SM - Commercial bank, state charter, Fed member, and supervised by the Federal Reserve Bank (FRB); NC – Noninsured non-deposit commercial banks and/or trust companies regulated by the OCC, a state, or a territory; NS - Noninsured stock savings bank supervised by a state or territory; CU - state or federally chartered credit unions supervised by the National Credit Union Association (NCUA). This field can be used for search and filtering."#]
-    #[serde(rename="BKCLASS")]
+    #[schemars(description = r#"INSTITUTION CLASS (Search-Eligible) - A classification code assigned by the FDIC based on the institution's charter type (commercial bank or savings institution), charter agent (state or federal), Federal Reserve membership status (Fed member, Fed non-member) and its primary federal regulator (state chartered institutions are subject to both federal and state supervision). N - Commercial bank, national (federal) charter, Fed member, and supervised by the Office of the Comptroller of the Currency (OCC); NM - Commercial bank, state charter, Fed non-member, and supervised by the Federal Deposit Insurance Corporation (FDIC); OI - Insured U.S. branch of a foreign chartered institution (IBA) and supervised by the OCC or FDIC; SB – Federal savings banks, federal charter, supervised by the OCC or before July 21,2011 the Office of Thrift Supervision (OTS); SI - State chartered stock savings banks, supervised by the FDIC; SL - State chartered stock savings and loan associations, supervised by the FDIC or before July 21,2011 the OTS; SM - Commercial bank, state charter, Fed member, and supervised by the Federal Reserve Bank (FRB); NC – Noninsured non-deposit commercial banks and/or trust companies regulated by the OCC, a state, or a territory; NS - Noninsured stock savings bank supervised by a state or territory; CU - state or federally chartered credit unions supervised by the National Credit Union Association (NCUA). This field can be used for search and filtering."#)]
     pub bkclass: Option<String>,
 
-    #[doc = r#"Title: PREMISES AND FIXED ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BKPREM")]
+    #[schemars(description = r#"PREMISES AND FIXED ASSETS - "#)]
     pub bkprem: Option<f32>,
 
-    #[doc = r#"Title: PREMISES AND FIXED ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BKPREMR")]
+    #[schemars(description = r#"PREMISES AND FIXED ASSETS RATIO - "#)]
     pub bkpremr: Option<f32>,
 
-    #[doc = r#"Title: BROKERED DEP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BRO")]
+    #[schemars(description = r#"BROKERED DEP - "#)]
     pub bro: Option<f32>,
 
-    #[doc = r#"Title: BROKERED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BROR")]
+    #[schemars(description = r#"BROKERED RATIO - "#)]
     pub bror: Option<f32>,
 
-    #[doc = r#"Title: REPORT DATE (CCYYMM)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CALLYM")]
+    #[schemars(description = r#"REPORT DATE (CCYYMM) - "#)]
     pub callym: Option<f32>,
 
-    #[doc = r#"Title: CASH & DUE FROM DEPOSITORY INST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBAL")]
+    #[schemars(description = r#"CASH & DUE FROM DEPOSITORY INST - "#)]
     pub chbal: Option<f32>,
 
-    #[doc = r#"Title: CASH & DUE FROM DEPOSITORY INST RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALR")]
+    #[schemars(description = r#"CASH & DUE FROM DEPOSITORY INST RATIO - "#)]
     pub chbalr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING CASH & DUE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALI")]
+    #[schemars(description = r#"INTEREST-BEARING CASH & DUE - "#)]
     pub chbali: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING CASH & DUE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALIR")]
+    #[schemars(description = r#"INTEREST-BEARING CASH & DUE RATIO - "#)]
     pub chbalir: Option<f32>,
 
-    #[doc = r#"Title: CHARTER AGENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHRTAGNT")]
+    #[schemars(description = r#"CHARTER AGENT - "#)]
     pub chrtagnt: Option<String>,
 
-    #[doc = r#"Title: RTC CONSERVATORSHIP FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CONSERVE")]
+    #[schemars(description = r#"RTC CONSERVATORSHIP FLAG - "#)]
     pub conserve: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLNLS")]
+    #[schemars(description = r#"TOTAL LN&LS RECOVERIES - "#)]
     pub crlnls: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLNLSR")]
+    #[schemars(description = r#"TOTAL LN&LS RECOVERIES RATIO - "#)]
     pub crlnlsr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLNLSQ")]
+    #[schemars(description = r#"TOTAL LN&LS RECOVERIES QUARTERLY - "#)]
     pub crlnlsq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLNLSQR")]
+    #[schemars(description = r#"TOTAL LN&LS RECOVERIES QUARTERLY RATIO - "#)]
     pub crlnlsqr: Option<f32>,
 
-    #[doc = r#"Title: CUSTOMERS ACCEPTANCES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CUSLI")]
+    #[schemars(description = r#"CUSTOMERS ACCEPTANCES - "#)]
     pub cusli: Option<f32>,
 
-    #[doc = r#"Title: DDA TRANS-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DDT")]
+    #[schemars(description = r#"DDA TRANS-TOTAL - "#)]
     pub ddt: Option<f32>,
 
-    #[doc = r#"Title: DDA TRANS-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DDTR")]
+    #[schemars(description = r#"DDA TRANS-TOTAL RATIO - "#)]
     pub ddtr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFOR")]
+    #[schemars(description = r#"TOTAL DEPOSITS-FOR - "#)]
     pub depfor: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFORR")]
+    #[schemars(description = r#"TOTAL DEPOSITS-FOR RATIO - "#)]
     pub depforr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING DEP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPI")]
+    #[schemars(description = r#"INTEREST-BEARING DEP - "#)]
     pub depi: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING DEP-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIFOR")]
+    #[schemars(description = r#"INTEREST-BEARING DEP-FOR - "#)]
     pub depifor: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING DEP-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIFORR")]
+    #[schemars(description = r#"INTEREST-BEARING DEP-FOR RATIO - "#)]
     pub depiforr: Option<f32>,
 
-    #[doc = r#"Title: IPC & OFFICIAL CHECKS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIPCCF")]
+    #[schemars(description = r#"IPC & OFFICIAL CHECKS-FOR - "#)]
     pub depipccf: Option<f32>,
 
-    #[doc = r#"Title: IPC & OFFICIAL CHECKS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIPCCFR")]
+    #[schemars(description = r#"IPC & OFFICIAL CHECKS-FOR RATIO - "#)]
     pub depipccfr: Option<f32>,
 
-    #[doc = r#"Title: IPC-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIPCF")]
+    #[schemars(description = r#"IPC-FOR - "#)]
     pub depipcf: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING DEP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPNI")]
+    #[schemars(description = r#"NONINTEREST-BEARING DEP - "#)]
     pub depni: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING DEP-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPNIFOR")]
+    #[schemars(description = r#"NONINTEREST-BEARING DEP-FOR - "#)]
     pub depnifor: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING DEP-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPNIFORR")]
+    #[schemars(description = r#"NONINTEREST-BEARING DEP-FOR RATIO - "#)]
     pub depniforr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLNLS")]
+    #[schemars(description = r#"TOTAL LN&LS CHARGE-OFFS - "#)]
     pub drlnls: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLNLSR")]
+    #[schemars(description = r#"TOTAL LN&LS CHARGE-OFFS RATIO - "#)]
     pub drlnlsr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLNLSQ")]
+    #[schemars(description = r#"TOTAL LN&LS CHARGE-OFFS QUARTERLY - "#)]
     pub drlnlsq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLNLSQR")]
+    #[schemars(description = r#"TOTAL LN&LS CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drlnlsqr: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSS AST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EAMINTAN")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSS AST - "#)]
     pub eamintan: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSS AST RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EAMINTANR")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSS AST RATIO - "#)]
     pub eamintanr: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSS AST QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EAMINTQ")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSS AST QUARTERLY - "#)]
     pub eamintq: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSS AST QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EAMINTQR")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSS AST QUARTERLY RATIO - "#)]
     pub eamintqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEP")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE - "#)]
     pub edep: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPDOM")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-DOM - "#)]
     pub edepdom: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-DOM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPDOMR")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-DOM RATIO - "#)]
     pub edepdomr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-DOM QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPDOMQ")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-DOM QUARTERLY - "#)]
     pub edepdomq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-DOM QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPDOMQR")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-DOM QUARTERLY RATIO - "#)]
     pub edepdomqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPFOR")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-FOR - "#)]
     pub edepfor: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPFORR")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-FOR RATIO - "#)]
     pub edepforr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-FOR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPFORQ")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-FOR QUARTERLY - "#)]
     pub edepforq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSIT INTEREST EXPENSE-FOR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDEPFORQR")]
+    #[schemars(description = r#"DEPOSIT INTEREST EXPENSE-FOR QUARTERLY RATIO - "#)]
     pub edepforqr: Option<f32>,
 
-    #[doc = r#"Title: ADVANCES FROM FHLBANK INT EXP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFHLBADV")]
+    #[schemars(description = r#"ADVANCES FROM FHLBANK INT EXP - "#)]
     pub efhlbadv: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS INT EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFREPP")]
+    #[schemars(description = r#"FED FUNDS & REPOS INT EXPENSE - "#)]
     pub efrepp: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS INT EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFREPPR")]
+    #[schemars(description = r#"FED FUNDS & REPOS INT EXPENSE RATIO - "#)]
     pub efreppr: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS INT EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFREPPQ")]
+    #[schemars(description = r#"FED FUNDS & REPOS INT EXPENSE QUARTERLY - "#)]
     pub efreppq: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS INT EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFREPPQR")]
+    #[schemars(description = r#"FED FUNDS & REPOS INT EXPENSE QUARTERLY RATIO - "#)]
     pub efreppqr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTEXP")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE - "#)]
     pub eintexp: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTEXPR")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE RATIO - "#)]
     pub eintexpr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTXQ")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE QUARTERLY - "#)]
     pub eintxq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTXQA")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE QUARTERLY - "#)]
     pub eintxqa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTEXPA")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE ANNUALLY - "#)]
     pub eintexpa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTXQR")]
+    #[schemars(description = r#"TOTAL INTEREST EXPENSE QUARTERLY RATIO - "#)]
     pub eintxqr: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATR")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES - "#)]
     pub elnatr: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATRR")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES RATIO - "#)]
     pub elnatrr: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATQ")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES QUARTERLY - "#)]
     pub elnatq: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATQA")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES QUARTERLY - "#)]
     pub elnatqa: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATQR")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO - "#)]
     pub elnatqr: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNLOSQ")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO - "#)]
     pub elnlosq: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTTOTQ")]
+    #[schemars(description = r#"PROVISIONS FOR CREDIT LOSSES QUARTERLY RATIO - "#)]
     pub nttotq: Option<f32>,
 
-    #[doc = r#"Title: PROVISIONS FOR LN & LEASE LOSSES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNLOS")]
+    #[schemars(description = r#"PROVISIONS FOR LN & LEASE LOSSES - "#)]
     pub elnlos: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE DEBT INTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EMTGLS")]
+    #[schemars(description = r#"MORTGAGE DEBT INTEREST EXPENSE - "#)]
     pub emtgls: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONINTEXP")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST EXPENSE - "#)]
     pub addnonintexp: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONINTEXPR")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST EXPENSE RATIO - "#)]
     pub addnonintexpr: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONINTEXPQ")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST EXPENSE QUARTERLY - "#)]
     pub addnonintexpq: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONINTEXPQR")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST EXPENSE QUARTERLY RATIO - "#)]
     pub addnonintexpqr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER NONINTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHNINT")]
+    #[schemars(description = r#"ALL OTHER NONINTEREST EXPENSE - "#)]
     pub eothnint: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER NONINTEREST EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHNINTR")]
+    #[schemars(description = r#"ALL OTHER NONINTEREST EXPENSE RATIO - "#)]
     pub eothnintr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER NONINTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHNINQ")]
+    #[schemars(description = r#"ALL OTHER NONINTEREST EXPENSE QUARTERLY - "#)]
     pub eothninq: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER NONINTEREST EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHNINQR")]
+    #[schemars(description = r#"ALL OTHER NONINTEREST EXPENSE QUARTERLY RATIO - "#)]
     pub eothninqr: Option<f32>,
 
-    #[doc = r#"Title: PREMISES & FIXED ASSETS EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EPREMAGG")]
+    #[schemars(description = r#"PREMISES & FIXED ASSETS EXPENSE - "#)]
     pub epremagg: Option<f32>,
 
-    #[doc = r#"Title: PREMISES & EQUIPMENT EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EPREMAGGR")]
+    #[schemars(description = r#"PREMISES & EQUIPMENT EXPENSE RATIO - "#)]
     pub epremaggr: Option<f32>,
 
-    #[doc = r#"Title: PREMISES & FIXED ASSETS EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EPREMAGQ")]
+    #[schemars(description = r#"PREMISES & FIXED ASSETS EXPENSE QUARTERLY - "#)]
     pub epremagq: Option<f32>,
 
-    #[doc = r#"Title: PREMISES & EQUIPMENT EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EPREMAGQR")]
+    #[schemars(description = r#"PREMISES & EQUIPMENT EXPENSE QUARTERLY RATIO - "#)]
     pub epremagqr: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM & PREF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIV")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM & PREF - "#)]
     pub eqcdiv: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM & PREF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVR")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM & PREF RATIO - "#)]
     pub eqcdivr: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVC")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM STOCK - "#)]
     pub eqcdivc: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM STOCK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVCR")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM STOCK RATIO - "#)]
     pub eqcdivcr: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON PREF STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVP")]
+    #[schemars(description = r#"CASH DIVIDENDS ON PREF STOCK - "#)]
     pub eqcdivp: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON PREF STOCK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVPR")]
+    #[schemars(description = r#"CASH DIVIDENDS ON PREF STOCK RATIO - "#)]
     pub eqcdivpr: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM & PREF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVQ")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM & PREF QUARTERLY - "#)]
     pub eqcdivq: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM & PREF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVQR")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM & PREF QUARTERLY RATIO - "#)]
     pub eqcdivqr: Option<f32>,
 
-    #[doc = r#"Title: EQCFCTA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCFCTA")]
+    #[schemars(description = r#"EQCFCTA - "#)]
     pub eqcfcta: Option<f32>,
 
-    #[doc = r#"Title: MINOR INT IN CONSOL SUBS-EQ"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCONSUB")]
+    #[schemars(description = r#"MINOR INT IN CONSOL SUBS-EQ - "#)]
     pub eqconsub: Option<f32>,
 
-    #[doc = r#"Title: COMMON STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCS")]
+    #[schemars(description = r#"COMMON STOCK - "#)]
     pub eqcs: Option<f32>,
 
-    #[doc = r#"Title: COMMON STOCK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCSR")]
+    #[schemars(description = r#"COMMON STOCK RATIO - "#)]
     pub eqcsr: Option<f32>,
 
-    #[doc = r#"Title: NET WORTH CERTIFICATES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQNWCERT")]
+    #[schemars(description = r#"NET WORTH CERTIFICATES - "#)]
     pub eqnwcert: Option<f32>,
 
-    #[doc = r#"Title: OTHER EQUITY CAPITAL COMPONENTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQOTHCC")]
+    #[schemars(description = r#"OTHER EQUITY CAPITAL COMPONENTS - "#)]
     pub eqothcc: Option<f32>,
 
-    #[doc = r#"Title: PERPETUAL PREFERRED STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQPP")]
+    #[schemars(description = r#"PERPETUAL PREFERRED STOCK - "#)]
     pub eqpp: Option<f32>,
 
-    #[doc = r#"Title: PERPETUAL PREFERRED STOCK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQPPR")]
+    #[schemars(description = r#"PERPETUAL PREFERRED STOCK RATIO - "#)]
     pub eqppr: Option<f32>,
 
-    #[doc = r#"Title: SURPLUS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQSUR")]
+    #[schemars(description = r#"SURPLUS - "#)]
     pub eqsur: Option<f32>,
 
-    #[doc = r#"Title: SURPLUS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQSURR")]
+    #[schemars(description = r#"SURPLUS RATIO - "#)]
     pub eqsurr: Option<f32>,
 
-    #[doc = r#"Title: EQUP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQUP")]
+    #[schemars(description = r#"EQUP - "#)]
     pub equp: Option<f32>,
 
-    #[doc = r#"Title: UP-NET & OTHER CAPITAL COMP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQUPTOT")]
+    #[schemars(description = r#"UP-NET & OTHER CAPITAL COMP - "#)]
     pub equptot: Option<f32>,
 
-    #[doc = r#"Title: UP-NET & OTHER CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQUPTOTR")]
+    #[schemars(description = r#"UP-NET & OTHER CAPITAL RATIO - "#)]
     pub equptotr: Option<f32>,
 
-    #[doc = r#"Title: SALARIES AND EMPLOYEE BENEFITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESAL")]
+    #[schemars(description = r#"SALARIES AND EMPLOYEE BENEFITS - "#)]
     pub esal: Option<f32>,
 
-    #[doc = r#"Title: SALARIES AND EMPLOYEE BENEFITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESALR")]
+    #[schemars(description = r#"SALARIES AND EMPLOYEE BENEFITS RATIO - "#)]
     pub esalr: Option<f32>,
 
-    #[doc = r#"Title: SALARIES AND EMPLOYEE BENEFITS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESALQ")]
+    #[schemars(description = r#"SALARIES AND EMPLOYEE BENEFITS QUARTERLY - "#)]
     pub esalq: Option<f32>,
 
-    #[doc = r#"Title: SALARIES AND EMPLOYEE BENEFITS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESALQR")]
+    #[schemars(description = r#"SALARIES AND EMPLOYEE BENEFITS QUARTERLY RATIO - "#)]
     pub esalqr: Option<f32>,
 
-    #[doc = r#"Title: SUBORDINATED NOTES INT EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESUBND")]
+    #[schemars(description = r#"SUBORDINATED NOTES INT EXPENSE - "#)]
     pub esubnd: Option<f32>,
 
-    #[doc = r#"Title: TT&L & OTHER BORROWINGS INT EXP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETTLOTBO")]
+    #[schemars(description = r#"TT&L & OTHER BORROWINGS INT EXP - "#)]
     pub ettlotbo: Option<f32>,
 
-    #[doc = r#"Title: NET DISCONTINUED OPERATIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EXTRA")]
+    #[schemars(description = r#"NET DISCONTINUED OPERATIONS - "#)]
     pub extra: Option<f32>,
 
-    #[doc = r#"Title: NET DISCONTINUED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EXTRAR")]
+    #[schemars(description = r#"NET DISCONTINUED RATIO - "#)]
     pub extrar: Option<f32>,
 
-    #[doc = r#"Title: NET DISCONTINUED OPERATIONS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EXTRAQ")]
+    #[schemars(description = r#"NET DISCONTINUED OPERATIONS QUARTERLY - "#)]
     pub extraq: Option<f32>,
 
-    #[doc = r#"Title: NET DISCONTINUED OPERATIONS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EXTRAQR")]
+    #[schemars(description = r#"NET DISCONTINUED OPERATIONS QUARTERLY RATIO - "#)]
     pub extraqr: Option<f32>,
 
-    #[doc = r#"Title: FDIC REGION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FDICDBS")]
+    #[schemars(description = r#"FDIC REGION - "#)]
     pub fdicdbs: Option<f32>,
 
-    #[doc = r#"Title: FDIC REGION DESC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FDICDBSDESC")]
+    #[schemars(description = r#"FDIC REGION DESC - "#)]
     pub fdicdbsdesc: Option<String>,
 
-    #[doc = r#"Title: FDIC REGION - SUPERVISORY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FDICSUPV")]
+    #[schemars(description = r#"FDIC REGION - SUPERVISORY - "#)]
     pub fdicsupv: Option<f32>,
 
-    #[doc = r#"Title: FDIC REGION - SUPERVISORY DESC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FDICSUPVDESC")]
+    #[schemars(description = r#"FDIC REGION - SUPERVISORY DESC - "#)]
     pub fdicsupvdesc: Option<String>,
 
-    #[doc = r#"Title: FED DISTRICT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FED")]
+    #[schemars(description = r#"FED DISTRICT - "#)]
     pub fed: Option<f32>,
 
-    #[doc = r#"Title: FED DISTRICT DESC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FEDDESC")]
+    #[schemars(description = r#"FED DISTRICT DESC - "#)]
     pub feddesc: Option<String>,
 
-    #[doc = r#"Title: FEDERAL CHARTER FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FEDCHRTR")]
+    #[schemars(description = r#"FEDERAL CHARTER FLAG - "#)]
     pub fedchrtr: Option<f32>,
 
-    #[doc = r#"Title: FDIC RISK MANAGEMENT FIELD OFFICE (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="FLDOFF")]
+    #[schemars(description = r#"FDIC RISK MANAGEMENT FIELD OFFICE (Search-Eligible) - This field can be used for search and filtering."#)]
     pub fldoff: Option<String>,
 
-    #[doc = r#"Title: FOREIGN CHARTER FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FORCHRTR")]
+    #[schemars(description = r#"FOREIGN CHARTER FLAG - "#)]
     pub forchrtr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL FINANCIAL REPORT FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FORMCFR")]
+    #[schemars(description = r#"COMMERCIAL FINANCIAL REPORT FLAG - "#)]
     pub formcfr: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS SOLD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FREPO")]
+    #[schemars(description = r#"FED FUNDS & REPOS SOLD - "#)]
     pub frepo: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS SOLD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FREPOR")]
+    #[schemars(description = r#"FED FUNDS & REPOS SOLD - "#)]
     pub frepor: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS PURCHASED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FREPP")]
+    #[schemars(description = r#"FED FUNDS & REPOS PURCHASED - "#)]
     pub frepp: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPOS PURCHASED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FREPPR")]
+    #[schemars(description = r#"FED FUNDS & REPOS PURCHASED RATIO - "#)]
     pub freppr: Option<f32>,
 
-    #[doc = r#"Title: FRS MEMBER FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FRSMEM")]
+    #[schemars(description = r#"FRS MEMBER FLAG - "#)]
     pub frsmem: Option<f32>,
 
-    #[doc = r#"Title: MEMBER OF A ONE BANK HOLDING CO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="HCTONE")]
+    #[schemars(description = r#"MEMBER OF A ONE BANK HOLDING CO - "#)]
     pub hctone: Option<f32>,
 
-    #[doc = r#"Title: INTL BANKING ACT ENTITY FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBA")]
+    #[schemars(description = r#"INTL BANKING ACT ENTITY FLAG - "#)]
     pub iba: Option<f32>,
 
-    #[doc = r#"Title: INCOME BEFORE INC TAXES & DISC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFTAX")]
+    #[schemars(description = r#"INCOME BEFORE INC TAXES & DISC - "#)]
     pub ibeftax: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INSTITUTIONS INT INC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ICHBAL")]
+    #[schemars(description = r#"DEPOSITORY INSTITUTIONS INT INC - "#)]
     pub ichbal: Option<f32>,
 
-    #[doc = r#"Title: BALANCES FROM DEPOSITORY INSTITUTIONS YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ICHBALR")]
+    #[schemars(description = r#"BALANCES FROM DEPOSITORY INSTITUTIONS YTD RATIO - "#)]
     pub ichbalr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INSTITUTIONS INT INC QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ICHBALQ")]
+    #[schemars(description = r#"DEPOSITORY INSTITUTIONS INT INC QUARTERLY - "#)]
     pub ichbalq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INSTITUTIONS INT INC QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ICHBALQR")]
+    #[schemars(description = r#"DEPOSITORY INSTITUTIONS INT INC QUARTERLY RATIO - "#)]
     pub ichbalqr: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPO INTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFREPO")]
+    #[schemars(description = r#"FED FUNDS & REPO INTEREST INCOME - "#)]
     pub ifrepo: Option<f32>,
 
-    #[doc = r#"Title: FEDERAL FUNDS SOLD YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFREPOR")]
+    #[schemars(description = r#"FEDERAL FUNDS SOLD YTD RATIO - "#)]
     pub ifrepor: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPO INTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFREPOQ")]
+    #[schemars(description = r#"FED FUNDS & REPO INTEREST INCOME QUARTERLY - "#)]
     pub ifrepoq: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPO INTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFREPOQR")]
+    #[schemars(description = r#"FED FUNDS & REPO INTEREST INCOME QUARTERLY RATIO - "#)]
     pub ifrepoqr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES GAINS AND LOSSES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSEC")]
+    #[schemars(description = r#"SECURITIES GAINS AND LOSSES - "#)]
     pub iglsec: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES GAINS AND LOSSES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSECR")]
+    #[schemars(description = r#"SECURITIES GAINS AND LOSSES RATIO - "#)]
     pub iglsecr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES GAINS AND LOSSES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSECQR")]
+    #[schemars(description = r#"SECURITIES GAINS AND LOSSES QUARTERLY RATIO - "#)]
     pub iglsecqr: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNDOM")]
+    #[schemars(description = r#"LOAN INCOME-DOM - "#)]
     pub ilndom: Option<f32>,
 
-    #[doc = r#"Title: DOMESTIC OFFICE LOANS YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNDOMR")]
+    #[schemars(description = r#"DOMESTIC OFFICE LOANS YTD RATIO - "#)]
     pub ilndomr: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-DOM QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNDOMQ")]
+    #[schemars(description = r#"LOAN INCOME-DOM QUARTERLY - "#)]
     pub ilndomq: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-DOM QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNDOMQR")]
+    #[schemars(description = r#"LOAN INCOME-DOM QUARTERLY RATIO - "#)]
     pub ilndomqr: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNFOR")]
+    #[schemars(description = r#"LOAN INCOME-FOR - "#)]
     pub ilnfor: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN OFFICE LOANS YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNFORR")]
+    #[schemars(description = r#"FOREIGN OFFICE LOANS YTD RATIO - "#)]
     pub ilnforr: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-FOR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNFORQ")]
+    #[schemars(description = r#"LOAN INCOME-FOR QUARTERLY - "#)]
     pub ilnforq: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-FOR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNFORQR")]
+    #[schemars(description = r#"LOAN INCOME-FOR QUARTERLY RATIO - "#)]
     pub ilnforqr: Option<f32>,
 
-    #[doc = r#"Title: LEASE INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILS")]
+    #[schemars(description = r#"LEASE INCOME - "#)]
     pub ils: Option<f32>,
 
-    #[doc = r#"Title: LEASE FINANCING RECEIVABLES YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILSR")]
+    #[schemars(description = r#"LEASE FINANCING RECEIVABLES YTD RATIO - "#)]
     pub ilsr: Option<f32>,
 
-    #[doc = r#"Title: LEASE INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILSQ")]
+    #[schemars(description = r#"LEASE INCOME QUARTERLY - "#)]
     pub ilsq: Option<f32>,
 
-    #[doc = r#"Title: LEASE INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILSQR")]
+    #[schemars(description = r#"LEASE INCOME QUARTERLY RATIO - "#)]
     pub ilsqr: Option<f32>,
 
-    #[doc = r#"Title: INSURED INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSALL")]
+    #[schemars(description = r#"INSURED INSTITUTION FLAG - "#)]
     pub insall: Option<f32>,
 
-    #[doc = r#"Title: INSURED COMMERCIAL FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSCOML")]
+    #[schemars(description = r#"INSURED COMMERCIAL FLAG - "#)]
     pub inscoml: Option<f32>,
 
-    #[doc = r#"Title: FDIC INSURED FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSFDIC")]
+    #[schemars(description = r#"FDIC INSURED FLAG - "#)]
     pub insfdic: Option<f32>,
 
-    #[doc = r#"Title: NOT FEDERALLY INSURED FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSNONE")]
+    #[schemars(description = r#"NOT FEDERALLY INSURED FLAG - "#)]
     pub insnone: Option<f32>,
 
-    #[doc = r#"Title: INSURED SAVINGS INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSSAVE")]
+    #[schemars(description = r#"INSURED SAVINGS INSTITUTION FLAG - "#)]
     pub inssave: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSTCOML")]
+    #[schemars(description = r#"COMMERCIAL INSTITUTION FLAG - "#)]
     pub instcoml: Option<f32>,
 
-    #[doc = r#"Title: SAVING & S&L INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSTSAVE")]
+    #[schemars(description = r#"SAVING & S&L INSTITUTION FLAG - "#)]
     pub instsave: Option<f32>,
 
-    #[doc = r#"Title: INSTITUTION TYPE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSTTYPE")]
+    #[schemars(description = r#"INSTITUTION TYPE - "#)]
     pub insttype: Option<String>,
 
-    #[doc = r#"Title: INTANGIBLE ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTAN")]
+    #[schemars(description = r#"INTANGIBLE ASSETS - "#)]
     pub intan: Option<f32>,
 
-    #[doc = r#"Title: INTANGIBLE ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANR")]
+    #[schemars(description = r#"INTANGIBLE ASSETS RATIO - "#)]
     pub intanr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST EXPENSE TO EARNING ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTEXPY")]
+    #[schemars(description = r#"INTEREST EXPENSE TO EARNING ASSETS RATIO - "#)]
     pub intexpy: Option<f32>,
 
-    #[doc = r#"Title: COST OF FUNDING EARNING ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTEXPYQ")]
+    #[schemars(description = r#"COST OF FUNDING EARNING ASSETS QUARTERLY - "#)]
     pub intexpyq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINC")]
+    #[schemars(description = r#"TOTAL INTEREST INCOME - "#)]
     pub intinc: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST INCOME YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINCR")]
+    #[schemars(description = r#"TOTAL INTEREST INCOME YTD RATIO - "#)]
     pub intincr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINQ")]
+    #[schemars(description = r#"TOTAL INTEREST INCOME QUARTERLY - "#)]
     pub intinq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINQR")]
+    #[schemars(description = r#"TOTAL INTEREST INCOME QUARTERLY RATIO - "#)]
     pub intinqr: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINQA")]
+    #[schemars(description = r#" - "#)]
     pub intinqa: Option<f32>,
 
-    #[doc = r#"Title: INVEST IN UNCONSOLIDATED SUBS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INVSUB")]
+    #[schemars(description = r#"INVEST IN UNCONSOLIDATED SUBS - "#)]
     pub invsub: Option<f32>,
 
-    #[doc = r#"Title: INVESTMENTS IN RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INVSUORE")]
+    #[schemars(description = r#"INVESTMENTS IN RE - "#)]
     pub invsuore: Option<f32>,
 
-    #[doc = r#"Title: OTHER FEE INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTHFEE")]
+    #[schemars(description = r#"OTHER FEE INCOME - "#)]
     pub iothfee: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTHII")]
+    #[schemars(description = r#"OTHER INTEREST INCOME - "#)]
     pub iothii: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST INCOME YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTHIIR")]
+    #[schemars(description = r#"OTHER INTEREST INCOME YTD RATIO - "#)]
     pub iothiir: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTHIIQ")]
+    #[schemars(description = r#"OTHER INTEREST INCOME QUARTERLY - "#)]
     pub iothiiq: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTHIIQR")]
+    #[schemars(description = r#"OTHER INTEREST INCOME QUARTERLY RATIO - "#)]
     pub iothiiqr: Option<f32>,
 
-    #[doc = r#"Title: IRAS AND KEOGH PLANS-DEPOSITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IRAKEOGH")]
+    #[schemars(description = r#"IRAS AND KEOGH PLANS-DEPOSITS - "#)]
     pub irakeogh: Option<f32>,
 
-    #[doc = r#"Title: IRAS AND KEOGH PLANS-DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IRAKEOGHR")]
+    #[schemars(description = r#"IRAS AND KEOGH PLANS-DEPOSITS RATIO - "#)]
     pub irakeoghr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL SECURITY INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISC")]
+    #[schemars(description = r#"TOTAL SECURITY INCOME - "#)]
     pub isc: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISCR")]
+    #[schemars(description = r#"SECURITIES YTD RATIO - "#)]
     pub iscr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL SECURITY INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISCQ")]
+    #[schemars(description = r#"TOTAL SECURITY INCOME QUARTERLY - "#)]
     pub iscq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL SECURITY INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISCQR")]
+    #[schemars(description = r#"TOTAL SECURITY INCOME QUARTERLY RATIO - "#)]
     pub iscqr: Option<f32>,
 
-    #[doc = r#"Title: SERVICE CHARGE ON DEPOSIT ACCTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERCHG")]
+    #[schemars(description = r#"SERVICE CHARGE ON DEPOSIT ACCTS - "#)]
     pub iserchg: Option<f32>,
 
-    #[doc = r#"Title: SERVICE CHARGE ON DEPOSIT ACCTS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERCHGR")]
+    #[schemars(description = r#"SERVICE CHARGE ON DEPOSIT ACCTS RATIO - "#)]
     pub iserchgr: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAX")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES - "#)]
     pub itax: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAXR")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES RATIO - "#)]
     pub itaxr: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAXQ")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES QUARTERLY - "#)]
     pub itaxq: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAXQR")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES QUARTERLY RATIO - "#)]
     pub itaxqr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST INCOME ON TRADING ACCTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITRADE")]
+    #[schemars(description = r#"INTEREST INCOME ON TRADING ACCTS - "#)]
     pub itrade: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNTS YTD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITRADER")]
+    #[schemars(description = r#"TRADING ACCOUNTS YTD RATIO - "#)]
     pub itrader: Option<f32>,
 
-    #[doc = r#"Title: INTEREST INCOME ON TRADING ACCTS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITRADEQ")]
+    #[schemars(description = r#"INTEREST INCOME ON TRADING ACCTS QUARTERLY - "#)]
     pub itradeq: Option<f32>,
 
-    #[doc = r#"Title: INTEREST INCOME ON TRADING ACCTS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITRADEQR")]
+    #[schemars(description = r#"INTEREST INCOME ON TRADING ACCTS QUARTERLY RATIO - "#)]
     pub itradeqr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LIABILITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIAB")]
+    #[schemars(description = r#"TOTAL LIABILITIES - "#)]
     pub liab: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LIABILITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIABR")]
+    #[schemars(description = r#"TOTAL LIABILITIES RATIO - "#)]
     pub liabr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LIABILITIES & CAPITAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIABEQ")]
+    #[schemars(description = r#"TOTAL LIABILITIES & CAPITAL - "#)]
     pub liabeq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LIABILITIES & CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIABEQR")]
+    #[schemars(description = r#"TOTAL LIABILITIES & CAPITAL RATIO - "#)]
     pub liabeqr: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE LOANS IN PROCESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIPMTG")]
+    #[schemars(description = r#"MORTGAGE LOANS IN PROCESS - "#)]
     pub lipmtg: Option<f32>,
 
-    #[doc = r#"Title: LIMITED-LIFE PREFERRED STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LLPFDSTK")]
+    #[schemars(description = r#"LIMITED-LIFE PREFERRED STOCK - "#)]
     pub llpfdstk: Option<f32>,
 
-    #[doc = r#"Title: ACCEPTANCES OF OTHER BANKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNACOTH")]
+    #[schemars(description = r#"ACCEPTANCES OF OTHER BANKS - "#)]
     pub lnacoth: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG")]
+    #[schemars(description = r#"AGRICULTURAL LOANS - "#)]
     pub lnag: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAGR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS RATIO - "#)]
     pub lnagr: Option<f32>,
 
-    #[doc = r#"Title: ALLOW FOR LOANS LOSS ADJUSTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNATRES")]
+    #[schemars(description = r#"ALLOW FOR LOANS LOSS ADJUSTED - "#)]
     pub lnatres: Option<f32>,
 
-    #[doc = r#"Title: ALLOW FOR LOANS + ALLOC TRN RISK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNATRESJ")]
+    #[schemars(description = r#"ALLOW FOR LOANS + ALLOC TRN RISK - "#)]
     pub lnatresj: Option<f32>,
 
-    #[doc = r#"Title: ALLOW FOR LOANS + ALLOC TRN RISK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNATRESRR")]
+    #[schemars(description = r#"ALLOW FOR LOANS + ALLOC TRN RISK RATIO - "#)]
     pub lnatresrr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAUTO")]
+    #[schemars(description = r#"CONSUMER LOANS - AUTO - "#)]
     pub lnauto: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAUTOR")]
+    #[schemars(description = r#"CONSUMER LOANS-AUTO RATIO - "#)]
     pub lnautor: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI")]
+    #[schemars(description = r#"C&I LOANS - "#)]
     pub lnci: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCIR")]
+    #[schemars(description = r#"C&I LOANS RATIO - "#)]
     pub lncir: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCON")]
+    #[schemars(description = r#"CONSUMER LOANS - "#)]
     pub lncon: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONR")]
+    #[schemars(description = r#"CONSUMER LOANS RATIO - "#)]
     pub lnconr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-HOME IMPROVEMENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONOT1")]
+    #[schemars(description = r#"CONSUMER LOANS-HOME IMPROVEMENT - "#)]
     pub lnconot1: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONOTH")]
+    #[schemars(description = r#"CONSUMER LOANS-OTHER - "#)]
     pub lnconoth: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONOTHR")]
+    #[schemars(description = r#"CONSUMER LOANS-OTHER RATIO - "#)]
     pub lnconothr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-CREDIT CARD PLAN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCRCD")]
+    #[schemars(description = r#"CONSUMER LOANS-CREDIT CARD PLAN - "#)]
     pub lncrcd: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-CREDIT CARD PLAN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCRCDR")]
+    #[schemars(description = r#"CONSUMER LOANS-CREDIT CARD PLAN RATIO - "#)]
     pub lncrcdr: Option<f32>,
 
-    #[doc = r#"Title: LNS-CREDIT CD & RELATED PLAN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCRCDRP")]
+    #[schemars(description = r#"LNS-CREDIT CD & RELATED PLAN - "#)]
     pub lncrcdrp: Option<f32>,
 
-    #[doc = r#"Title: DEP INSTITUTION LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEP")]
+    #[schemars(description = r#"DEP INSTITUTION LOANS - "#)]
     pub lndep: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNFG")]
+    #[schemars(description = r#"FOREIGN GOVT LOANS - "#)]
     pub lnfg: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNFGR")]
+    #[schemars(description = r#"FOREIGN GOVT LOANS RATIO - "#)]
     pub lnfgr: Option<f32>,
 
-    #[doc = r#"Title: LN&LS + UNEARNED INC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLS")]
+    #[schemars(description = r#"LN&LS + UNEARNED INC - "#)]
     pub lnls: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGR")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL - "#)]
     pub lnlsgr: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGR2")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL - "#)]
     pub lnlsgr2: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL ADJUSTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRJ")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL ADJUSTED - "#)]
     pub lnlsgrj: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRR")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL RATIO - "#)]
     pub lnlsgrr: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-NET"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSNET")]
+    #[schemars(description = r#"LOANS AND LEASES-NET - "#)]
     pub lnlsnet: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-NET RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSNETR")]
+    #[schemars(description = r#"LOANS AND LEASES-NET RATIO - "#)]
     pub lnlsnetr: Option<f32>,
 
-    #[doc = r#"Title: MUNI LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNMUNI")]
+    #[schemars(description = r#"MUNI LOANS - "#)]
     pub lnmuni: Option<f32>,
 
-    #[doc = r#"Title: MUNI LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNMUNIR")]
+    #[schemars(description = r#"MUNI LOANS RATIO - "#)]
     pub lnmunir: Option<f32>,
 
-    #[doc = r#"Title: OTHER LNS & LS-COMM-QBP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTCI")]
+    #[schemars(description = r#"OTHER LNS & LS-COMM-QBP - "#)]
     pub lnotci: Option<f32>,
 
-    #[doc = r#"Title: OTHER LNS & LS-COMM-QBP RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTCIR")]
+    #[schemars(description = r#"OTHER LNS & LS-COMM-QBP RATIO - "#)]
     pub lnotcir: Option<f32>,
 
-    #[doc = r#"Title: LN TO NONDEP FIN INST & OTH LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTHER")]
+    #[schemars(description = r#"LN TO NONDEP FIN INST & OTH LN - "#)]
     pub lnother: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSOTHER")]
+    #[schemars(description = r#"OTHER LOANS - "#)]
     pub lnsother: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSOTHERR")]
+    #[schemars(description = r#"OTHER LOANS - "#)]
     pub lnsotherr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRE")]
+    #[schemars(description = r#"RE LOANS - "#)]
     pub lnre: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRE2")]
+    #[schemars(description = r#"RE LOANS - "#)]
     pub lnre2: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECON2")]
+    #[schemars(description = r#" - "#)]
     pub lnrecon2: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREMUL2")]
+    #[schemars(description = r#" - "#)]
     pub lnremul2: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS ADJUSTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREJ")]
+    #[schemars(description = r#"RE LOANS ADJUSTED - "#)]
     pub lnrej: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRE5")]
+    #[schemars(description = r#"RE LOANS CAVG5 - "#)]
     pub lnre5: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRER")]
+    #[schemars(description = r#"RE LOANS RATIO - "#)]
     pub lnrer: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG")]
+    #[schemars(description = r#"RE AGRICULTURAL - "#)]
     pub lnreag: Option<f32>,
 
-    #[doc = r#"Title: RE CONSTRUCTION & LAND DEV-CAV5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECON5")]
+    #[schemars(description = r#"RE CONSTRUCTION & LAND DEV-CAV5 - "#)]
     pub lnrecon5: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAGR")]
+    #[schemars(description = r#"RE AGRICULTURAL RATIO - "#)]
     pub lnreagr: Option<f32>,
 
-    #[doc = r#"Title: RE CONSTRUCTION & LAND DEVELOP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECONS")]
+    #[schemars(description = r#"RE CONSTRUCTION & LAND DEVELOP - "#)]
     pub lnrecons: Option<f32>,
 
-    #[doc = r#"Title: RE CONSTRUCTION & LAND DEVELOP RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECONSR")]
+    #[schemars(description = r#"RE CONSTRUCTION & LAND DEVELOP RATIO - "#)]
     pub lnreconsr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREDOM")]
+    #[schemars(description = r#"RE LOANS-DOM - "#)]
     pub lnredom: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS-DOM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREDOMR")]
+    #[schemars(description = r#"RE LOANS-DOM RATIO - "#)]
     pub lnredomr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREFOR")]
+    #[schemars(description = r#"RE LOANS-FOR - "#)]
     pub lnrefor: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREFORR")]
+    #[schemars(description = r#"RE LOANS-FOR RATIO - "#)]
     pub lnreforr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-LINE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRELOC")]
+    #[schemars(description = r#"RE 1-4 FAMILY-LINE - "#)]
     pub lnreloc: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-LINE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRELOCR")]
+    #[schemars(description = r#"RE 1-4 FAMILY-LINE RATIO - "#)]
     pub lnrelocr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-LINE2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRELOC2")]
+    #[schemars(description = r#"RE 1-4 FAMILY-LINE2 - "#)]
     pub lnreloc2: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-LINE-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRELOC5")]
+    #[schemars(description = r#"RE 1-4 FAMILY-LINE-CAVG5 - "#)]
     pub lnreloc5: Option<f32>,
 
-    #[doc = r#"Title: RE MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREMULT")]
+    #[schemars(description = r#"RE MULTIFAMILY - "#)]
     pub lnremult: Option<f32>,
 
-    #[doc = r#"Title: RE MULTIFAMILY-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREMUL5")]
+    #[schemars(description = r#"RE MULTIFAMILY-CAVG5 - "#)]
     pub lnremul5: Option<f32>,
 
-    #[doc = r#"Title: RE MULTIFAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREMULTR")]
+    #[schemars(description = r#"RE MULTIFAMILY RATIO - "#)]
     pub lnremultr: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRESIDENTIAL PROP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENRES")]
+    #[schemars(description = r#"RE NONFARM NONRESIDENTIAL PROP - "#)]
     pub lnrenres: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRESIDENTIAL CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENRE5")]
+    #[schemars(description = r#"RE NONFARM NONRESIDENTIAL CAVG5 - "#)]
     pub lnrenre5: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRESIDENTIAL CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENRE2")]
+    #[schemars(description = r#"RE NONFARM NONRESIDENTIAL CAVG5 - "#)]
     pub lnrenre2: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRESIDENTIAL PROP RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENRESR")]
+    #[schemars(description = r#"RE NONFARM NONRESIDENTIAL PROP RATIO - "#)]
     pub lnrenresr: Option<f32>,
 
-    #[doc = r#"Title: PREPAID TAXES & INS ON MTG LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREPP")]
+    #[schemars(description = r#"PREPAID TAXES & INS ON MTG LNS - "#)]
     pub lnrepp: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERES")]
+    #[schemars(description = r#"RE 1-4 FAMILY - "#)]
     pub lnreres: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERESR")]
+    #[schemars(description = r#"RE 1-4 FAMILY RATIO - "#)]
     pub lnreresr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERES2")]
+    #[schemars(description = r#"RE 1-4 FAMILY2 - "#)]
     pub lnreres2: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERES5")]
+    #[schemars(description = r#"RE 1-4 FAMILY-CAVG5 - "#)]
     pub lnreres5: Option<f32>,
 
-    #[doc = r#"Title: ALLOWANCE FOR RE LOAN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRESRE")]
+    #[schemars(description = r#"ALLOWANCE FOR RE LOAN - "#)]
     pub lnresre: Option<f32>,
 
-    #[doc = r#"Title: LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LS")]
+    #[schemars(description = r#"LEASES - "#)]
     pub ls: Option<f32>,
 
-    #[doc = r#"Title: LEASES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSR")]
+    #[schemars(description = r#"LEASES RATIO - "#)]
     pub lsr: Option<f32>,
 
-    #[doc = r#"Title: METROPOLITAN FLAG"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is in a metropolitan statistical area. The U.S census bureau office of management and budget defines the metropolitan statistical area. A core based statistical area associated with at least one urbanized area that has a population of at least 50,000. The metropolitan statistical area comprises the central county or counties containing the core, plus adjacent outlying counties having a high degree of social and economic integration with the central county as measured through commuting. 0=institution is not in a metropolitan statistical area. 1=institution is in a metropolitan statistical area."#]
-    #[serde(rename="METRO")]
+    #[schemars(description = r#"METROPOLITAN FLAG - A flag used to indicate whether an institution is in a metropolitan statistical area. The U.S census bureau office of management and budget defines the metropolitan statistical area. A core based statistical area associated with at least one urbanized area that has a population of at least 50,000. The metropolitan statistical area comprises the central county or counties containing the core, plus adjacent outlying counties having a high degree of social and economic integration with the central county as measured through commuting. 0=institution is not in a metropolitan statistical area. 1=institution is in a metropolitan statistical area."#)]
     pub metro: Option<f32>,
 
-    #[doc = r#"Title: INSURED SAVINGS BANK FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MI")]
+    #[schemars(description = r#"INSURED SAVINGS BANK FLAG - "#)]
     pub mi: Option<f32>,
 
-    #[doc = r#"Title: MICROPOLITAN FLAG"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution is in a micropolitan statistical area. The U.S census bureau office of management and budget defines the micropolitan statistical area. A core based statistical area associated with at least one urban cluster that has a population of at least 10,000 but less than 50,000. The micropolitan statistical area comprises the central county or counties containing the core, plus adjacent outlying counties having a high degree of social and economic integration with the central county as measured through commuting. 0=institution is not in a micropolitan statistical area. 1=institution is in a micropolitan statistical area."#]
-    #[serde(rename="MICRO")]
+    #[schemars(description = r#"MICROPOLITAN FLAG - A flag used to indicate whether an institution is in a micropolitan statistical area. The U.S census bureau office of management and budget defines the micropolitan statistical area. A core based statistical area associated with at least one urban cluster that has a population of at least 10,000 but less than 50,000. The micropolitan statistical area comprises the central county or counties containing the core, plus adjacent outlying counties having a high degree of social and economic integration with the central county as measured through commuting. 0=institution is not in a micropolitan statistical area. 1=institution is in a micropolitan statistical area."#)]
     pub micro: Option<f32>,
 
-    #[doc = r#"Title: MINORITY CODE"#]
-    #[doc = r#"Description: A character field on the institution file corresponding to a type of minority ownership. .=NONE. 01=African American. 02=Hispanic American. 03=Asian or Pacific Islander Americans. 04=Native American or Native Alaskan American. 05=Multi-Racial American. 06=Minority Board and serving African American Community. 08=Minority Board and serving Asian/Pacific Islander Americans. 10=Minority Board and serving Multi-Racial community."#]
-    #[serde(rename="MNRTYCDE")]
+    #[schemars(description = r#"MINORITY CODE - A character field on the institution file corresponding to a type of minority ownership. .=NONE. 01=African American. 02=Hispanic American. 03=Asian or Pacific Islander Americans. 04=Native American or Native Alaskan American. 05=Multi-Racial American. 06=Minority Board and serving African American Community. 08=Minority Board and serving Asian/Pacific Islander Americans. 10=Minority Board and serving Multi-Racial community."#)]
     pub mnrtycde: Option<f32>,
 
-    #[doc = r#"Title: EFFECTIVE DTE OF MINORITY STATUS"#]
-    #[doc = r#"Description: Represent the effective date on which an institution is assigned a minority status, transaction in dates. Format(DDMONCCYY) day, month abbrev, century, and year."#]
-    #[serde(rename="MNRTYDTE")]
+    #[schemars(description = r#"EFFECTIVE DTE OF MINORITY STATUS - Represent the effective date on which an institution is assigned a minority status, transaction in dates. Format(DDMONCCYY) day, month abbrev, century, and year."#)]
     pub mnrtydte: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE INDEBTEDNESS & CAP LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MTGLS")]
+    #[schemars(description = r#"MORTGAGE INDEBTEDNESS & CAP LS - "#)]
     pub mtgls: Option<f32>,
 
-    #[doc = r#"Title: NATIONAL BANK FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="N")]
+    #[schemars(description = r#"NATIONAL BANK FLAG - "#)]
     pub n: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-LOANS & LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALNLS")]
+    #[schemars(description = r#"NONACCRUAL-LOANS & LEASES - "#)]
     pub nalnls: Option<f32>,
 
-    #[doc = r#"Title: NONINSURED COMMERCIAL INST FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NC")]
+    #[schemars(description = r#"NONINSURED COMMERCIAL INST FLAG - "#)]
     pub nc: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-LOANS & LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCLNLS")]
+    #[schemars(description = r#"TOTAL N/C-LOANS & LEASES - "#)]
     pub nclnls: Option<f32>,
 
-    #[doc = r#"Title: NET INC - ATTRIB TO MINORITY INT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETIMIN")]
+    #[schemars(description = r#"NET INC - ATTRIB TO MINORITY INT - "#)]
     pub netimin: Option<f32>,
 
-    #[doc = r#"Title: NET INC - ATTRIB TO MINORITY INT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETIMINR")]
+    #[schemars(description = r#"NET INC - ATTRIB TO MINORITY INT RATIO - "#)]
     pub netiminr: Option<f32>,
 
-    #[doc = r#"Title: NET INC - ATTRIB TO MINORITY INT QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETIMINQ")]
+    #[schemars(description = r#"NET INC - ATTRIB TO MINORITY INT QUARTERLY - "#)]
     pub netiminq: Option<f32>,
 
-    #[doc = r#"Title: NET INC - ATTRIB TO MINORITY INT QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETIMINQR")]
+    #[schemars(description = r#"NET INC - ATTRIB TO MINORITY INT QUARTERLY RATIO - "#)]
     pub netiminqr: Option<f32>,
 
-    #[doc = r#"Title: NET INC - BANK & MINORITY INT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINBM")]
+    #[schemars(description = r#"NET INC - BANK & MINORITY INT - "#)]
     pub netinbm: Option<f32>,
 
-    #[doc = r#"Title: NET INC - BANK & MINORITY INT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINBMR")]
+    #[schemars(description = r#"NET INC - BANK & MINORITY INT RATIO - "#)]
     pub netinbmr: Option<f32>,
 
-    #[doc = r#"Title: NET INC - BANK & MINORITY INT QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINBMQ")]
+    #[schemars(description = r#"NET INC - BANK & MINORITY INT QUARTERLY - "#)]
     pub netinbmq: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME BEFORE TAXES ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINBXA")]
+    #[schemars(description = r#"NET INCOME BEFORE TAXES ANNUALLY - "#)]
     pub netinbxa: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETIBXQA")]
+    #[schemars(description = r#" - "#)]
     pub netibxqa: Option<f32>,
 
-    #[doc = r#"Title: NET INC - BANK & MINORITY INT QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINBMQR")]
+    #[schemars(description = r#"NET INC - BANK & MINORITY INT QUARTERLY RATIO - "#)]
     pub netinbmqr: Option<f32>,
 
-    #[doc = r#"Title: NEW INSTITUTION FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NEWINST")]
+    #[schemars(description = r#"NEW INSTITUTION FLAG - "#)]
     pub newinst: Option<f32>,
 
-    #[doc = r#"Title: NUMBER OF FIDUCIARY ACCOUNTS AND RELATED ASSET ACCOUNTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NFAA")]
+    #[schemars(description = r#"NUMBER OF FIDUCIARY ACCOUNTS AND RELATED ASSET ACCOUNTS - "#)]
     pub nfaa: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIM")]
+    #[schemars(description = r#"NET INTEREST INCOME - "#)]
     pub nim: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMR")]
+    #[schemars(description = r#"NET INTEREST INCOME RATIO - "#)]
     pub nimr: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMQ")]
+    #[schemars(description = r#"NET INTEREST INCOME QUARTERLY - "#)]
     pub nimq: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMQA")]
+    #[schemars(description = r#"NET INTEREST INCOME QUARTERLY - "#)]
     pub nimqa: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMA")]
+    #[schemars(description = r#"NET INTEREST INCOME ANNUALLY - "#)]
     pub nima: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMQR")]
+    #[schemars(description = r#"NET INTEREST INCOME QUARTERLY RATIO - "#)]
     pub nimqr: Option<f32>,
 
-    #[doc = r#"Title: NONMEMBER INSURED INST FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NM")]
+    #[schemars(description = r#"NONMEMBER INSURED INST FLAG - "#)]
     pub nm: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONII")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME - "#)]
     pub nonii: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIR")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME RATIO - "#)]
     pub noniir: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIX")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE - "#)]
     pub nonix: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXR")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE RATIO - "#)]
     pub nonixr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXQ")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE QUARTERLY - "#)]
     pub nonixq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXQA")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE QUARTERLY - "#)]
     pub nonixqa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXQR")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE QUARTERLY RATIO - "#)]
     pub nonixqr: Option<f32>,
 
-    #[doc = r#"Title: NONINSURED SAVINGS INST FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NS")]
+    #[schemars(description = r#"NONINSURED SAVINGS INST FLAG - "#)]
     pub ns: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLS")]
+    #[schemars(description = r#"TOTAL LN&LS NET CHARGE-OFFS - "#)]
     pub ntlnls: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSCOR")]
+    #[schemars(description = r#"TOTAL LN&LS NET CHARGE-OFFS RATIO - "#)]
     pub ntlnlscor: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSQ")]
+    #[schemars(description = r#"TOTAL LN&LS NET CHARGE-OFFS QUARTERLY - "#)]
     pub ntlnlsq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSQA")]
+    #[schemars(description = r#"TOTAL LN&LS NET CHARGE-OFFS QUARTERLY - "#)]
     pub ntlnlsqa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSCOQR")]
+    #[schemars(description = r#"TOTAL LN&LS NET CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub ntlnlscoqr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTR")]
+    #[schemars(description = r#"NONTRANSACTION-TOTAL - "#)]
     pub ntr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRR")]
+    #[schemars(description = r#"NONTRANSACTION-TOTAL RATIO - "#)]
     pub ntrr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-IPC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRIPC")]
+    #[schemars(description = r#"NONTRANSACTION-IPC - "#)]
     pub ntripc: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-IPC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRIPCR")]
+    #[schemars(description = r#"NONTRANSACTION-IPC RATIO - "#)]
     pub ntripcr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-MUNI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRMUNI")]
+    #[schemars(description = r#"NONTRANSACTION-MUNI - "#)]
     pub ntrmuni: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-MUNI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRMUNIR")]
+    #[schemars(description = r#"NONTRANSACTION-MUNI RATIO - "#)]
     pub ntrmunir: Option<f32>,
 
-    #[doc = r#"Title: TIME DEPOSITS-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTIME")]
+    #[schemars(description = r#"TIME DEPOSITS-TOTAL - "#)]
     pub ntrtime: Option<f32>,
 
-    #[doc = r#"Title: TIME DEPOSITS OVER $100M"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTMLG")]
+    #[schemars(description = r#"TIME DEPOSITS OVER $100M - "#)]
     pub ntrtmlg: Option<f32>,
 
-    #[doc = r#"Title: AMT TOTAL TIME DEP MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTMLGJ")]
+    #[schemars(description = r#"AMT TOTAL TIME DEP MORE THAN $250,000 - "#)]
     pub ntrtmlgj: Option<f32>,
 
-    #[doc = r#"Title: AMT TOTAL TIME DEP MORE THAN $250,000 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTMLGJR")]
+    #[schemars(description = r#"AMT TOTAL TIME DEP MORE THAN $250,000 RATIO - "#)]
     pub ntrtmlgjr: Option<f32>,
 
-    #[doc = r#"Title: AMT TIME DEP OF $250,000 OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTMMED")]
+    #[schemars(description = r#"AMT TIME DEP OF $250,000 OR LESS - "#)]
     pub ntrtmmed: Option<f32>,
 
-    #[doc = r#"Title: AMT TIME DEP OF $250,000 OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRTMMEDR")]
+    #[schemars(description = r#"AMT TIME DEP OF $250,000 OR LESS RATIO - "#)]
     pub ntrtmmedr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-U.S. GOVERNMENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRUSGOV")]
+    #[schemars(description = r#"NONTRANSACTION-U.S. GOVERNMENT - "#)]
     pub ntrusgov: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-U.S. GOVERNMENT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRUSGOVR")]
+    #[schemars(description = r#"NONTRANSACTION-U.S. GOVERNMENT RATIO - "#)]
     pub ntrusgovr: Option<f32>,
 
-    #[doc = r#"Title: RETAINED EARNINGS ANUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTIRTA")]
+    #[schemars(description = r#"RETAINED EARNINGS ANUALLY - "#)]
     pub ntirta: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN & LS LOSS NET CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTTOT")]
+    #[schemars(description = r#"TOTAL LN & LS LOSS NET CHG-OFFS - "#)]
     pub nttot: Option<f32>,
 
-    #[doc = r#"Title: NUMBER OF FULL TIME EMPLOYEES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NUMEMP")]
+    #[schemars(description = r#"NUMBER OF FULL TIME EMPLOYEES - "#)]
     pub numemp: Option<f32>,
 
-    #[doc = r#"Title: OTHER ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OA")]
+    #[schemars(description = r#"OTHER ASSETS - "#)]
     pub oa: Option<f32>,
 
-    #[doc = r#"Title: OAKAR FLAG"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution acquired deposits that were previously insured under a different insurance fund. 0=has no oakar deposits. 1=has oakar deposits."#]
-    #[serde(rename="OAKAR")]
+    #[schemars(description = r#"OAKAR FLAG - A flag used to indicate whether an institution acquired deposits that were previously insured under a different insurance fund. 0=has no oakar deposits. 1=has oakar deposits."#)]
     pub oakar: Option<f32>,
 
-    #[doc = r#"Title: OCC DISTRICT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OCCDIST")]
+    #[schemars(description = r#"OCC DISTRICT - "#)]
     pub occdist: Option<f32>,
 
-    #[doc = r#"Title: OCC DISTRICT DESC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OCCDISTDESC")]
+    #[schemars(description = r#"OCC DISTRICT DESC - "#)]
     pub occdistdesc: Option<String>,
 
-    #[doc = r#"Title: DOMESTIC MULTI-SERVICE OFFICES"#]
-    #[doc = r#"Description: The number of multiple service domestic offices operated by an institution."#]
-    #[serde(rename="OFFDMULT")]
+    #[schemars(description = r#"DOMESTIC MULTI-SERVICE OFFICES - The number of multiple service domestic offices operated by an institution."#)]
     pub offdmult: Option<f32>,
 
-    #[doc = r#"Title: NONDOMESTIC OFFICES"#]
-    #[doc = r#"Description: The number of nondomestic offices operated by an institution."#]
-    #[serde(rename="OFFNDOM")]
+    #[schemars(description = r#"NONDOMESTIC OFFICES - The number of nondomestic offices operated by an institution."#)]
     pub offndom: Option<f32>,
 
-    #[doc = r#"Title: DOMESTIC OTHER OFFICES"#]
-    #[doc = r#"Description: The number of domestic non-multiple service offices operated by an institution."#]
-    #[serde(rename="OFFOTH")]
+    #[schemars(description = r#"DOMESTIC OTHER OFFICES - The number of domestic non-multiple service offices operated by an institution."#)]
     pub offoth: Option<f32>,
 
-    #[doc = r#"Title: SOD OFFICES"#]
-    #[doc = r#"Description: The number of offices operated by an institution based on the summary of deposits definition of offices."#]
-    #[serde(rename="OFFSOD")]
+    #[schemars(description = r#"SOD OFFICES - The number of offices operated by an institution based on the summary of deposits definition of offices."#)]
     pub offsod: Option<f32>,
 
-    #[doc = r#"Title: NUMBER OF STATES WITH OFFICES"#]
-    #[doc = r#"Description: The number of states with offices (including its main office)."#]
-    #[serde(rename="OFFSTATE")]
+    #[schemars(description = r#"NUMBER OF STATES WITH OFFICES - The number of states with offices (including its main office)."#)]
     pub offstate: Option<f32>,
 
-    #[doc = r#"Title: TOTAL OFFICES"#]
-    #[doc = r#"Description: The total number of offices operated by an institution."#]
-    #[serde(rename="OFFTOT")]
+    #[schemars(description = r#"TOTAL OFFICES - The total number of offices operated by an institution."#)]
     pub offtot: Option<f32>,
 
-    #[doc = r#"Title: U.S. AND OTHER AREA OFFICES"#]
-    #[doc = r#"Description: The number of domestic and U.S terrirtories offices operated by an institution."#]
-    #[serde(rename="OFFUSOA")]
+    #[schemars(description = r#"U.S. AND OTHER AREA OFFICES - The number of domestic and U.S terrirtories offices operated by an institution."#)]
     pub offusoa: Option<f32>,
 
-    #[doc = r#"Title: INSURED IBA OFFICE FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OI")]
+    #[schemars(description = r#"INSURED IBA OFFICE FLAG - "#)]
     pub oi: Option<f32>,
 
-    #[doc = r#"Title: OTS DISTRICT"#]
-    #[doc = r#"Description: A number used to identify the office of thrift supervision district in which the institution is located. 01=Northeast. 02=Southeast. 03=Midwest. 04=West."#]
-    #[serde(rename="OTSDIST")]
+    #[schemars(description = r#"OTS DISTRICT - A number used to identify the office of thrift supervision district in which the institution is located. 01=Northeast. 02=Southeast. 03=Midwest. 04=West."#)]
     pub otsdist: Option<f32>,
 
-    #[doc = r#"Title: OTS REGION NUMBER"#]
-    #[doc = r#"Description: A number used to identify the office of thrift supervision region in which the institution is located. 01=Northeast. 02=Southeast. 03=Midwest. 04=West."#]
-    #[serde(rename="OTSREGNO")]
+    #[schemars(description = r#"OTS REGION NUMBER - A number used to identify the office of thrift supervision region in which the institution is located. 01=Northeast. 02=Southeast. 03=Midwest. 04=West."#)]
     pub otsregno: Option<f32>,
 
-    #[doc = r#"Title: OTHER LIAB & MINOR IN SUBS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OLMIN")]
+    #[schemars(description = r#"OTHER LIAB & MINOR IN SUBS - "#)]
     pub olmin: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORE")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED - "#)]
     pub ore: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORER")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED RATIO - "#)]
     pub orer: Option<f32>,
 
-    #[doc = r#"Title: OTHER LIABILITIES-FHLB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFHLB")]
+    #[schemars(description = r#"OTHER LIABILITIES-FHLB - "#)]
     pub othbfhlb: Option<f32>,
 
-    #[doc = r#"Title: OTHER LIABILITIES-FHLB RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFHLBR")]
+    #[schemars(description = r#"OTHER LIABILITIES-FHLB RATIO - "#)]
     pub othbfhlbr: Option<f32>,
 
-    #[doc = r#"Title: OTHER BORROWED MONEY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBOR")]
+    #[schemars(description = r#"OTHER BORROWED MONEY - "#)]
     pub othbor: Option<f32>,
 
-    #[doc = r#"Title: OTH BORROWED FUNDS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBRF")]
+    #[schemars(description = r#"OTH BORROWED FUNDS - "#)]
     pub othbrf: Option<f32>,
 
-    #[doc = r#"Title: OTH BORROWED FUNDS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBRFR")]
+    #[schemars(description = r#"OTH BORROWED FUNDS RATIO - "#)]
     pub othbrfr: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP ONE YR OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH1L")]
+    #[schemars(description = r#"FHLB ADV MAT REP ONE YR OR LESS - "#)]
     pub otbfh1l: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP ONE YR OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH1LR")]
+    #[schemars(description = r#"FHLB ADV MAT REP ONE YR OR LESS RATIO - "#)]
     pub otbfh1lr: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP ONE YR THROUGH THREE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH1T3")]
+    #[schemars(description = r#"FHLB ADV MAT REP ONE YR THROUGH THREE - "#)]
     pub otbfh1t3: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP ONE YR THROUGH THREE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH1T3R")]
+    #[schemars(description = r#"FHLB ADV MAT REP ONE YR THROUGH THREE - "#)]
     pub otbfh1t3r: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP THREE THROUGH FIVE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH3T5")]
+    #[schemars(description = r#"FHLB ADV MAT REP THREE THROUGH FIVE - "#)]
     pub otbfh3t5: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP THREE THROUGH FIVE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFH3T5R")]
+    #[schemars(description = r#"FHLB ADV MAT REP THREE THROUGH FIVE RATIO - "#)]
     pub otbfh3t5r: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP OVER FIVE YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFHOV5")]
+    #[schemars(description = r#"FHLB ADV MAT REP OVER FIVE YEARS - "#)]
     pub otbfhov5: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV MAT REP OVER FIVE YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFHOV5R")]
+    #[schemars(description = r#"FHLB ADV MAT REP OVER FIVE YEARS RATIO - "#)]
     pub otbfhov5r: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV WITH REMAINING MAT ONE YR OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFH1L")]
+    #[schemars(description = r#"FHLB ADV WITH REMAINING MAT ONE YR OR LESS - "#)]
     pub othbfh1l: Option<f32>,
 
-    #[doc = r#"Title: FHLB ADV WITH REMAINING MAT ONE YR OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFH1LR")]
+    #[schemars(description = r#"FHLB ADV WITH REMAINING MAT ONE YR OR LESS RATIO - "#)]
     pub othbfh1lr: Option<f32>,
 
-    #[doc = r#"Title: FHLB STRUCTURED ADV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFHSTA")]
+    #[schemars(description = r#"FHLB STRUCTURED ADV - "#)]
     pub otbfhsta: Option<f32>,
 
-    #[doc = r#"Title: FHLB STRUCTURED ADV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBFHSTAR")]
+    #[schemars(description = r#"FHLB STRUCTURED ADV - "#)]
     pub otbfhstar: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING ONE YR OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT1L")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING ONE YR OR LESS - "#)]
     pub otbot1l: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING ONE YR OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT1LR")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING ONE YR OR LESS RATIO - "#)]
     pub otbot1lr: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING ONE YR THROUGH THREE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT1T3")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING ONE YR THROUGH THREE - "#)]
     pub otbot1t3: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING ONE YR THROUGH THREE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT1T3R")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING ONE YR THROUGH THREE RATIO - "#)]
     pub otbot1t3r: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING THREE YR THROUGH FIVE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT3T5")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING THREE YR THROUGH FIVE - "#)]
     pub otbot3t5: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING THREE YR THROUGH FIVE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOT3T5R")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING THREE YR THROUGH FIVE RATIO - "#)]
     pub otbot3t5r: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING OVER FIVE YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOTOV5")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING OVER FIVE YRS - "#)]
     pub otbotov5: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT OR NEXT REPRICING OVER FIVE YRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTBOTOV5R")]
+    #[schemars(description = r#"OTH BORR MAT OR NEXT REPRICING OVER FIVE YRS RATIO - "#)]
     pub otbotov5r: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT REMAINING MAT OF ONE YR OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBOT1L")]
+    #[schemars(description = r#"OTH BORR MAT REMAINING MAT OF ONE YR OR LESS - "#)]
     pub othbot1l: Option<f32>,
 
-    #[doc = r#"Title: OTH BORR MAT REMANING MAT OF ONE YR OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBOT1LR")]
+    #[schemars(description = r#"OTH BORR MAT REMANING MAT OF ONE YR OR LESS RATIO - "#)]
     pub othbot1lr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LIABILITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ALLOTHL")]
+    #[schemars(description = r#"ALL OTHER LIABILITIES - "#)]
     pub allothl: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LIABILITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ALLOTHLR")]
+    #[schemars(description = r#"ALL OTHER LIABILITIES RATIO - "#)]
     pub allothlr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-LOANS & LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LNLS")]
+    #[schemars(description = r#"30-89 DAYS P/D-LOANS & LEASES - "#)]
     pub p3lnls: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-LOANS & LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LNLS")]
+    #[schemars(description = r#"90+ DAYS P/D-LOANS & LEASES - "#)]
     pub p9lnls: Option<f32>,
 
-    #[doc = r#"Title: QBP COMMERCIAL BANK REGION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="QBPRCOML")]
+    #[schemars(description = r#"QBP COMMERCIAL BANK REGION - "#)]
     pub qbprcoml: Option<f32>,
 
-    #[doc = r#"Title: QBP COMMERCIAL BANK REGION DESC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="QBPRCOMLDESC")]
+    #[schemars(description = r#"QBP COMMERCIAL BANK REGION DESC - "#)]
     pub qbprcomldesc: Option<String>,
 
-    #[doc = r#"Title: QBP BIF FUND SAVINGS REGION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="QBPRSAVB")]
+    #[schemars(description = r#"QBP BIF FUND SAVINGS REGION - "#)]
     pub qbprsavb: Option<f32>,
 
-    #[doc = r#"Title: QBP SAVING SAIF FUND REGION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="QBPRSAVS")]
+    #[schemars(description = r#"QBP SAVING SAIF FUND REGION - "#)]
     pub qbprsavs: Option<f32>,
 
-    #[doc = r#"Title: QUARTER NUMBER"#]
-    #[doc = r#"Description: Identifies the calendar quarter. 1=March. 2=June. 3=September. 4=December."#]
-    #[serde(rename="QTRNO")]
+    #[schemars(description = r#"QUARTER NUMBER - Identifies the calendar quarter. 1=March. 2=June. 3=September. 4=December."#)]
     pub qtrno: Option<f32>,
 
-    #[doc = r#"Title: PRIMARY REGULATING AGENCY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="REGAGNT")]
+    #[schemars(description = r#"PRIMARY REGULATING AGENCY - "#)]
     pub regagnt: Option<String>,
 
-    #[doc = r#"Title: FDIC RISK TERRITORY"#]
-    #[doc = r#"Description: An abbreviation of the current risk territory for an institution (FDIC Risk Territory). All periods are displayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#]
-    #[serde(rename="RISKTERR")]
+    #[schemars(description = r#"FDIC RISK TERRITORY - An abbreviation of the current risk territory for an institution (FDIC Risk Territory). All periods are displayed in the current perspective (exceptions can exist depending on when a quarter is updated)."#)]
     pub riskterr: Option<String>,
 
-    #[doc = r#"Title: ASSETS 10B TO 250B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="S10T250B")]
+    #[schemars(description = r#"ASSETS 10B TO 250B FLAG - "#)]
     pub s10t250b: Option<f32>,
 
-    #[doc = r#"Title: SASSER FLAG"#]
-    #[doc = r#"Description: A flag used to indicate whether an institution was a former savings association that has converted to a bank charter and is still a SAIF insured institution. 0=not a sasser institution. 1=is a sasser institution."#]
-    #[serde(rename="SASSER")]
+    #[schemars(description = r#"SASSER FLAG - A flag used to indicate whether an institution was a former savings association that has converted to a bank charter and is still a SAIF insured institution. 0=not a sasser institution. 1=is a sasser institution."#)]
     pub sasser: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS BANK FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SB")]
+    #[schemars(description = r#"SAVINGS BANK FLAG - "#)]
     pub sb: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SC")]
+    #[schemars(description = r#"SECURITIES - "#)]
     pub sc: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCR")]
+    #[schemars(description = r#"SECURITIES RATIO - "#)]
     pub scr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL AVAILABLE-FOR-SALE AT AMORTIZED COST SECURITIES ON A CONSOLIDATED BASIS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCAA")]
+    #[schemars(description = r#"TOTAL AVAILABLE-FOR-SALE AT AMORTIZED COST SECURITIES ON A CONSOLIDATED BASIS - "#)]
     pub scaa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL HELD-TO-MATURITY AT FAIR VALUE SECURITIES ON A CONSOLIDATED BASIS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCHF")]
+    #[schemars(description = r#"TOTAL HELD-TO-MATURITY AT FAIR VALUE SECURITIES ON A CONSOLIDATED BASIS - "#)]
     pub schf: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCAGE")]
+    #[schemars(description = r#"U.S. AGENCY - "#)]
     pub scage: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCASPNHA")]
+    #[schemars(description = r#"U.S. AGENCY - "#)]
     pub scaspnha: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCASPNAF")]
+    #[schemars(description = r#"U.S. AGENCY - "#)]
     pub scaspnaf: Option<f32>,
 
-    #[doc = r#"Title: NON-MORT BACKED ISSUES BY US GOVT OR SPONSORED AGENCIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCASPNSUM")]
+    #[schemars(description = r#"NON-MORT BACKED ISSUES BY US GOVT OR SPONSORED AGENCIES - "#)]
     pub scaspnsum: Option<f32>,
 
-    #[doc = r#"Title: NON-MORT BACKED ISSUES BY US GOVT OR SPONSORED AGENCIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCASPNSUMR")]
+    #[schemars(description = r#"NON-MORT BACKED ISSUES BY US GOVT OR SPONSORED AGENCIES RATIO - "#)]
     pub scaspnsumr: Option<f32>,
 
-    #[doc = r#"Title: DOMESTIC SEC*DEBT & EQUITY - CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCDEQ")]
+    #[schemars(description = r#"DOMESTIC SEC*DEBT & EQUITY - CON - "#)]
     pub scdeq: Option<f32>,
 
-    #[doc = r#"Title: OTHER DOMESTIC DEBT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCDOMO")]
+    #[schemars(description = r#"OTHER DOMESTIC DEBT - "#)]
     pub scdomo: Option<f32>,
 
-    #[doc = r#"Title: OTHER DOMESTIC DEBT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCDOMOR")]
+    #[schemars(description = r#"OTHER DOMESTIC DEBT RATIO - "#)]
     pub scdomor: Option<f32>,
 
-    #[doc = r#"Title: EQUITY SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCEQ")]
+    #[schemars(description = r#"EQUITY SECURITIES - "#)]
     pub sceq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEBT & EQUITY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCFDEQ")]
+    #[schemars(description = r#"FOREIGN DEBT & EQUITY - "#)]
     pub scfdeq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCFORD")]
+    #[schemars(description = r#"FOREIGN DEBT SECURITIES - "#)]
     pub scford: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCFORDR")]
+    #[schemars(description = r#"FOREIGN DEBT SECURITIES RATIO - "#)]
     pub scfordr: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE BACKED SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMTGBK")]
+    #[schemars(description = r#"MORTGAGE BACKED SECURITIES - "#)]
     pub scmtgbk: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE BACKED SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMTGBKR")]
+    #[schemars(description = r#"MORTGAGE BACKED SECURITIES RATIO - "#)]
     pub scmtgbkr: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNI")]
+    #[schemars(description = r#"MUNICIPAL SECURITIES - "#)]
     pub scmuni: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNIR")]
+    #[schemars(description = r#"MUNICIPAL RATIO - "#)]
     pub scmunir: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-MV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMV")]
+    #[schemars(description = r#"SECURITIES-MV - "#)]
     pub scmv: Option<f32>,
 
-    #[doc = r#"Title: RES-OTH DOM DEBT*PRIV CERTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODPC")]
+    #[schemars(description = r#"RES-OTH DOM DEBT*PRIV CERTS - "#)]
     pub scodpc: Option<f32>,
 
-    #[doc = r#"Title: RES-OTH DOM DEBT*PRIV CERTS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODPCR")]
+    #[schemars(description = r#"RES-OTH DOM DEBT*PRIV CERTS RATIO - "#)]
     pub scodpcr: Option<f32>,
 
-    #[doc = r#"Title: CONTRA-ASSETS TO SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCRES")]
+    #[schemars(description = r#"CONTRA-ASSETS TO SECURITIES - "#)]
     pub scres: Option<f32>,
 
-    #[doc = r#"Title: U.S. TREASURY & AGENCY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUS")]
+    #[schemars(description = r#"U.S. TREASURY & AGENCY - "#)]
     pub scus: Option<f32>,
 
-    #[doc = r#"Title: U.S. TREASURY & AGENCY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUSR")]
+    #[schemars(description = r#"U.S. TREASURY & AGENCY RATIO - "#)]
     pub scusr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ALL OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUSA")]
+    #[schemars(description = r#"U.S. AGENCY ALL OTHER - "#)]
     pub scusa: Option<f32>,
 
-    #[doc = r#"Title: U.S. TREASURY SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUST")]
+    #[schemars(description = r#"U.S. TREASURY SECURITIES - "#)]
     pub scust: Option<f32>,
 
-    #[doc = r#"Title: U.S. TREASURY SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUSTR")]
+    #[schemars(description = r#"U.S. TREASURY SECURITIES RATIO - "#)]
     pub scustr: Option<f32>,
 
-    #[doc = r#"Title: GEOGRAPHIC LATITUDE OF MAIN OFFICE"#]
-    #[doc = r#"Description: Geographic latitude of main office."#]
-    #[serde(rename="SIMS_LAT")]
+    #[schemars(description = r#"GEOGRAPHIC LATITUDE OF MAIN OFFICE - Geographic latitude of main office."#)]
     pub sims_lat: Option<f32>,
 
-    #[doc = r#"Title: GEOGRAPHIC LONGITUDE OF MAIN OFFICE"#]
-    #[doc = r#"Description: Geographic longitude of main office"#]
-    #[serde(rename="SIMS_LONG")]
+    #[schemars(description = r#"GEOGRAPHIC LONGITUDE OF MAIN OFFICE - Geographic longitude of main office"#)]
     pub sims_long: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS AND LOAN FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SL")]
+    #[schemars(description = r#"SAVINGS AND LOAN FLAG - "#)]
     pub sl: Option<f32>,
 
-    #[doc = r#"Title: STATE MEMBER BANK FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SM")]
+    #[schemars(description = r#"STATE MEMBER BANK FLAG - "#)]
     pub sm: Option<f32>,
 
-    #[doc = r#"Title: FIPS STATE ALPHA CODE (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="STALP")]
+    #[schemars(description = r#"FIPS STATE ALPHA CODE (Search-Eligible) - This field can be used for search and filtering."#)]
     pub stalp: Option<String>,
 
-    #[doc = r#"Title: STATE CHARTER FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="STCHRTR")]
+    #[schemars(description = r#"STATE CHARTER FLAG - "#)]
     pub stchrtr: Option<f32>,
 
-    #[doc = r#"Title: STATE NAME (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="STNAME")]
+    #[schemars(description = r#"STATE NAME (Search-Eligible) - This field can be used for search and filtering."#)]
     pub stname: Option<String>,
 
-    #[doc = r#"Title: FIPS STATE NUMBER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="STNUM")]
+    #[schemars(description = r#"FIPS STATE NUMBER - "#)]
     pub stnum: Option<f32>,
 
-    #[doc = r#"Title: SUB. DEBT & L/L PREFERRED STK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SUBLLPF")]
+    #[schemars(description = r#"SUB. DEBT & L/L PREFERRED STK - "#)]
     pub subllpf: Option<f32>,
 
-    #[doc = r#"Title: SUBORDINATED NOTES & DEBENTURES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SUBND")]
+    #[schemars(description = r#"SUBORDINATED NOTES & DEBENTURES - "#)]
     pub subnd: Option<f32>,
 
-    #[doc = r#"Title: ASSETS UNDER 25M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ25")]
+    #[schemars(description = r#"ASSETS UNDER 25M FLAG - "#)]
     pub sz25: Option<f32>,
 
-    #[doc = r#"Title: ASSETS UNDER 100M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ100")]
+    #[schemars(description = r#"ASSETS UNDER 100M FLAG - "#)]
     pub sz100: Option<f32>,
 
-    #[doc = r#"Title: ASSETS OVER 100M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ100MP")]
+    #[schemars(description = r#"ASSETS OVER 100M FLAG - "#)]
     pub sz100mp: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 100M TO 300M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ100T3")]
+    #[schemars(description = r#"ASSETS 100M TO 300M FLAG - "#)]
     pub sz100t3: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 100M TO 500M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ100T5")]
+    #[schemars(description = r#"ASSETS 100M TO 500M FLAG - "#)]
     pub sz100t5: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 100M TO 1B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ100T1B")]
+    #[schemars(description = r#"ASSETS 100M TO 1B FLAG - "#)]
     pub sz100t1b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS OVER 10B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ10BP")]
+    #[schemars(description = r#"ASSETS OVER 10B FLAG - "#)]
     pub sz10bp: Option<f32>,
 
-    #[doc = r#"Title: ASSETS OVER 1B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ1BP")]
+    #[schemars(description = r#"ASSETS OVER 1B FLAG - "#)]
     pub sz1bp: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 1B TO 10B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ1BT10B")]
+    #[schemars(description = r#"ASSETS 1B TO 10B FLAG - "#)]
     pub sz1bt10b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 1B TO 3B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ1BT3B")]
+    #[schemars(description = r#"ASSETS 1B TO 3B FLAG - "#)]
     pub sz1bt3b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 1B TO 5B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ1BT5B")]
+    #[schemars(description = r#"ASSETS 1B TO 5B FLAG - "#)]
     pub sz1bt5b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS OVER 250B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ250BP")]
+    #[schemars(description = r#"ASSETS OVER 250B FLAG - "#)]
     pub sz250bp: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 25M TO 50M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ25T50")]
+    #[schemars(description = r#"ASSETS 25M TO 50M FLAG - "#)]
     pub sz25t50: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 300M TO 500M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ300T5")]
+    #[schemars(description = r#"ASSETS 300M TO 500M FLAG - "#)]
     pub sz300t5: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 3B TO 10B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ3BT10B")]
+    #[schemars(description = r#"ASSETS 3B TO 10B FLAG - "#)]
     pub sz3bt10b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 500M TO 1B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ500T1B")]
+    #[schemars(description = r#"ASSETS 500M TO 1B FLAG - "#)]
     pub sz500t1b: Option<f32>,
 
-    #[doc = r#"Title: ASSETS 50M TO 100M FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ50T100")]
+    #[schemars(description = r#"ASSETS 50M TO 100M FLAG - "#)]
     pub sz50t100: Option<f32>,
 
-    #[doc = r#"Title: ASSETS OVER 5B FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ5BP")]
+    #[schemars(description = r#"ASSETS OVER 5B FLAG - "#)]
     pub sz5bp: Option<f32>,
 
-    #[doc = r#"Title: TOTAL FIDUCIARY AND RELATED ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TFRA")]
+    #[schemars(description = r#"TOTAL FIDUCIARY AND RELATED ASSETS - "#)]
     pub tfra: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRADE")]
+    #[schemars(description = r#"TRADING ACCOUNTS - "#)]
     pub trade: Option<f32>,
 
-    #[doc = r#"Title: TRADING LIABILITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRADEL")]
+    #[schemars(description = r#"TRADING LIABILITIES - "#)]
     pub tradel: Option<f32>,
 
-    #[doc = r#"Title: TRADING LIABILITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRADELR")]
+    #[schemars(description = r#"TRADING LIABILITIES RATIO - "#)]
     pub tradelr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNTS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRADER")]
+    #[schemars(description = r#"TRADING ACCOUNTS RATIO - "#)]
     pub trader: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRN")]
+    #[schemars(description = r#"TRANSACTION-TOTAL - "#)]
     pub trn: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNR")]
+    #[schemars(description = r#"TRANSACTION-TOTAL RATIO - "#)]
     pub trnr: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-IPC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNIPC")]
+    #[schemars(description = r#"TRANSACTION-IPC - "#)]
     pub trnipc: Option<f32>,
 
-    #[doc = r#"Title: TRAN-IPC-OFFICIAL CHECKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNIPCOC")]
+    #[schemars(description = r#"TRAN-IPC-OFFICIAL CHECKS - "#)]
     pub trnipcoc: Option<f32>,
 
-    #[doc = r#"Title: TRAN-IPC-OFFICIAL CHECKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNIPCOCR")]
+    #[schemars(description = r#"TRAN-IPC-OFFICIAL CHECKS RATIO - "#)]
     pub trnipcocr: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-MUNI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNMUNI")]
+    #[schemars(description = r#"TRANSACTION-MUNI - "#)]
     pub trnmuni: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-MUNI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNMUNIR")]
+    #[schemars(description = r#"TRANSACTION-MUNI RATIO - "#)]
     pub trnmunir: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-U.S. GOVERNMENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNUSGOV")]
+    #[schemars(description = r#"TRANSACTION-U.S. GOVERNMENT - "#)]
     pub trnusgov: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-U.S. GOVERNMENT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNUSGOVR")]
+    #[schemars(description = r#"TRANSACTION-U.S. GOVERNMENT RATIO - "#)]
     pub trnusgovr: Option<f32>,
 
-    #[doc = r#"Title: TRUST POWER GRANTED CODES"#]
-    #[doc = r#"Description: Is a two digit numeric code which identifies the trust power granted categories of an institution. 00 - Trust powers not known. 10 - Full trust powers granted. 11 - Full trust powers granted, exercised. 12 - Full trust powers granted, not exercised. 20 - Limited trust powers granted. 21 - Limited trust powers granted, exercised. 30 - Trust powers not granted. 31 - Trust powers not granted but exercised. 40 - Full trust powers grandfathered."#]
-    #[serde(rename="TRUSTPWR")]
+    #[schemars(description = r#"TRUST POWER GRANTED CODES - Is a two digit numeric code which identifies the trust power granted categories of an institution. 00 - Trust powers not known. 10 - Full trust powers granted. 11 - Full trust powers granted, exercised. 12 - Full trust powers granted, not exercised. 20 - Limited trust powers granted. 21 - Limited trust powers granted, exercised. 30 - Trust powers not granted. 31 - Trust powers not granted but exercised. 40 - Full trust powers grandfathered."#)]
     pub trustpwr: Option<f32>,
 
-    #[doc = r#"Title: TIME & SAVINGS DEPOSITS-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TS")]
+    #[schemars(description = r#"TIME & SAVINGS DEPOSITS-TOTAL - "#)]
     pub ts: Option<f32>,
 
-    #[doc = r#"Title: TIME & SAVINGS DEPOSITS-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TSR")]
+    #[schemars(description = r#"TIME & SAVINGS DEPOSITS-TOTAL RATIO - "#)]
     pub tsr: Option<f32>,
 
-    #[doc = r#"Title: TT&L NOTE OPTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTL")]
+    #[schemars(description = r#"TT&L NOTE OPTION - "#)]
     pub ttl: Option<f32>,
 
-    #[doc = r#"Title: TT&L & OTHER BORROWINGS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTLOTBOR")]
+    #[schemars(description = r#"TT&L & OTHER BORROWINGS - "#)]
     pub ttlotbor: Option<f32>,
 
-    #[doc = r#"Title: UNEARNED INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UNINC")]
+    #[schemars(description = r#"UNEARNED INCOME - "#)]
     pub uninc: Option<f32>,
 
-    #[doc = r#"Title: BANK UNIQUE NUMBER"#]
-    #[doc = r#"Description: A unique identification number assigned to an institution by the FDIC."#]
-    #[serde(rename="UNINUM")]
+    #[schemars(description = r#"BANK UNIQUE NUMBER - A unique identification number assigned to an institution by the FDIC."#)]
     pub uninum: Option<f32>,
 
-    #[doc = r#"Title: USA LOCATED INSTITUTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="USA")]
+    #[schemars(description = r#"USA LOCATED INSTITUTION - "#)]
     pub usa: Option<f32>,
 
-    #[doc = r#"Title: UNAMORTIZED YIELD ADJ-MTG LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UYAMTG")]
+    #[schemars(description = r#"UNAMORTIZED YIELD ADJ-MTG LOANS - "#)]
     pub uyamtg: Option<f32>,
 
-    #[doc = r#"Title: ASST-BCK UNUSED COMMIT - RELATED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCUBK")]
+    #[schemars(description = r#"ASST-BCK UNUSED COMMIT - RELATED - "#)]
     pub abcubk: Option<f32>,
 
-    #[doc = r#"Title: ASST-BCK UNUSED COMMIT - RELATED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCUBKR")]
+    #[schemars(description = r#"ASST-BCK UNUSED COMMIT - RELATED RATIO - "#)]
     pub abcubkr: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK UNUSED COMMIT - OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCUOTH")]
+    #[schemars(description = r#"ASSET-BACK UNUSED COMMIT - OTHER - "#)]
     pub abcuoth: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK UNUSED COMMIT - OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCUOTHR")]
+    #[schemars(description = r#"ASSET-BACK UNUSED COMMIT - OTHER RATIO - "#)]
     pub abcuothr: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK CREDIT EX-RELATED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCXBK")]
+    #[schemars(description = r#"ASSET-BACK CREDIT EX-RELATED - "#)]
     pub abcxbk: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK CREDIT EX-RELATED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCXBKR")]
+    #[schemars(description = r#"ASSET-BACK CREDIT EX-RELATED RATIO - "#)]
     pub abcxbkr: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK CREDIT EX-OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCXOTH")]
+    #[schemars(description = r#"ASSET-BACK CREDIT EX-OTHER - "#)]
     pub abcxoth: Option<f32>,
 
-    #[doc = r#"Title: ASSET-BACK CREDIT EX-OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ABCXOTHR")]
+    #[schemars(description = r#"ASSET-BACK CREDIT EX-OTHER RATIO - "#)]
     pub abcxothr: Option<f32>,
 
-    #[doc = r#"Title: C.E. RECOURSE NOT SECUR. - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASCEOTH")]
+    #[schemars(description = r#"C.E. RECOURSE NOT SECUR. - OTH - "#)]
     pub asceoth: Option<f32>,
 
-    #[doc = r#"Title: C.E. RECOURSE NOT SECUR. - OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASCEOTHR")]
+    #[schemars(description = r#"C.E. RECOURSE NOT SECUR. - OTH RATIO - "#)]
     pub asceothr: Option<f32>,
 
-    #[doc = r#"Title: C.E. RECOURSE NOT SECUR. - RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASCERES")]
+    #[schemars(description = r#"C.E. RECOURSE NOT SECUR. - RES - "#)]
     pub asceres: Option<f32>,
 
-    #[doc = r#"Title: C.E. RECOURSE NOT SECUR. - RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASCERESR")]
+    #[schemars(description = r#"C.E. RECOURSE NOT SECUR. - RES RATIO - "#)]
     pub asceresr: Option<f32>,
 
-    #[doc = r#"Title: SOLD W/RECOURSE N/SECUR. - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASDROTH")]
+    #[schemars(description = r#"SOLD W/RECOURSE N/SECUR. - OTH - "#)]
     pub asdroth: Option<f32>,
 
-    #[doc = r#"Title: SOLD W/RECOURSE N/SECUR. - OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASDROTHR")]
+    #[schemars(description = r#"SOLD W/RECOURSE N/SECUR. - OTH RATIO - "#)]
     pub asdrothr: Option<f32>,
 
-    #[doc = r#"Title: SOLD W/RECOURSE N/SECUR.- RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASDRRES")]
+    #[schemars(description = r#"SOLD W/RECOURSE N/SECUR.- RES - "#)]
     pub asdrres: Option<f32>,
 
-    #[doc = r#"Title: SOLD W/RECOURSE N/SECUR.- RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASDRRESR")]
+    #[schemars(description = r#"SOLD W/RECOURSE N/SECUR.- RES RATIO - "#)]
     pub asdrresr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL ASSETS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSET2")]
+    #[schemars(description = r#"TOTAL ASSETS-CAVG2 - "#)]
     pub asset2: Option<f32>,
 
-    #[doc = r#"Title: TOTAL ASSETS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSET5")]
+    #[schemars(description = r#"TOTAL ASSETS-CAVG5 - "#)]
     pub asset5: Option<f32>,
 
-    #[doc = r#"Title: TOTAL ASSETS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSETFOR")]
+    #[schemars(description = r#"TOTAL ASSETS-FOR - "#)]
     pub assetfor: Option<f32>,
 
-    #[doc = r#"Title: LONG-TERM ASSETS (5+ YEARS)-QBP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSTLT")]
+    #[schemars(description = r#"LONG-TERM ASSETS (5+ YEARS)-QBP - "#)]
     pub asstlt: Option<f32>,
 
-    #[doc = r#"Title: LONG-TERM ASSETS (5+ YEARS) RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSTLTR")]
+    #[schemars(description = r#"LONG-TERM ASSETS (5+ YEARS) RATIO - "#)]
     pub asstltr: Option<f32>,
 
-    #[doc = r#"Title: ASSETS PER EMPLOYEE IN MILLION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASTEMPM")]
+    #[schemars(description = r#"ASSETS PER EMPLOYEE IN MILLION - "#)]
     pub astempm: Option<f32>,
 
-    #[doc = r#"Title: AVERAGE ASSETS-ADJUSTED-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVASSETJ")]
+    #[schemars(description = r#"AVERAGE ASSETS-ADJUSTED-PCA - "#)]
     pub avassetj: Option<f32>,
 
-    #[doc = r#"Title: AVERAGE ASSETS-ADJUSTED-PCA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVASSETJR")]
+    #[schemars(description = r#"AVERAGE ASSETS-ADJUSTED-PCA RATIO - "#)]
     pub avassetjr: Option<f32>,
 
-    #[doc = r#"Title: BROKERED DEP-INSURED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BROINS")]
+    #[schemars(description = r#"BROKERED DEP-INSURED - "#)]
     pub broins: Option<f32>,
 
-    #[doc = r#"Title: BROKERED DEP-INSURED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BROINSR")]
+    #[schemars(description = r#"BROKERED DEP-INSURED RATIO - "#)]
     pub broinsr: Option<f32>,
 
-    #[doc = r#"Title: REPORT DATE (CCYYMMDD)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CALLYMD")]
+    #[schemars(description = r#"REPORT DATE (CCYYMMDD) - "#)]
     pub callymd: Option<f32>,
 
-    #[doc = r#"Title: CASH & DUE FROM DEP INST-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALFOR")]
+    #[schemars(description = r#"CASH & DUE FROM DEP INST-FOR - "#)]
     pub chbalfor: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING CASH & DUE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALNI")]
+    #[schemars(description = r#"NONINTEREST-BEARING CASH & DUE - "#)]
     pub chbalni: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING CASH & DUE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHBALNIR")]
+    #[schemars(description = r#"NONINTEREST-BEARING CASH & DUE RATIO - "#)]
     pub chbalnir: Option<f32>,
 
-    #[doc = r#"Title: CASH ITEMS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHCIC")]
+    #[schemars(description = r#"CASH ITEMS - "#)]
     pub chcic: Option<f32>,
 
-    #[doc = r#"Title: CASH ITEMS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHCICR")]
+    #[schemars(description = r#"CASH ITEMS RATIO - "#)]
     pub chcicr: Option<f32>,
 
-    #[doc = r#"Title: CURRENCY & COIN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHCOIN")]
+    #[schemars(description = r#"CURRENCY & COIN - "#)]
     pub chcoin: Option<f32>,
 
-    #[doc = r#"Title: CURRENCY & COIN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHCOINR")]
+    #[schemars(description = r#"CURRENCY & COIN RATIO - "#)]
     pub chcoinr: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING CASH FLOW-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHFLA")]
+    #[schemars(description = r#"NET OPERATING CASH FLOW-ANN - "#)]
     pub chfla: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING CASH FLOW-ANN Quarterly"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHFLQ")]
+    #[schemars(description = r#"NET OPERATING CASH FLOW-ANN Quarterly - "#)]
     pub chflq: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM FRB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHFRB")]
+    #[schemars(description = r#"BAL DUE FROM FRB - "#)]
     pub chfrb: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM FRB RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHFRBR")]
+    #[schemars(description = r#"BAL DUE FROM FRB RATIO - "#)]
     pub chfrbr: Option<f32>,
 
-    #[doc = r#"Title: CASH ITEM COLLEC IN DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHITEM")]
+    #[schemars(description = r#"CASH ITEM COLLEC IN DOMESTIC OFFICES - "#)]
     pub chitem: Option<f32>,
 
-    #[doc = r#"Title: CASH ITEMS COLLEC IN DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHITEMR")]
+    #[schemars(description = r#"CASH ITEMS COLLEC IN DOMESTIC OFFICES RATIO - "#)]
     pub chitemr: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM BK FOR COUNTRY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHNUS")]
+    #[schemars(description = r#"BAL DUE FROM BK FOR COUNTRY - "#)]
     pub chnus: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM BK FOR COUNTRY RATIOS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHNUSR")]
+    #[schemars(description = r#"BAL DUE FROM BK FOR COUNTRY RATIOS - "#)]
     pub chnusr: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM FOR BR OF OTH US BK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHNUSFBK")]
+    #[schemars(description = r#"BAL DUE FROM FOR BR OF OTH US BK - "#)]
     pub chnusfbk: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM DEP INST U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHUS")]
+    #[schemars(description = r#"BAL DUE FROM DEP INST U.S. - "#)]
     pub chus: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM DEP INST U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHUSR")]
+    #[schemars(description = r#"BAL DUE FROM DEP INST U.S. RATIO - "#)]
     pub chusr: Option<f32>,
 
-    #[doc = r#"Title: BAL DUE FROM U.S. BR OF FOR BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CHUSFBK")]
+    #[schemars(description = r#"BAL DUE FROM U.S. BR OF FOR BKS - "#)]
     pub chusfbk: Option<f32>,
 
-    #[doc = r#"Title: CITY (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="CITY")]
+    #[schemars(description = r#"CITY (Search-Eligible) - This field can be used for search and filtering."#)]
     pub city: Option<String>,
 
-    #[doc = r#"Title: CORE DEPOSITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="COREDEP")]
+    #[schemars(description = r#"CORE DEPOSITS - "#)]
     pub coredep: Option<f32>,
 
-    #[doc = r#"Title: CORE DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="COREDEPR")]
+    #[schemars(description = r#"CORE DEPOSITS RATIO - "#)]
     pub coredepr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAG")]
+    #[schemars(description = r#"AGRICULTURAL LOAN RECOVERIES - "#)]
     pub crag: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGR")]
+    #[schemars(description = r#"AGRICULTURAL LOAN RECOVERIES RATIO - "#)]
     pub cragr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGQ")]
+    #[schemars(description = r#"AGRICULTURAL LOAN RECOVERIES QUARTERLY - "#)]
     pub cragq: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGQR")]
+    #[schemars(description = r#"AGRICULTURAL LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub cragqr: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN RECOVERIES*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGSM")]
+    #[schemars(description = r#"AG LOAN RECOVERIES*SMALL BKS - "#)]
     pub cragsm: Option<f32>,
 
-    #[doc = r#"Title: AAG LOAN RECOVERIES*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGSMR")]
+    #[schemars(description = r#"AAG LOAN RECOVERIES*SMALL BKS RATIO - "#)]
     pub cragsmr: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN RECOVERIES*SMALL BKS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGSMQ")]
+    #[schemars(description = r#"AG LOAN RECOVERIES*SMALL BKS QUARTERLY - "#)]
     pub cragsmq: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN RECOVERIES*SMALL BKS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAGSMQR")]
+    #[schemars(description = r#"AG LOAN RECOVERIES*SMALL BKS QUARTERLY RATIO - "#)]
     pub cragsmqr: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAUTO")]
+    #[schemars(description = r#"AUTO LOANS - RECOVERIES - "#)]
     pub crauto: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAUTOR")]
+    #[schemars(description = r#"AUTO LOANS - RECOVERIES RATIO - "#)]
     pub crautor: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAUTOQ")]
+    #[schemars(description = r#"AUTO LOANS - RECOVERIES QUARTERLY - "#)]
     pub crautoq: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRAUTOQR")]
+    #[schemars(description = r#"AUTO LOANS - RECOVERIES QUARTERLY RATIO - "#)]
     pub crautoqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCI")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES - "#)]
     pub crci: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCIR")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES RATIO - "#)]
     pub crcir: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCIQ")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES QUARTERLY - "#)]
     pub crciq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCIQR")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crciqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCINUS")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES NON-U.S. - "#)]
     pub crcinus: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCINUSR")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES NON-U.S. RATIO - "#)]
     pub crcinusr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES NON-U.S. QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCINUSQ")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES NON-U.S. QUARTERLY - "#)]
     pub crcinusq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN RECOVERIES NON-U.S. QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCINUSQR")]
+    #[schemars(description = r#"COMMERCIAL LOAN RECOVERIES NON-U.S. QUARTERLY RATIO - "#)]
     pub crcinusqr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCON")]
+    #[schemars(description = r#"CONSUMER LOAN RECOVERIES - "#)]
     pub crcon: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONR")]
+    #[schemars(description = r#"CONSUMER LOAN RECOVERIES RATIO - "#)]
     pub crconr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONQ")]
+    #[schemars(description = r#"CONSUMER LOAN RECOVERIES QUARTERLY - "#)]
     pub crconq: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONQR")]
+    #[schemars(description = r#"CONSUMER LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crconqr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONOTH")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN RECOVERIES - "#)]
     pub crconoth: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONOTHR")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN RECOVERIES RATIO - "#)]
     pub crconothr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONOTQ")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN RECOVERIES QUARTERLY - "#)]
     pub crconotq: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCONOTQR")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crconotqr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCRCD")]
+    #[schemars(description = r#"CREDIT CARD LOAN RECOVERIES - "#)]
     pub crcrcd: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCRCDR")]
+    #[schemars(description = r#"CREDIT CARD LOAN RECOVERIES RATIO - "#)]
     pub crcrcdr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCRCDQ")]
+    #[schemars(description = r#"CREDIT CARD LOAN RECOVERIES QUARTERLY - "#)]
     pub crcrcdq: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRCRCDQR")]
+    #[schemars(description = r#"CREDIT CARD LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crcrcdqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEP")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN RECOVERIES - "#)]
     pub crdep: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN RECOVERIES RATIO - "#)]
     pub crdepr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPQ")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN RECOVERIES QUARTERLY - "#)]
     pub crdepq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN RECOVERIES Quarterly RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPQR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN RECOVERIES Quarterly RATIO - "#)]
     pub crdepqr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPNUS")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN RECOVERIES - "#)]
     pub crdepnus: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPNUSR")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN RECOVERIES RATIO - "#)]
     pub crdepnusr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPNUQ")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN RECOVERIES QUARTERLY - "#)]
     pub crdepnuq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRDEPNUQR")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crdepnuqr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRFORGV")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN RECOVERIES - "#)]
     pub crforgv: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRFORGVR")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN RECOVERIES RATIO - "#)]
     pub crforgvr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRFORGVQ")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN RECOVERIES QUARTERLY - "#)]
     pub crforgvq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRFORGVQR")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crforgvqr: Option<f32>,
 
-    #[doc = r#"Title: LEASE RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLS")]
+    #[schemars(description = r#"LEASE RECOVERIES - "#)]
     pub crls: Option<f32>,
 
-    #[doc = r#"Title: LEASE RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLSR")]
+    #[schemars(description = r#"LEASE RECOVERIES RATIO - "#)]
     pub crlsr: Option<f32>,
 
-    #[doc = r#"Title: LEASE RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLSQ")]
+    #[schemars(description = r#"LEASE RECOVERIES QUARTERLY - "#)]
     pub crlsq: Option<f32>,
 
-    #[doc = r#"Title: LEASE RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRLSQR")]
+    #[schemars(description = r#"LEASE RECOVERIES QUARTERLY RATIO - "#)]
     pub crlsqr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CROTHER")]
+    #[schemars(description = r#"ALL OTHER LOAN RECOVERIES - "#)]
     pub crother: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CROTHERR")]
+    #[schemars(description = r#"ALL OTHER LOAN RECOVERIES RATIO - "#)]
     pub crotherr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CROTHQ")]
+    #[schemars(description = r#"ALL OTHER LOAN RECOVERIES QUARTERLY - "#)]
     pub crothq: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CROTHQR")]
+    #[schemars(description = r#"ALL OTHER LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crothqr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRE")]
+    #[schemars(description = r#"REAL ESTATE LOAN RECOVERIES - "#)]
     pub crre: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRER")]
+    #[schemars(description = r#"REAL ESTATE LOAN RECOVERIES RATIO - "#)]
     pub crrer: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN RECOVERIES QUARTERLY - "#)]
     pub crreq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREQR")]
+    #[schemars(description = r#"REAL ESTATE LOAN RECOVERIES QUARTERLY RATIO - "#)]
     pub crreqr: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREAG")]
+    #[schemars(description = r#"FARMLAND RE LN RECOVERIES - "#)]
     pub crreag: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREAGR")]
+    #[schemars(description = r#"FARMLAND RE LN RECOVERIES RATIO - "#)]
     pub crreagr: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN RECOVERIES-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREAGQ")]
+    #[schemars(description = r#"FARMLAND RE LN RECOVERIES-QTR - "#)]
     pub crreagq: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREAGQR")]
+    #[schemars(description = r#"FARMLAND RE LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crreagqr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM CONSTRUCT LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECNFM")]
+    #[schemars(description = r#"1-4 FAM CONSTRUCT LN RECOVERIES - "#)]
     pub crrecnfm: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSTRUCT LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECNOT")]
+    #[schemars(description = r#"OTHER CONSTRUCT LN RECOVERIES - "#)]
     pub crrecnot: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN RECOVER-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECONQ")]
+    #[schemars(description = r#"CONSTRUCTION RE LN RECOVER-QTR - "#)]
     pub crreconq: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECONQR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crreconqr: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECONS")]
+    #[schemars(description = r#"CONSTRUCTION RE LN RECOVERIES - "#)]
     pub crrecons: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRECONSR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN RECOVERIES RATIO - "#)]
     pub crreconsr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN RECOVERIES - FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREFOR")]
+    #[schemars(description = r#"REAL ESTATE LN RECOVERIES - FOR - "#)]
     pub crrefor: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN RECOVERIES - FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREFORR")]
+    #[schemars(description = r#"REAL ESTATE LN RECOVERIES - FOR RATIO - "#)]
     pub crreforr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN RECOVERIES - FOR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREFORQ")]
+    #[schemars(description = r#"REAL ESTATE LN RECOVERIES - FOR QUARTERLY - "#)]
     pub crreforq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN RECOVERIES - FOR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREFORQR")]
+    #[schemars(description = r#"REAL ESTATE LN RECOVERIES - FOR QUARTERLY RATIO - "#)]
     pub crreforqr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRELOC")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN RECOVERIES - "#)]
     pub crreloc: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRELOCR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN RECOVERIES RATIO - "#)]
     pub crrelocr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRELOCQ")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN RECOVERIES QUARTERLY - "#)]
     pub crrelocq: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRELOCQR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crrelocqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RE LN RECOVERIES-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREMULQ")]
+    #[schemars(description = r#"MULTIFAMILY RE LN RECOVERIES-QTR - "#)]
     pub crremulq: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREMULQR")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crremulqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREMULT")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN RECOVERIES - "#)]
     pub crremult: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREMULTR")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN RECOVERIES RATIO - "#)]
     pub crremultr: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENRES")]
+    #[schemars(description = r#"NONFARM NONRES RE LN RECOVERIES - "#)]
     pub crrenres: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENRESR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN RECOVERIES RATIO - "#)]
     pub crrenresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONFARM NONRES RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENROT")]
+    #[schemars(description = r#"OTHER NONFARM NONRES RECOVERIES - "#)]
     pub crrenrot: Option<f32>,
 
-    #[doc = r#"Title: OWN-OCCUP NONFARM NONRES RECOV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENROW")]
+    #[schemars(description = r#"OWN-OCCUP NONFARM NONRES RECOV - "#)]
     pub crrenrow: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN RECOVER-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENRSQ")]
+    #[schemars(description = r#"NONFARM NONRES RE LN RECOVER-QTR - "#)]
     pub crrenrsq: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN RECOVER-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENRSQR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN RECOVER-QTR RATIO - "#)]
     pub crrenrsqr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENUS")]
+    #[schemars(description = r#"NON-U.S. RE LN RECOVERIES - "#)]
     pub crrenus: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENUSR")]
+    #[schemars(description = r#"NON-U.S. RE LN RECOVERIES RATIO - "#)]
     pub crrenusr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN RECOVERIES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENUSQ")]
+    #[schemars(description = r#"NON-U.S. RE LN RECOVERIES QUARTERLY - "#)]
     pub crrenusq: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRENUSQR")]
+    #[schemars(description = r#"NON-U.S. RE LN RECOVERIES QUARTERLY RATIO - "#)]
     pub crrenusqr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY RECOVERIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERES")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY RECOVERIES - "#)]
     pub crreres: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY RECOVERIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERESR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY RECOVERIES RATIO - "#)]
     pub crreresr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY RECOVER-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERESQ")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY RECOVER-QTR - "#)]
     pub crreresq: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY RECOVERIES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERESQR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY RECOVERIES QUARTERLY RATIO - "#)]
     pub crreresqr: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM JR LIEN-RECOVER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSF2")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM JR LIEN-RECOVER - "#)]
     pub crrersf2: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM JR LIEN-RECOVER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSF2R")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM JR LIEN-RECOVER RATIO - "#)]
     pub crrersf2r: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM JR LIEN-RECOVER QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERS2Q")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM JR LIEN-RECOVER QUARTERLY - "#)]
     pub crrers2q: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM JR LIEN-RECOVER QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERS2QR")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM JR LIEN-RECOVER QUARTERLY RATIO - "#)]
     pub crrers2qr: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM FIRST LIEN-RECOV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSFM")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM FIRST LIEN-RECOV - "#)]
     pub crrersfm: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM FIRST LIEN-RECOV RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSFMR")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM FIRST LIEN-RECOV RATIO - "#)]
     pub crrersfmr: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM FIRST LIEN-RECOV QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSFQ")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM FIRST LIEN-RECOV QUARTERLY - "#)]
     pub crrersfq: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN 1-4 FAM FIRST LIEN-RECOV QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRRERSFQR")]
+    #[schemars(description = r#"RE LOAN 1-4 FAM FIRST LIEN-RECOV QUARTERLY RATIO - "#)]
     pub crrersfqr: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN RECOVERIES DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREOFFDOM")]
+    #[schemars(description = r#"RE LOAN RECOVERIES DOMESTIC OFFICES - "#)]
     pub crreoffdom: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN RECOVERIES DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREOFFDOMR")]
+    #[schemars(description = r#"RE LOAN RECOVERIES DOMESTIC OFFICES RATIO - "#)]
     pub crreoffdomr: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN RECOVERIES DOMESTIC OFFICES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREOFFDOMQ")]
+    #[schemars(description = r#"RE LOAN RECOVERIES DOMESTIC OFFICES QUARTERLY - "#)]
     pub crreoffdomq: Option<f32>,
 
-    #[doc = r#"Title: RE LOAN RECOVERIES DOMESTIC OFFICES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CRREOFFDOMQR")]
+    #[schemars(description = r#"RE LOAN RECOVERIES DOMESTIC OFFICES QUARTERLY RATIO - "#)]
     pub crreoffdomqr: Option<f32>,
 
-    #[doc = r#"Title: CR DER (NET)-PURCHASE PROTECT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CTDERBEN")]
+    #[schemars(description = r#"CR DER (NET)-PURCHASE PROTECT - "#)]
     pub ctderben: Option<f32>,
 
-    #[doc = r#"Title: CR DER(NET) - SOLD PROTECTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CTDERGTY")]
+    #[schemars(description = r#"CR DER(NET) - SOLD PROTECTION - "#)]
     pub ctdergty: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSIT LIAB BEF EXCLUSION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPBEFEX")]
+    #[schemars(description = r#"TOTAL DEPOSIT LIAB BEF EXCLUSION - "#)]
     pub depbefex: Option<f32>,
 
-    #[doc = r#"Title: ESTIMATED ASSESSABLE DEPOSITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPCSBQ")]
+    #[schemars(description = r#"ESTIMATED ASSESSABLE DEPOSITS - "#)]
     pub depcsbq: Option<f32>,
 
-    #[doc = r#"Title: ESTIMATED ASSESSABLE DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPCSBQR")]
+    #[schemars(description = r#"ESTIMATED ASSESSABLE DEPOSITS RATIO - "#)]
     pub depcsbqr: Option<f32>,
 
-    #[doc = r#"Title: TOT DOMESTIC DEPOSIT / ASSET"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPDASTR")]
+    #[schemars(description = r#"TOT DOMESTIC DEPOSIT / ASSET - "#)]
     pub depdastr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN BANKS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFBKF")]
+    #[schemars(description = r#"FOREIGN BANKS-FOR - "#)]
     pub depfbkf: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN BANKS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFBKFR")]
+    #[schemars(description = r#"FOREIGN BANKS-FOR RATIO - "#)]
     pub depfbkfr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENTS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFGOVF")]
+    #[schemars(description = r#"FOREIGN GOVERNMENTS-FOR - "#)]
     pub depfgovf: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENTS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPFGOVFR")]
+    #[schemars(description = r#"FOREIGN GOVERNMENTS-FOR RATIO - "#)]
     pub depfgovfr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING DEP-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIDOM")]
+    #[schemars(description = r#"INTEREST-BEARING DEP-DOM - "#)]
     pub depidom: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING DEP-DOM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIDOMR")]
+    #[schemars(description = r#"INTEREST-BEARING DEP-DOM RATIO - "#)]
     pub depidomr: Option<f32>,
 
-    #[doc = r#"Title: ESTIMATED INSURED DEPOSITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPINS")]
+    #[schemars(description = r#"ESTIMATED INSURED DEPOSITS - "#)]
     pub depins: Option<f32>,
 
-    #[doc = r#"Title: ESTIMATED INSURED DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPINSR")]
+    #[schemars(description = r#"ESTIMATED INSURED DEPOSITS RATIO - "#)]
     pub depinsr: Option<f32>,
 
-    #[doc = r#"Title: AMT DEP ACC GREATER THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGAMT")]
+    #[schemars(description = r#"AMT DEP ACC GREATER THAN $250,000 - "#)]
     pub deplgamt: Option<f32>,
 
-    #[doc = r#"Title: AMT DEP ACC GREATER THAN $250,000 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGAMTR")]
+    #[schemars(description = r#"AMT DEP ACC GREATER THAN $250,000 RATIO - "#)]
     pub deplgamtr: Option<f32>,
 
-    #[doc = r#"Title: NUM DEP ACC GREATER THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGB")]
+    #[schemars(description = r#"NUM DEP ACC GREATER THAN $250,000 - "#)]
     pub deplgb: Option<f32>,
 
-    #[doc = r#"Title: AMT OF RETIREMENT DEP ACC OF MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGRA")]
+    #[schemars(description = r#"AMT OF RETIREMENT DEP ACC OF MORE THAN $250,000 - "#)]
     pub deplgra: Option<f32>,
 
-    #[doc = r#"Title: AMT OF RETIREMENT DEP ACC OF MORE THAN $250,000 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGRAR")]
+    #[schemars(description = r#"AMT OF RETIREMENT DEP ACC OF MORE THAN $250,000 RATIO - "#)]
     pub deplgrar: Option<f32>,
 
-    #[doc = r#"Title: NUM OF RETIREMENT DEP ACC MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLGRN")]
+    #[schemars(description = r#"NUM OF RETIREMENT DEP ACC MORE THAN $250,000 - "#)]
     pub deplgrn: Option<f32>,
 
-    #[doc = r#"Title: DEP THRU LIST SVC NOT BROKERED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLSNB")]
+    #[schemars(description = r#"DEP THRU LIST SVC NOT BROKERED - "#)]
     pub deplsnb: Option<f32>,
 
-    #[doc = r#"Title: DEP THRU LIST SVC NOT BROKERED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPLSNBR")]
+    #[schemars(description = r#"DEP THRU LIST SVC NOT BROKERED RATIO - "#)]
     pub deplsnbr: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING DEP-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPNIDOM")]
+    #[schemars(description = r#"NONINTEREST-BEARING DEP-DOM - "#)]
     pub depnidom: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST-BEARING DEP-DOM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPNIDOMR")]
+    #[schemars(description = r#"NONINTEREST-BEARING DEP-DOM RATIO - "#)]
     pub depnidomr: Option<f32>,
 
-    #[doc = r#"Title: AMT DEP ACC AT $250,000 OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMAMT")]
+    #[schemars(description = r#"AMT DEP ACC AT $250,000 OR LESS - "#)]
     pub depsmamt: Option<f32>,
 
-    #[doc = r#"Title: AMT DEP ACC AT $250,000 OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMAMTR")]
+    #[schemars(description = r#"AMT DEP ACC AT $250,000 OR LESS RATIO - "#)]
     pub depsmamtr: Option<f32>,
 
-    #[doc = r#"Title: NUM DEP ACC EQUAL OR LESS THAN EQUAL TO $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMB")]
+    #[schemars(description = r#"NUM DEP ACC EQUAL OR LESS THAN EQUAL TO $250,000 - "#)]
     pub depsmb: Option<f32>,
 
-    #[doc = r#"Title: AMT RETIREMENT DEP ACC OF $250,000 OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMRA")]
+    #[schemars(description = r#"AMT RETIREMENT DEP ACC OF $250,000 OR LESS - "#)]
     pub depsmra: Option<f32>,
 
-    #[doc = r#"Title: AMT RETIREMENT DEP ACC OF $250,000 OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMRAR")]
+    #[schemars(description = r#"AMT RETIREMENT DEP ACC OF $250,000 OR LESS RATIO - "#)]
     pub depsmrar: Option<f32>,
 
-    #[doc = r#"Title: NUM RETIREMENT DEP ACC OF $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPSMRN")]
+    #[schemars(description = r#"NUM RETIREMENT DEP ACC OF $250,000 - "#)]
     pub depsmrn: Option<f32>,
 
-    #[doc = r#"Title: TOTAL ALLOWABLE EXCLUSIONS (INCLUDING FOREIGN DEPOSITS)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPALLEX")]
+    #[schemars(description = r#"TOTAL ALLOWABLE EXCLUSIONS (INCLUDING FOREIGN DEPOSITS) - "#)]
     pub depallex: Option<f32>,
 
-    #[doc = r#"Title: EST UNINSURED DEP IN DOM-OFF IN INSURED BRANCHES IN US TERR AND POSSESSIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUNA")]
+    #[schemars(description = r#"EST UNINSURED DEP IN DOM-OFF IN INSURED BRANCHES IN US TERR AND POSSESSIONS - "#)]
     pub depuna: Option<f32>,
 
-    #[doc = r#"Title: EST UNINSURED DEP IN DOM-OFF IN INSURED BRANCHES IN US TERR AND POSSESSIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUNAR")]
+    #[schemars(description = r#"EST UNINSURED DEP IN DOM-OFF IN INSURED BRANCHES IN US TERR AND POSSESSIONS - "#)]
     pub depunar: Option<f32>,
 
-    #[doc = r#"Title: ESTIMATED UNINSURED DEPOSITS IN DOMESTIC OFFICES AND IN INSURED BRANCHES IN US TERRITORIES AND POSSESSIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUNINS")]
+    #[schemars(description = r#"ESTIMATED UNINSURED DEPOSITS IN DOMESTIC OFFICES AND IN INSURED BRANCHES IN US TERRITORIES AND POSSESSIONS - "#)]
     pub depunins: Option<f32>,
 
-    #[doc = r#"Title: U.S. BANKS&OTH.US INST-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUSBKF")]
+    #[schemars(description = r#"U.S. BANKS&OTH.US INST-FOR - "#)]
     pub depusbkf: Option<f32>,
 
-    #[doc = r#"Title: U.S. BANKS&OTH.US INST-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUSBKFR")]
+    #[schemars(description = r#"U.S. BANKS&OTH.US INST-FOR RATIO - "#)]
     pub depusbkfr: Option<f32>,
 
-    #[doc = r#"Title: U.S.GOVT & ST & POL SUBS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUSMF")]
+    #[schemars(description = r#"U.S.GOVT & ST & POL SUBS-FOR - "#)]
     pub depusmf: Option<f32>,
 
-    #[doc = r#"Title: U.S.GOVT & ST & POL SUBS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPUSMFR")]
+    #[schemars(description = r#"U.S.GOVT & ST & POL SUBS-FOR RATIO - "#)]
     pub depusmfr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAG")]
+    #[schemars(description = r#"AGRICULTURAL LOAN CHARGE-OFFS - "#)]
     pub drag: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGR")]
+    #[schemars(description = r#"AGRICULTURAL LOAN CHARGE-OFFS RATIO - "#)]
     pub dragr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGQ")]
+    #[schemars(description = r#"AGRICULTURAL LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub dragq: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGQR")]
+    #[schemars(description = r#"AGRICULTURAL LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub dragqr: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN CHARGE-OFFS*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGSM")]
+    #[schemars(description = r#"AG LOAN CHARGE-OFFS*SMALL BKS - "#)]
     pub dragsm: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN CHARGE-OFFS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGSMR")]
+    #[schemars(description = r#"AG LOAN CHARGE-OFFS*SMALL BKS RATIO - "#)]
     pub dragsmr: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN CHARGE-OFFS*SMALL BKS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGSMQ")]
+    #[schemars(description = r#"AG LOAN CHARGE-OFFS*SMALL BKS QUARTERLY - "#)]
     pub dragsmq: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN CHARGE-OFFS*SMALL BKS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAGSMQR")]
+    #[schemars(description = r#"AG LOAN CHARGE-OFFS*SMALL BKS QUARTERLY RATIO - "#)]
     pub dragsmqr: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAUTO")]
+    #[schemars(description = r#"AUTO LOANS - CHARGE-OFFS - "#)]
     pub drauto: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAUTOR")]
+    #[schemars(description = r#"AUTO LOANS - CHARGE-OFFS RATIO - "#)]
     pub drautor: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAUTOQ")]
+    #[schemars(description = r#"AUTO LOANS - CHARGE-OFFS QUARTERLY - "#)]
     pub drautoq: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRAUTOQR")]
+    #[schemars(description = r#"AUTO LOANS - CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drautoqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCI")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS - "#)]
     pub drci: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCIR")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS RATIO - "#)]
     pub drcir: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCIQ")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drciq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCIQR")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drciqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCINUS")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS NON-U.S. - "#)]
     pub drcinus: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCINUSR")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS NON-U.S. RATIO - "#)]
     pub drcinusr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS NON-U.S. QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCINUSQ")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS NON-U.S. QUARTERLY - "#)]
     pub drcinusq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN CHARGE-OFFS NON-U.S. QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCINUSQR")]
+    #[schemars(description = r#"COMMERCIAL LOAN CHARGE-OFFS NON-U.S. QUARTERLY RATIO - "#)]
     pub drcinusqr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCON")]
+    #[schemars(description = r#"CONSUMER LOAN CHARGE-OFFS - "#)]
     pub drcon: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONR")]
+    #[schemars(description = r#"CONSUMER LOAN CHARGE-OFFS RATIO - "#)]
     pub drconr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONQ")]
+    #[schemars(description = r#"CONSUMER LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drconq: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONQR")]
+    #[schemars(description = r#"CONSUMER LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drconqr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONOTH")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN CHARGE-OFFS - "#)]
     pub drconoth: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONOTHR")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN CHARGE-OFFS RATIO - "#)]
     pub drconothr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONOTQ")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drconotq: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCONOTQR")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drconotqr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCRCD")]
+    #[schemars(description = r#"CREDIT CARD LOAN CHARGE-OFFS - "#)]
     pub drcrcd: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCRCDR")]
+    #[schemars(description = r#"CREDIT CARD LOAN CHARGE-OFFS RATIO - "#)]
     pub drcrcdr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCRCDQ")]
+    #[schemars(description = r#"CREDIT CARD LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drcrcdq: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRCRCDQR")]
+    #[schemars(description = r#"CREDIT CARD LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drcrcdqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEP")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN CHARGE-OFFS - "#)]
     pub drdep: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN CHARGE-OFFS RATIO - "#)]
     pub drdepr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPQ")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drdepq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPQR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drdepqr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPNUS")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN CHG-OFFS - "#)]
     pub drdepnus: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPNUSR")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN CHG-OFFS RATIO - "#)]
     pub drdepnusr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN CHG-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPNUQ")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN CHG-OFFS QUARTERLY - "#)]
     pub drdepnuq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEPS INST LN CHG-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRDEPNUQR")]
+    #[schemars(description = r#"FOREIGN DEPS INST LN CHG-OFFS QUARTERLY RATIO - "#)]
     pub drdepnuqr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRFORGV")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN CHG-OFFS - "#)]
     pub drforgv: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRFORGVR")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN CHG-OFFS RATIO - "#)]
     pub drforgvr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN CHG-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRFORGVQ")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN CHG-OFFS QUARTERLY - "#)]
     pub drforgvq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVERNMENT LN CHG-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRFORGVQR")]
+    #[schemars(description = r#"FOREIGN GOVERNMENT LN CHG-OFFS QUARTERLY RATIO - "#)]
     pub drforgvqr: Option<f32>,
 
-    #[doc = r#"Title: LEASE CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLS")]
+    #[schemars(description = r#"LEASE CHARGE-OFFS - "#)]
     pub drls: Option<f32>,
 
-    #[doc = r#"Title: LEASE CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLSR")]
+    #[schemars(description = r#"LEASE CHARGE-OFFS RATIO - "#)]
     pub drlsr: Option<f32>,
 
-    #[doc = r#"Title: LEASE CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLSQ")]
+    #[schemars(description = r#"LEASE CHARGE-OFFS QUARTERLY - "#)]
     pub drlsq: Option<f32>,
 
-    #[doc = r#"Title: LEASE CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRLSQR")]
+    #[schemars(description = r#"LEASE CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drlsqr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DROTHER")]
+    #[schemars(description = r#"ALL OTHER LOAN CHARGE-OFFS - "#)]
     pub drother: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DROTHERR")]
+    #[schemars(description = r#"ALL OTHER LOAN CHARGE-OFFS RATIO - "#)]
     pub drotherr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DROTHQ")]
+    #[schemars(description = r#"ALL OTHER LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drothq: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DROTHQR")]
+    #[schemars(description = r#"ALL OTHER LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drothqr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRE")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS - "#)]
     pub drre: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRER")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS RATIO - "#)]
     pub drrer: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS QUARTERLY - "#)]
     pub drreq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREQR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drreqr: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREAG")]
+    #[schemars(description = r#"FARMLAND RE LN CHARGE-OFFS - "#)]
     pub drreag: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREAGR")]
+    #[schemars(description = r#"FARMLAND RE LN CHARGE-OFFS RATIO - "#)]
     pub drreagr: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN CHG-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREAGQ")]
+    #[schemars(description = r#"FARMLAND RE LN CHG-OFFS-QTR - "#)]
     pub drreagq: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREAGQR")]
+    #[schemars(description = r#"FARMLAND RE LN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drreagqr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM CONSTRUCT LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECNFM")]
+    #[schemars(description = r#"1-4 FAM CONSTRUCT LN CHARGE-OFFS - "#)]
     pub drrecnfm: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSTRUCT LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECNOT")]
+    #[schemars(description = r#"OTHER CONSTRUCT LN CHARGE-OFFS - "#)]
     pub drrecnot: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN CHG-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECONQ")]
+    #[schemars(description = r#"CONSTRUCTION RE LN CHG-OFFS-QTR - "#)]
     pub drreconq: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECONQR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drreconqr: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECONS")]
+    #[schemars(description = r#"CONSTRUCTION RE LN CHARGE-OFFS - "#)]
     pub drrecons: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRECONSR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN CHARGE-OFFS RATIO - "#)]
     pub drreconsr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHRG-OFFS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREFOR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHRG-OFFS-FOR - "#)]
     pub drrefor: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHRG-OFFS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREFORR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHRG-OFFS-FOR RATIO - "#)]
     pub drreforr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHRG-OFFS-FOR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREFORQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHRG-OFFS-FOR QUARTERLY - "#)]
     pub drreforq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHRG-OFFS-FOR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREFORQR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHRG-OFFS-FOR QUARTERLY RATIO - "#)]
     pub drreforqr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRELOC")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN CHARGE-OFFS - "#)]
     pub drreloc: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRELOCR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN CHARGE-OFFS RATIO - "#)]
     pub drrelocr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRELOCQ")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN CHARGE-OFFS QUARTERLY - "#)]
     pub drrelocq: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRELOCQR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN CHARGE-OFFS RATIO - "#)]
     pub drrelocqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RE LN CHG-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREMULQ")]
+    #[schemars(description = r#"MULTIFAMILY RE LN CHG-OFFS-QTR - "#)]
     pub drremulq: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN CHARGE-OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREMULQR")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN CHARGE-OFF QUARTERLY RATIO - "#)]
     pub drremulqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN CHARGE-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREMULT")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN CHARGE-OFF - "#)]
     pub drremult: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN CHARGE-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREMULTR")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN CHARGE-OFF RATIO - "#)]
     pub drremultr: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENRES")]
+    #[schemars(description = r#"NONFARM NONRES RE LN CHARGE-OFFS - "#)]
     pub drrenres: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENRESR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN CHARGE-OFFS RATIO - "#)]
     pub drrenresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONFARM NONRES RE CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENROT")]
+    #[schemars(description = r#"OTHER NONFARM NONRES RE CHG-OFF - "#)]
     pub drrenrot: Option<f32>,
 
-    #[doc = r#"Title: OWN-OCCUP NONFARM NONRES CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENROW")]
+    #[schemars(description = r#"OWN-OCCUP NONFARM NONRES CHG-OFF - "#)]
     pub drrenrow: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN CHG-OFF-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENRSQ")]
+    #[schemars(description = r#"NONFARM NONRES RE LN CHG-OFF-QTR - "#)]
     pub drrenrsq: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENRSQR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drrenrsqr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENUS")]
+    #[schemars(description = r#"NON-U.S. RE LN CHARGE-OFFS - "#)]
     pub drrenus: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENUSR")]
+    #[schemars(description = r#"NON-U.S. RE LN CHARGE-OFFS RATIO - "#)]
     pub drrenusr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENUSQ")]
+    #[schemars(description = r#"NON-U.S. RE LN CHARGE-OFFS QUARTERLY - "#)]
     pub drrenusq: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRENUSQR")]
+    #[schemars(description = r#"NON-U.S. RE LN CHARGE-OFFS RATIO - "#)]
     pub drrenusqr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERES")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY CHARGE-OFFS - "#)]
     pub drreres: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERESR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY CHARGE-OFFS RATIO - "#)]
     pub drreresr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY CHG-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERESQ")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY CHG-OFFS-QTR - "#)]
     pub drreresq: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERESQR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub drreresqr: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSF2")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-CHG-OFF - "#)]
     pub drrersf2: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSF2R")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-CHG-OFF RATIO - "#)]
     pub drrersf2r: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-CHG-OFF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERS2Q")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-CHG-OFF QUARTERLY - "#)]
     pub drrers2q: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-CHG-OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERS2QR")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-CHG-OFF QUARTERLY RATIO - "#)]
     pub drrers2qr: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM FIRST LIEN-CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSFM")]
+    #[schemars(description = r#"RE LN 1-4 FAM FIRST LIEN-CHG-OFF - "#)]
     pub drrersfm: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM FIRST LIEN-CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSFMR")]
+    #[schemars(description = r#"RE LN 1-4 FAM FIRST LIEN-CHG-OFF RATIO - "#)]
     pub drrersfmr: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM FIRST LIEN-CHG-OFF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSFQ")]
+    #[schemars(description = r#"RE LN 1-4 FAM FIRST LIEN-CHG-OFF QUARTERLY - "#)]
     pub drrersfq: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM FIRST LIEN-CHG-OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRRERSFQR")]
+    #[schemars(description = r#"RE LN 1-4 FAM FIRST LIEN-CHG-OFF QUARTERLY RATIO - "#)]
     pub drrersfqr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREOFFDOM")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES - "#)]
     pub drreoffdom: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREOFFDOMR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES RATIO - "#)]
     pub drreoffdomr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREOFFDOMQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES QUARTERLY - "#)]
     pub drreoffdomq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DRREOFFDOMQR")]
+    #[schemars(description = r#"REAL ESTATE LOAN CHARGE-OFFS DOMESTIC OFFICES QUARTERLY RATIO - "#)]
     pub drreoffdomqr: Option<f32>,
 
-    #[doc = r#"Title: EQUITY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EDCM")]
+    #[schemars(description = r#"EQUITY - "#)]
     pub edcm: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY RATIO EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EEFF")]
+    #[schemars(description = r#"EFFICIENCY RATIO EXPENSE - "#)]
     pub eeff: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY RATIO EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EEFFQ")]
+    #[schemars(description = r#"EFFICIENCY RATIO EXPENSE QUARTERLY - "#)]
     pub eeffq: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EEFFR")]
+    #[schemars(description = r#"EFFICIENCY RATIO - "#)]
     pub eeffr: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EEFFQR")]
+    #[schemars(description = r#"EFFICIENCY QUARTERLY RATIO - "#)]
     pub eeffqr: Option<f32>,
 
-    #[doc = r#"Title: EFFECTIVE DATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFFDATE")]
+    #[schemars(description = r#"EFFECTIVE DATE - "#)]
     pub effdate: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL IMPAIRMENT LOSSES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTGW")]
+    #[schemars(description = r#"GOODWILL IMPAIRMENT LOSSES - "#)]
     pub eintgw: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL IMPAIRMENT LOSSES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTGWR")]
+    #[schemars(description = r#"GOODWILL IMPAIRMENT LOSSES RATIO - "#)]
     pub eintgwr: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL IMPAIRMENT LOSSES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTGWQ")]
+    #[schemars(description = r#"GOODWILL IMPAIRMENT LOSSES QUARTERLY - "#)]
     pub eintgwq: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL IMPAIRMENT LOSSES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTGWQR")]
+    #[schemars(description = r#"GOODWILL IMPAIRMENT LOSSES QUARTERLY RATIO - "#)]
     pub eintgwqr: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSSES OTH INTAN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTOTH")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSSES OTH INTAN - "#)]
     pub eintoth: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSSES OTH INTAN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTOTHR")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSSES OTH INTAN RATIO - "#)]
     pub eintothr: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSSES OTH INTAN QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTOTHQ")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSSES OTH INTAN QUARTERLY - "#)]
     pub eintothq: Option<f32>,
 
-    #[doc = r#"Title: AMORT & IMPAIR LOSSES OTH INTAN QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EINTOTHQR")]
+    #[schemars(description = r#"AMORT & IMPAIR LOSSES OTH INTAN QUARTERLY RATIO - "#)]
     pub eintothqr: Option<f32>,
 
-    #[doc = r#"Title: LOAN LOSS PROV/NT CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNANTR")]
+    #[schemars(description = r#"LOAN LOSS PROV/NT CHG-OFFS - "#)]
     pub elnantr: Option<f32>,
 
-    #[doc = r#"Title: ELNATRA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATRA")]
+    #[schemars(description = r#"ELNATRA - "#)]
     pub elnatra: Option<f32>,
 
-    #[doc = r#"Title: CREDIT LOSS PROV/AVE ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATRY")]
+    #[schemars(description = r#"CREDIT LOSS PROV/AVE ASSETS - "#)]
     pub elnatry: Option<f32>,
 
-    #[doc = r#"Title: CREDIT LOSS PROV/AVE ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ELNATRYQ")]
+    #[schemars(description = r#"CREDIT LOSS PROV/AVE ASSETS QUARTERLY - "#)]
     pub elnatryq: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE-ENHANCEMENTS - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCEAUTO")]
+    #[schemars(description = r#"CR EXPOSURE-ENHANCEMENTS - AUTO - "#)]
     pub enceauto: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE-ENHANCEMENTS - AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCEAUTOR")]
+    #[schemars(description = r#"CR EXPOSURE-ENHANCEMENTS - AUTO RATIO - "#)]
     pub enceautor: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCECI")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - CI - "#)]
     pub enceci: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCECIR")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - CI RATIO - "#)]
     pub encecir: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCECON")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - CON - "#)]
     pub encecon: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCECONR")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - CON RATIO - "#)]
     pub enceconr: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCEOTH")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - OTH - "#)]
     pub enceoth: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCEOTHR")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - OTH RATIO - "#)]
     pub enceothr: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCERES")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - RES - "#)]
     pub enceres: Option<f32>,
 
-    #[doc = r#"Title: CR EXPOSURE - ENHANCEMENTS - RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENCERESR")]
+    #[schemars(description = r#"CR EXPOSURE - ENHANCEMENTS - RES RATIO - "#)]
     pub enceresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHINT")]
+    #[schemars(description = r#"OTHER INTEREST EXPENSE - "#)]
     pub eothint: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST EXPENSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHINTR")]
+    #[schemars(description = r#"OTHER INTEREST EXPENSE RATIO - "#)]
     pub eothintr: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST EXPENSE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHINTQ")]
+    #[schemars(description = r#"OTHER INTEREST EXPENSE QUARTERLY - "#)]
     pub eothintq: Option<f32>,
 
-    #[doc = r#"Title: OTHER INTEREST EXPENSE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHINTQR")]
+    #[schemars(description = r#"OTHER INTEREST EXPENSE QUARTERLY RATIO - "#)]
     pub eothintqr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL BANK EQUITY CAPITAL-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQ5")]
+    #[schemars(description = r#"TOTAL BANK EQUITY CAPITAL-CAVG5 - "#)]
     pub eq5: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTIONS WITH BHC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCBHCTR")]
+    #[schemars(description = r#"TRANSACTIONS WITH BHC - "#)]
     pub eqcbhctr: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTIONS WITH BHC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCBHCTRR")]
+    #[schemars(description = r#"TRANSACTIONS WITH BHC RATIO - "#)]
     pub eqcbhctrr: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMPREHENSIVE INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCCOMPI")]
+    #[schemars(description = r#"OTHER COMPREHENSIVE INCOME - "#)]
     pub eqccompi: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMPREHENSIVE INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCCOMPIR")]
+    #[schemars(description = r#"OTHER COMPREHENSIVE INCOME RATIO - "#)]
     pub eqccompir: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS ON COMM & PFD-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVA")]
+    #[schemars(description = r#"CASH DIVIDENDS ON COMM & PFD-ANN - "#)]
     pub eqcdiva: Option<f32>,
 
-    #[doc = r#"Title: CHANGES DUE TO MERGERS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCMRG")]
+    #[schemars(description = r#"CHANGES DUE TO MERGERS - "#)]
     pub eqcmrg: Option<f32>,
 
-    #[doc = r#"Title: CHANGES DUE TO MERGERS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCMRGR")]
+    #[schemars(description = r#"CHANGES DUE TO MERGERS RATIO - "#)]
     pub eqcmrgr: Option<f32>,
 
-    #[doc = r#"Title: BK EQ CAP MOST RECENTLY REPORTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCPREV")]
+    #[schemars(description = r#"BK EQ CAP MOST RECENTLY REPORTED - "#)]
     pub eqcprev: Option<f32>,
 
-    #[doc = r#"Title: BK EQ CAP MOST RECENTLY REPORTED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCPREVR")]
+    #[schemars(description = r#"BK EQ CAP MOST RECENTLY REPORTED RATIO - "#)]
     pub eqcprevr: Option<f32>,
 
-    #[doc = r#"Title: ACCOUNTING CHANGES & CORRECTIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCREST")]
+    #[schemars(description = r#"ACCOUNTING CHANGES & CORRECTIONS - "#)]
     pub eqcrest: Option<f32>,
 
-    #[doc = r#"Title: ACCOUNTING CHANGES & CORRECTIONS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCRESTR")]
+    #[schemars(description = r#"ACCOUNTING CHANGES & CORRECTIONS RATIO - "#)]
     pub eqcrestr: Option<f32>,
 
-    #[doc = r#"Title: SALE OF CAPITAL STOCK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCSTKRX")]
+    #[schemars(description = r#"SALE OF CAPITAL STOCK - "#)]
     pub eqcstkrx: Option<f32>,
 
-    #[doc = r#"Title: SALE OF CAPITAL STOCK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCSTKRXR")]
+    #[schemars(description = r#"SALE OF CAPITAL STOCK RATIO - "#)]
     pub eqcstkrxr: Option<f32>,
 
-    #[doc = r#"Title: SALE OF CAPITAL STOCK QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCSXQ")]
+    #[schemars(description = r#"SALE OF CAPITAL STOCK QUARTERLY - "#)]
     pub eqcsxq: Option<f32>,
 
-    #[doc = r#"Title: SALE OF CAPITAL STOCK QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCSXQR")]
+    #[schemars(description = r#"SALE OF CAPITAL STOCK QUARTERLY RATIO - "#)]
     pub eqcsxqr: Option<f32>,
 
-    #[doc = r#"Title: TREASURY STOCK TRANSACTIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCTRSTX")]
+    #[schemars(description = r#"TREASURY STOCK TRANSACTIONS - "#)]
     pub eqctrstx: Option<f32>,
 
-    #[doc = r#"Title: TREASURY STOCK TRANSACTIONS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCTRSTXR")]
+    #[schemars(description = r#"TREASURY STOCK TRANSACTIONS RATIO - "#)]
     pub eqctrstxr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL EQUITY CAPITAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQTOT")]
+    #[schemars(description = r#"TOTAL EQUITY CAPITAL - "#)]
     pub eqtot: Option<f32>,
 
-    #[doc = r#"Title: TOTAL EQUITY CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQTOTR")]
+    #[schemars(description = r#"TOTAL EQUITY CAPITAL RATIO - "#)]
     pub eqtotr: Option<f32>,
 
-    #[doc = r#"Title: BANK EQUITY CAPITAL/ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQV")]
+    #[schemars(description = r#"BANK EQUITY CAPITAL/ASSETS - "#)]
     pub eqv: Option<f32>,
 
-    #[doc = r#"Title: TOTAL EARNING ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ERNAST")]
+    #[schemars(description = r#"TOTAL EARNING ASSETS - "#)]
     pub ernast: Option<f32>,
 
-    #[doc = r#"Title: TOTAL EARNING ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ERNAST2")]
+    #[schemars(description = r#"TOTAL EARNING ASSETS - "#)]
     pub ernast2: Option<f32>,
 
-    #[doc = r#"Title: TOTAL EARNING ASSETS-CAVG5I"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ERNAST5")]
+    #[schemars(description = r#"TOTAL EARNING ASSETS-CAVG5I - "#)]
     pub ernast5: Option<f32>,
 
-    #[doc = r#"Title: EARNING ASSETS / TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ERNASTR")]
+    #[schemars(description = r#"EARNING ASSETS / TOTAL ASSETS - "#)]
     pub ernastr: Option<f32>,
 
-    #[doc = r#"Title: ESTABLISHED DATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESTYMD")]
+    #[schemars(description = r#"ESTABLISHED DATE - "#)]
     pub estymd: Option<f32>,
 
-    #[doc = r#"Title: INACTIVE DATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ENDEFYMD")]
+    #[schemars(description = r#"INACTIVE DATE - "#)]
     pub endefymd: Option<f32>,
 
-    #[doc = r#"Title: INACTIVE DATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORG_END_NUM_DTE")]
+    #[schemars(description = r#"INACTIVE DATE - "#)]
     pub org_end_num_dte: Option<f32>,
 
-    #[doc = r#"Title: TT&L"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETTLOTMG")]
+    #[schemars(description = r#"TT&L - "#)]
     pub ettlotmg: Option<f32>,
 
-    #[doc = r#"Title: THRIFT FINANCIAL REPORT FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FORMTFR")]
+    #[schemars(description = r#"THRIFT FINANCIAL REPORT FLAG - "#)]
     pub formtfr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN EXCHANGE-TOTAL CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FX")]
+    #[schemars(description = r#"FOREIGN EXCHANGE-TOTAL CONTRACTS - "#)]
     pub fx: Option<f32>,
 
-    #[doc = r#"Title: FOR EXCH-FUTURES & FORWARD CONTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FXFFC")]
+    #[schemars(description = r#"FOR EXCH-FUTURES & FORWARD CONTR - "#)]
     pub fxffc: Option<f32>,
 
-    #[doc = r#"Title: FOR EXCHANGE-SWAPS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FXNVS")]
+    #[schemars(description = r#"FOR EXCHANGE-SWAPS - "#)]
     pub fxnvs: Option<f32>,
 
-    #[doc = r#"Title: FOR EXCH-PUR OPTION CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FXPOC")]
+    #[schemars(description = r#"FOR EXCH-PUR OPTION CONTRACTS - "#)]
     pub fxpoc: Option<f32>,
 
-    #[doc = r#"Title: SPOT FOREIGN EXCHANGE CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FXSPOT")]
+    #[schemars(description = r#"SPOT FOREIGN EXCHANGE CONTRACTS - "#)]
     pub fxspot: Option<f32>,
 
-    #[doc = r#"Title: FOR EXCH-WRITTEN OPTION CONTRACT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FXWOC")]
+    #[schemars(description = r#"FOR EXCH-WRITTEN OPTION CONTRACT - "#)]
     pub fxwoc: Option<f32>,
 
-    #[doc = r#"Title: INC BEFORE INC TAXS & DISC-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFTXQ")]
+    #[schemars(description = r#"INC BEFORE INC TAXS & DISC-QTR - "#)]
     pub ibeftxq: Option<f32>,
 
-    #[doc = r#"Title: INCOME BEFORE DISC OPR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFXTR")]
+    #[schemars(description = r#"INCOME BEFORE DISC OPR - "#)]
     pub ibefxtr: Option<f32>,
 
-    #[doc = r#"Title: INCOME BEFORE DISC OPR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFXTRR")]
+    #[schemars(description = r#"INCOME BEFORE DISC OPR RATIO - "#)]
     pub ibefxtrr: Option<f32>,
 
-    #[doc = r#"Title: INCOME BEFORE DISC OPR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFXTRQ")]
+    #[schemars(description = r#"INCOME BEFORE DISC OPR QUARTERLY - "#)]
     pub ibefxtrq: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY RATIO INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IEFF")]
+    #[schemars(description = r#"EFFICIENCY RATIO INCOME - "#)]
     pub ieff: Option<f32>,
 
-    #[doc = r#"Title: EFFICIENCY RATIO INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IEFFQ")]
+    #[schemars(description = r#"EFFICIENCY RATIO INCOME QUARTERLY - "#)]
     pub ieffq: Option<f32>,
 
-    #[doc = r#"Title: INCOME BEFORE DISC OPR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFXTRQR")]
+    #[schemars(description = r#"INCOME BEFORE DISC OPR QUARTERLY RATIO - "#)]
     pub ibefxtrqr: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY ACTIVITIES INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFIDUC")]
+    #[schemars(description = r#"FIDUCIARY ACTIVITIES INCOME - "#)]
     pub ifiduc: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY ACTIVITIES INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFIDUCR")]
+    #[schemars(description = r#"FIDUCIARY ACTIVITIES INCOME RATIO - "#)]
     pub ifiducr: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY ACTIVITIES INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFIDUCQ")]
+    #[schemars(description = r#"FIDUCIARY ACTIVITIES INCOME-QTR - "#)]
     pub ifiducq: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY ACTIVITIES INCOME-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IFIDUCQR")]
+    #[schemars(description = r#"FIDUCIARY ACTIVITIES INCOME-QTR RATIO - "#)]
     pub ifiducqr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-COMMODITY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCMEX")]
+    #[schemars(description = r#"TRADING ACCOUNT-COMMODITY - "#)]
     pub iglcmex: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-COMMODITY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCMEXR")]
+    #[schemars(description = r#"TRADING ACCOUNT-COMMODITY RATIO - "#)]
     pub iglcmexr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-COMMODITY QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCMEXQ")]
+    #[schemars(description = r#"TRADING ACCOUNT-COMMODITY QUARTERLY - "#)]
     pub iglcmexq: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-COMMODITY RATIO QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCMEXQR")]
+    #[schemars(description = r#"TRADING ACCOUNT-COMMODITY RATIO QUARTERLY - "#)]
     pub iglcmexqr: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE- CREDIT EXPOSURE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCREX")]
+    #[schemars(description = r#"TRADING REVENUE- CREDIT EXPOSURE - "#)]
     pub iglcrex: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE- CREDIT EXPOSURE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCREXR")]
+    #[schemars(description = r#"TRADING REVENUE- CREDIT EXPOSURE RATIO - "#)]
     pub iglcrexr: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE- CREDIT EXPOSURE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCREXQ")]
+    #[schemars(description = r#"TRADING REVENUE- CREDIT EXPOSURE QUARTERLY - "#)]
     pub iglcrexq: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE- CREDIT EXPOSURE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLCREXQR")]
+    #[schemars(description = r#"TRADING REVENUE- CREDIT EXPOSURE QUARTERLY RATIO - "#)]
     pub iglcrexqr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-EQ DERIVATIVE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLEDEX")]
+    #[schemars(description = r#"TRADING ACCOUNT-EQ DERIVATIVE - "#)]
     pub igledex: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-EQ DERIVATIVE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLEDEXR")]
+    #[schemars(description = r#"TRADING ACCOUNT-EQ DERIVATIVE RATIO - "#)]
     pub igledexr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-EQ DERIVATIVE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLEDEXQ")]
+    #[schemars(description = r#"TRADING ACCOUNT-EQ DERIVATIVE QUARTERLY - "#)]
     pub igledexq: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-EQ DERIVATIVE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLEDEXQR")]
+    #[schemars(description = r#"TRADING ACCOUNT-EQ DERIVATIVE QUARTERLY RATIO - "#)]
     pub igledexqr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-FOREIGN EXCHANGE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLFXEX")]
+    #[schemars(description = r#"TRADING ACCOUNT-FOREIGN EXCHANGE - "#)]
     pub iglfxex: Option<f32>,
 
-    #[doc = r#"Title: RADING ACCOUNT-FOREIGN EXCHANGE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLFXEXR")]
+    #[schemars(description = r#"RADING ACCOUNT-FOREIGN EXCHANGE RATIO - "#)]
     pub iglfxexr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-FOREIGN EXCHANGE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLFXEXQ")]
+    #[schemars(description = r#"TRADING ACCOUNT-FOREIGN EXCHANGE QUARTERLY - "#)]
     pub iglfxexq: Option<f32>,
 
-    #[doc = r#"Title: RADING ACCOUNT-FOREIGN EXCHANGE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLFXEXQR")]
+    #[schemars(description = r#"RADING ACCOUNT-FOREIGN EXCHANGE QUARTERLY RATIO - "#)]
     pub iglfxexqr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-INTEREST RATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLRTEX")]
+    #[schemars(description = r#"TRADING ACCOUNT-INTEREST RATE - "#)]
     pub iglrtex: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-INTEREST RATE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLRTEXR")]
+    #[schemars(description = r#"TRADING ACCOUNT-INTEREST RATE RATIO - "#)]
     pub iglrtexr: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-INTEREST RATE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLRTEXQ")]
+    #[schemars(description = r#"TRADING ACCOUNT-INTEREST RATE QUARTERLY - "#)]
     pub iglrtexq: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNT-INTEREST RATE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLRTEXQR")]
+    #[schemars(description = r#"TRADING ACCOUNT-INTEREST RATE QUARTERLY RATIO - "#)]
     pub iglrtexqr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES GAINS AND LOSSES-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSECQ")]
+    #[schemars(description = r#"SECURITIES GAINS AND LOSSES-QTR - "#)]
     pub iglsecq: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUES-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLTRAD")]
+    #[schemars(description = r#"TRADING REVENUES-TOTAL - "#)]
     pub igltrad: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUES-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLTRADR")]
+    #[schemars(description = r#"TRADING REVENUES-TOTAL RATIO - "#)]
     pub igltradr: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLTRDQ")]
+    #[schemars(description = r#"TRADING REVENUE-QTR - "#)]
     pub igltrdq: Option<f32>,
 
-    #[doc = r#"Title: TRADING REVENUE-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLTRDQR")]
+    #[schemars(description = r#"TRADING REVENUE-QTR RATIO - "#)]
     pub igltrdqr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COMMISSIONS & FEES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSCOM")]
+    #[schemars(description = r#"INSURANCE COMMISSIONS & FEES - "#)]
     pub iinscom: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COMMISSIONS & FEES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSCOMR")]
+    #[schemars(description = r#"INSURANCE COMMISSIONS & FEES RATIO - "#)]
     pub iinscomr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COMMISSIONS & FEES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSCOMQ")]
+    #[schemars(description = r#"INSURANCE COMMISSIONS & FEES QUARTERLY - "#)]
     pub iinscomq: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COMMISSIONS & FEES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSCOMQR")]
+    #[schemars(description = r#"INSURANCE COMMISSIONS & FEES QUARTERLY RATIO - "#)]
     pub iinscomqr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COM+FEES-OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSOTH")]
+    #[schemars(description = r#"INSURANCE COM+FEES-OTHER - "#)]
     pub iinsoth: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COM+FEES-OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSOTHR")]
+    #[schemars(description = r#"INSURANCE COM+FEES-OTHER RATIO - "#)]
     pub iinsothr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COM+FEES-OTHER QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSOTHQ")]
+    #[schemars(description = r#"INSURANCE COM+FEES-OTHER QUARTERLY - "#)]
     pub iinsothq: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE COM+FEES-OTHER QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSOTHQR")]
+    #[schemars(description = r#"INSURANCE COM+FEES-OTHER QUARTERLY RATIO - "#)]
     pub iinsothqr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE UNDERWRITNG INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSUND")]
+    #[schemars(description = r#"INSURANCE UNDERWRITNG INCOME - "#)]
     pub iinsund: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE UNDERWRITNG INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSUNDR")]
+    #[schemars(description = r#"INSURANCE UNDERWRITNG INCOME RATIO - "#)]
     pub iinsundr: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE UNDERWRITNG INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSUNDQ")]
+    #[schemars(description = r#"INSURANCE UNDERWRITNG INCOME QUARTERLY - "#)]
     pub iinsundq: Option<f32>,
 
-    #[doc = r#"Title: INSURANCE UNDERWRITNG INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINSUNDQR")]
+    #[schemars(description = r#"INSURANCE UNDERWRITNG INCOME QUARTERLY RATIO - "#)]
     pub iinsundqr: Option<f32>,
 
-    #[doc = r#"Title: INVEST BANK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINVFEE")]
+    #[schemars(description = r#"INVEST BANK - "#)]
     pub iinvfee: Option<f32>,
 
-    #[doc = r#"Title: INVEST BANK RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINVFEER")]
+    #[schemars(description = r#"INVEST BANK RATIO - "#)]
     pub iinvfeer: Option<f32>,
 
-    #[doc = r#"Title: INVEST BANK QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINVFEEQ")]
+    #[schemars(description = r#"INVEST BANK QUARTERLY - "#)]
     pub iinvfeeq: Option<f32>,
 
-    #[doc = r#"Title: INVEST BANK QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IINVFEEQR")]
+    #[schemars(description = r#"INVEST BANK QUARTERLY RATIO - "#)]
     pub iinvfeeqr: Option<f32>,
 
-    #[doc = r#"Title: PRIMARY INSURER (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="INSAGNT1")]
+    #[schemars(description = r#"PRIMARY INSURER (Search-Eligible) - This field can be used for search and filtering."#)]
     pub insagnt1: Option<String>,
 
-    #[doc = r#"Title: PURCH CC REL & NONMTG SER ASTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANGCC")]
+    #[schemars(description = r#"PURCH CC REL & NONMTG SER ASTS - "#)]
     pub intangcc: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANGW")]
+    #[schemars(description = r#"GOODWILL - "#)]
     pub intangw: Option<f32>,
 
-    #[doc = r#"Title: GOODWILL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANGWR")]
+    #[schemars(description = r#"GOODWILL RATIO - "#)]
     pub intangwr: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE SERVICING ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANMSR")]
+    #[schemars(description = r#"MORTGAGE SERVICING ASSETS - "#)]
     pub intanmsr: Option<f32>,
 
-    #[doc = r#"Title: MORTGAGE SERVICING ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANMSRR")]
+    #[schemars(description = r#"MORTGAGE SERVICING ASSETS RATIO - "#)]
     pub intanmsrr: Option<f32>,
 
-    #[doc = r#"Title: OTHER IDENTIFIABLE INTANG ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANOTH")]
+    #[schemars(description = r#"OTHER IDENTIFIABLE INTANG ASSETS - "#)]
     pub intanoth: Option<f32>,
 
-    #[doc = r#"Title: OTHER IDENTIFIABLE INTANG ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTANOTHR")]
+    #[schemars(description = r#"OTHER IDENTIFIABLE INTANG ASSETS RATIO - "#)]
     pub intanothr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST INCOME/EARNING ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINCYQ")]
+    #[schemars(description = r#"INTEREST INCOME/EARNING ASSETS QUARTERLY - "#)]
     pub intincyq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL INTEREST INCOME ANNUAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINCA")]
+    #[schemars(description = r#"TOTAL INTEREST INCOME ANNUAL - "#)]
     pub intinca: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONINTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTNII")]
+    #[schemars(description = r#"OTHER NONINTEREST INCOME - "#)]
     pub iotnii: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONINTEREST INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTNIIR")]
+    #[schemars(description = r#"OTHER NONINTEREST INCOME RATIO - "#)]
     pub iotniir: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONINTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTNIIQ")]
+    #[schemars(description = r#"OTHER NONINTEREST INCOME QUARTERLY - "#)]
     pub iotniiq: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONINTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IOTNIIQR")]
+    #[schemars(description = r#"OTHER NONINTEREST INCOME QUARTERLY RATIO - "#)]
     pub iotniiqr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIZATION INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISECZ")]
+    #[schemars(description = r#"SECURITIZATION INCOME - "#)]
     pub isecz: Option<f32>,
 
-    #[doc = r#"Title: SECURITIZATION INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISECZR")]
+    #[schemars(description = r#"SECURITIZATION INCOME RATIO - "#)]
     pub iseczr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIZATION INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISECZQ")]
+    #[schemars(description = r#"SECURITIZATION INCOME QUARTERLY - "#)]
     pub iseczq: Option<f32>,
 
-    #[doc = r#"Title: SECURITIZATION INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISECZQR")]
+    #[schemars(description = r#"SECURITIZATION INCOME QUARTERLY RATIO - "#)]
     pub iseczqr: Option<f32>,
 
-    #[doc = r#"Title: SERVICE CHARGE ON DEP ACCTS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERCHGQ")]
+    #[schemars(description = r#"SERVICE CHARGE ON DEP ACCTS-QTR - "#)]
     pub iserchgq: Option<f32>,
 
-    #[doc = r#"Title: SERVICE CHARGE ON DEPOSIT ACCTS-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERCHGQR")]
+    #[schemars(description = r#"SERVICE CHARGE ON DEPOSIT ACCTS-QTR RATIO - "#)]
     pub iserchgqr: Option<f32>,
 
-    #[doc = r#"Title: SERVICING FEES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERFEE")]
+    #[schemars(description = r#"SERVICING FEES - "#)]
     pub iserfee: Option<f32>,
 
-    #[doc = r#"Title: SERVICING FEES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERFEER")]
+    #[schemars(description = r#"SERVICING FEES RATIO - "#)]
     pub iserfeer: Option<f32>,
 
-    #[doc = r#"Title: SERVICING FEES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERFEEQ")]
+    #[schemars(description = r#"SERVICING FEES QUARTERLY - "#)]
     pub iserfeeq: Option<f32>,
 
-    #[doc = r#"Title: SERVICING FEES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERFEEQR")]
+    #[schemars(description = r#"SERVICING FEES QUARTERLY RATIO - "#)]
     pub iserfeeqr: Option<f32>,
 
-    #[doc = r#"Title: VENTURE CAPITAL REVENUE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IVENCAP")]
+    #[schemars(description = r#"VENTURE CAPITAL REVENUE - "#)]
     pub ivencap: Option<f32>,
 
-    #[doc = r#"Title: VENTURE CAPITAL REVENUE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IVENCAPR")]
+    #[schemars(description = r#"VENTURE CAPITAL REVENUE RATIO - "#)]
     pub ivencapr: Option<f32>,
 
-    #[doc = r#"Title: VENTURE CAPITAL REVENUE QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IVENCAPQ")]
+    #[schemars(description = r#"VENTURE CAPITAL REVENUE QUARTERLY - "#)]
     pub ivencapq: Option<f32>,
 
-    #[doc = r#"Title: VENTURE CAPITAL REVENUE QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IVENCAPQR")]
+    #[schemars(description = r#"VENTURE CAPITAL REVENUE QUARTERLY RATIO - "#)]
     pub ivencapqr: Option<f32>,
 
-    #[doc = r#"Title: AG LOANS - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LAG")]
+    #[schemars(description = r#"AG LOANS - LOSS SHARE - "#)]
     pub lag: Option<f32>,
 
-    #[doc = r#"Title: AG LOANS - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LAGR")]
+    #[schemars(description = r#"AG LOANS - LOSS SHARE RATIO - "#)]
     pub lagr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LCI")]
+    #[schemars(description = r#"C&I LOANS - LOSS SHARE - "#)]
     pub lci: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LCIR")]
+    #[schemars(description = r#"C&I LOANS - LOSS SHARE RATIO - "#)]
     pub lcir: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LCON")]
+    #[schemars(description = r#"CONSUMER LOANS - LOSS SHARE - "#)]
     pub lcon: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LCONR")]
+    #[schemars(description = r#"CONSUMER LOANS - LOSS SHARE RATIO - "#)]
     pub lconr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LIABILITIES-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIABFOR")]
+    #[schemars(description = r#"TOTAL LIABILITIES-FOR - "#)]
     pub liabfor: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 100-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG1")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 100-$ - "#)]
     pub lnag1: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 100-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG1R")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 100-$ RATIO - "#)]
     pub lnag1r: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-100-250-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG2")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-100-250-$ - "#)]
     pub lnag2: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-100-250-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG2R")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-100-250-$ RATIO - "#)]
     pub lnag2r: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-250-500-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG3")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-250-500-$ - "#)]
     pub lnag3: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-250-500-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG3R")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-250-500-$ RATIO - "#)]
     pub lnag3r: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 500-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG4")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 500-$ - "#)]
     pub lnag4: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 500-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG4R")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 500-$ RATIO - "#)]
     pub lnag4r: Option<f32>,
 
-    #[doc = r#"Title: AG LOANS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG5")]
+    #[schemars(description = r#"AG LOANS-CAVG5 - "#)]
     pub lnag5: Option<f32>,
 
-    #[doc = r#"Title: AG LOANS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG22")]
+    #[schemars(description = r#"AG LOANS-CAVG2 - "#)]
     pub lnag22: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 100-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG1N")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 100-NUM - "#)]
     pub lnag1n: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 100-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG1NR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 100-NUM RATIO - "#)]
     pub lnag1nr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-100-250-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG2N")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-100-250-NUM - "#)]
     pub lnag2n: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-100-250-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG2NR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-100-250-NUM RATIO - "#)]
     pub lnag2nr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-250-500-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG3N")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-250-500-NUM - "#)]
     pub lnag3n: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-250-500-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG3NR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-250-500-NUM RATIO - "#)]
     pub lnag3nr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 500-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG4N")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 500-NUM - "#)]
     pub lnag4n: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-UNDER 500-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAG4NR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-UNDER 500-NUM RATIO - "#)]
     pub lnag4nr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAGFOR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-FOR - "#)]
     pub lnagfor: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAGFORR")]
+    #[schemars(description = r#"AGRICULTURAL LOANS-FOR RATIO - "#)]
     pub lnagforr: Option<f32>,
 
-    #[doc = r#"Title: LOAN LOSS RESERVE/GROSS LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNATRESR")]
+    #[schemars(description = r#"LOAN LOSS RESERVE/GROSS LN&LS - "#)]
     pub lnatresr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS - AUTO - CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAUTO2")]
+    #[schemars(description = r#"CONSUMER LOANS - AUTO - CAVG2 - "#)]
     pub lnauto2: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS - AUTO - CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNAUTO5")]
+    #[schemars(description = r#"CONSUMER LOANS - AUTO - CAVG5 - "#)]
     pub lnauto5: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-100-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI1")]
+    #[schemars(description = r#"C&I LOANS-UNDER-100-$ - "#)]
     pub lnci1: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-100-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI1R")]
+    #[schemars(description = r#"C&I LOANS-UNDER-100-$ RATIO - "#)]
     pub lnci1r: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-100-250-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI2")]
+    #[schemars(description = r#"C&I LOANS-100-250-$ - "#)]
     pub lnci2: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-100-250-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI2R")]
+    #[schemars(description = r#"C&I LOANS-100-250-$ RATIO - "#)]
     pub lnci2r: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-250-1M-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI3")]
+    #[schemars(description = r#"C&I LOANS-250-1M-$ - "#)]
     pub lnci3: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-250-1M-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI3R")]
+    #[schemars(description = r#"C&I LOANS-250-1M-$ RATIO - "#)]
     pub lnci3r: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-1M-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI4")]
+    #[schemars(description = r#"C&I LOANS-UNDER-1M-$ - "#)]
     pub lnci4: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-1M-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI4R")]
+    #[schemars(description = r#"C&I LOANS-UNDER-1M-$ RATIO - "#)]
     pub lnci4r: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI5")]
+    #[schemars(description = r#"C&I LOANS-CAVG5 - "#)]
     pub lnci5: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI22")]
+    #[schemars(description = r#"C&I LOANS-CAVG2 - "#)]
     pub lnci22: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-100-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI1N")]
+    #[schemars(description = r#"C&I LOANS-UNDER-100-NUM - "#)]
     pub lnci1n: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-100-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI1NR")]
+    #[schemars(description = r#"C&I LOANS-UNDER-100-NUM RATIO - "#)]
     pub lnci1nr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-100-250-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI2N")]
+    #[schemars(description = r#"C&I LOANS-100-250-NUM - "#)]
     pub lnci2n: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-250-1M-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI2NR")]
+    #[schemars(description = r#"C&I LOANS-250-1M-NUM RATIO - "#)]
     pub lnci2nr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-250-1M-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI3N")]
+    #[schemars(description = r#"C&I LOANS-250-1M-NUM - "#)]
     pub lnci3n: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-250-1M-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI3NR")]
+    #[schemars(description = r#"C&I LOANS-250-1M-NUM RATIO - "#)]
     pub lnci3nr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-1M-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI4N")]
+    #[schemars(description = r#"C&I LOANS-UNDER-1M-NUM - "#)]
     pub lnci4n: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-UNDER-1M-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCI4NR")]
+    #[schemars(description = r#"C&I LOANS-UNDER-1M-NUM RATIO - "#)]
     pub lnci4nr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCIFOR")]
+    #[schemars(description = r#"C&I LOANS-FOR - "#)]
     pub lncifor: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCIFORR")]
+    #[schemars(description = r#"C&I LOANS-FOR RATIO - "#)]
     pub lnciforr: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-NON-U.S. DOMICILE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCINUS")]
+    #[schemars(description = r#"C&I LOANS-NON-U.S. DOMICILE - "#)]
     pub lncinus: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-NON-U.S. DOMICILE-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCINUSF")]
+    #[schemars(description = r#"C&I LOANS-NON-U.S. DOMICILE-FOR - "#)]
     pub lncinusf: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS-NON-U.S. DOMICILE-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCINUSFR")]
+    #[schemars(description = r#"C&I LOANS-NON-U.S. DOMICILE-FOR RATIO - "#)]
     pub lncinusfr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCOMRE")]
+    #[schemars(description = r#"COMMERCIAL RE LOANS - "#)]
     pub lncomre: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCOMRER")]
+    #[schemars(description = r#"COMMERCIAL RE LOANS RATIO - "#)]
     pub lncomrer: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LOANS2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCOMRE2")]
+    #[schemars(description = r#"COMMERCIAL RE LOANS2 - "#)]
     pub lncomre2: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LOANS CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCOMRE5")]
+    #[schemars(description = r#"COMMERCIAL RE LOANS CAVG5 - "#)]
     pub lncomre5: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCON2")]
+    #[schemars(description = r#"CONSUMER LOANS-CAVG2 - "#)]
     pub lncon2: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCON5")]
+    #[schemars(description = r#"CONSUMER LOANS-CAVG5 - "#)]
     pub lncon5: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONFOR")]
+    #[schemars(description = r#"CONSUMER LOANS-FOR - "#)]
     pub lnconfor: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONFORR")]
+    #[schemars(description = r#"CONSUMER LOANS-FOR RATIO - "#)]
     pub lnconforr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER & RELATED PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONORP")]
+    #[schemars(description = r#"OTHER CONSUMER & RELATED PLANS - "#)]
     pub lnconorp: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOANS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONOT2")]
+    #[schemars(description = r#"OTHER CONSUMER LOANS-CAVG2 - "#)]
     pub lnconot2: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOANS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONOT5")]
+    #[schemars(description = r#"OTHER CONSUMER LOANS-CAVG5 - "#)]
     pub lnconot5: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LNS-RELATED PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONRP")]
+    #[schemars(description = r#"CONSUMER LNS-RELATED PLANS - "#)]
     pub lnconrp: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LNS-RELATED PLANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONRPR")]
+    #[schemars(description = r#"CONSUMER LNS-RELATED PLANS RATIO - "#)]
     pub lnconrpr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONTRA ACCOUNTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONTRA")]
+    #[schemars(description = r#"OTHER CONTRA ACCOUNTS - "#)]
     pub lncontra: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONTRA ACCOUNTS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONTRAR")]
+    #[schemars(description = r#"OTHER CONTRA ACCOUNTS RATIO - "#)]
     pub lncontrar: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD PLANS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCRCD2")]
+    #[schemars(description = r#"CREDIT CARD PLANS-CAVG2 - "#)]
     pub lncrcd2: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD PLANS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCRCD5")]
+    #[schemars(description = r#"CREDIT CARD PLANS-CAVG5 - "#)]
     pub lncrcd5: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEP INST LNS & ACCEPT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPAC")]
+    #[schemars(description = r#"TOTAL DEP INST LNS & ACCEPT - "#)]
     pub lndepac: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEP INST LNS & ACCEPT-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPACD")]
+    #[schemars(description = r#"TOTAL DEP INST LNS & ACCEPT-DOM - "#)]
     pub lndepacd: Option<f32>,
 
-    #[doc = r#"Title: LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCE OF OTHER BANKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPAOBK")]
+    #[schemars(description = r#"LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCE OF OTHER BANKS - "#)]
     pub lndepaobk: Option<f32>,
 
-    #[doc = r#"Title: LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCE OF OTHER BANKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPAOBKR")]
+    #[schemars(description = r#"LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCE OF OTHER BANKS RATIO - "#)]
     pub lndepaobkr: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-COMMERCIAL BANKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPCB")]
+    #[schemars(description = r#"DEP INST LNS-COMMERCIAL BANKS - "#)]
     pub lndepcb: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-COMMERCIAL BK-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPCBF")]
+    #[schemars(description = r#"DEP INST LNS-COMMERCIAL BK-FOR - "#)]
     pub lndepcbf: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-COMMERCIAL BK-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPCBFR")]
+    #[schemars(description = r#"DEP INST LNS-COMMERCIAL BK-FOR RATIO - "#)]
     pub lndepcbfr: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-FOR COUNTRY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPFC")]
+    #[schemars(description = r#"DEP INST LNS-FOR COUNTRY - "#)]
     pub lndepfc: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-FOR COUNTRY-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPFCF")]
+    #[schemars(description = r#"DEP INST LNS-FOR COUNTRY-FOR - "#)]
     pub lndepfcf: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-FOR COUNTRY-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPFCFR")]
+    #[schemars(description = r#"DEP INST LNS-FOR COUNTRY-FOR RATIO - "#)]
     pub lndepfcfr: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-FOR COUNTRY-U.S. BR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPFUS")]
+    #[schemars(description = r#"DEP INST LNS-FOR COUNTRY-U.S. BR - "#)]
     pub lndepfus: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-OTH U.S. INST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPUS")]
+    #[schemars(description = r#"DEP INST LNS-OTH U.S. INST - "#)]
     pub lndepus: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-COM BKS-U.S.BRANCH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPUSB")]
+    #[schemars(description = r#"DEP INST LNS-COM BKS-U.S.BRANCH - "#)]
     pub lndepusb: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-OTH U.S. INST-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPUSF")]
+    #[schemars(description = r#"DEP INST LNS-OTH U.S. INST-FOR - "#)]
     pub lndepusf: Option<f32>,
 
-    #[doc = r#"Title: DEP INST LNS-OTH U.S. INST-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNDEPUSFR")]
+    #[schemars(description = r#"DEP INST LNS-OTH U.S. INST-FOR RATIO - "#)]
     pub lndepusfr: Option<f32>,
 
-    #[doc = r#"Title: EXECUTIVE OFFICER LOANS-AMOUNT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNEXAMT")]
+    #[schemars(description = r#"EXECUTIVE OFFICER LOANS-AMOUNT - "#)]
     pub lnexamt: Option<f32>,
 
-    #[doc = r#"Title: EXECUTIVE OFFICER LOANS-AMOUNT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNEXAMTR")]
+    #[schemars(description = r#"EXECUTIVE OFFICER LOANS-AMOUNT RATIO - "#)]
     pub lnexamtr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNFGFOR")]
+    #[schemars(description = r#"FOREIGN GOVT LOANS-FOR - "#)]
     pub lnfgfor: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNFGFORR")]
+    #[schemars(description = r#"FOREIGN GOVT LOANS-FOR RATIO - "#)]
     pub lnfgforr: Option<f32>,
 
-    #[doc = r#"Title: NET LOANS & LEASES/DEPOSITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSDEPR")]
+    #[schemars(description = r#"NET LOANS & LEASES/DEPOSITS - "#)]
     pub lnlsdepr: Option<f32>,
 
-    #[doc = r#"Title: LN&LS + UNEARNED INC-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSFOR")]
+    #[schemars(description = r#"LN&LS + UNEARNED INC-FOR - "#)]
     pub lnlsfor: Option<f32>,
 
-    #[doc = r#"Title: LN&LS + UNEARNED INC-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSFORR")]
+    #[schemars(description = r#"LN&LS + UNEARNED INC-FOR RATIO - "#)]
     pub lnlsforr: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGR5")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL-CAVG5 - "#)]
     pub lnlsgr5: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRF")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL-FOR - "#)]
     pub lnlsgrf: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES-TOTAL-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRFR")]
+    #[schemars(description = r#"LOANS AND LEASES-TOTAL-FOR RATIO - "#)]
     pub lnlsgrfr: Option<f32>,
 
-    #[doc = r#"Title: NET LOANS & LEASES/ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSNTV")]
+    #[schemars(description = r#"NET LOANS & LEASES/ASSETS - "#)]
     pub lnlsntv: Option<f32>,
 
-    #[doc = r#"Title: NET LOANS & LEASES/ASSETS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSNQR")]
+    #[schemars(description = r#"NET LOANS & LEASES/ASSETS QUARTERLY RATIO - "#)]
     pub lnlsnqr: Option<f32>,
 
-    #[doc = r#"Title: LOANS & LEASES HELD FOR RESALE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSSALE")]
+    #[schemars(description = r#"LOANS & LEASES HELD FOR RESALE - "#)]
     pub lnlssale: Option<f32>,
 
-    #[doc = r#"Title: LOANS & LEASES HELD FOR RESALE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSSALER")]
+    #[schemars(description = r#"LOANS & LEASES HELD FOR RESALE RATIO - "#)]
     pub lnlssaler: Option<f32>,
 
-    #[doc = r#"Title: PLEDGED LOANS AND LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNPLEDGE")]
+    #[schemars(description = r#"PLEDGED LOANS AND LEASES - "#)]
     pub lnpledge: Option<f32>,
 
-    #[doc = r#"Title: PLEDGED LOANS AND LEASES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNPLEDGER")]
+    #[schemars(description = r#"PLEDGED LOANS AND LEASES RATIO - "#)]
     pub lnpledger: Option<f32>,
 
-    #[doc = r#"Title: MUNI LOANS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNMUNIF")]
+    #[schemars(description = r#"MUNI LOANS-FOR - "#)]
     pub lnmunif: Option<f32>,
 
-    #[doc = r#"Title: MUNI LOANS-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNMUNIFR")]
+    #[schemars(description = r#"MUNI LOANS-FOR RATIO - "#)]
     pub lnmunifr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT1T3")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 1-3 YEARS - "#)]
     pub lnot1t3: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT1T3R")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 1-3 YEARS RATIO - "#)]
     pub lnot1t3r: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS*3 MO OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3LES")]
+    #[schemars(description = r#"ALL OTHER LNS & LS*3 MO OR LESS - "#)]
     pub lnot3les: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS*3 MO OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3LESR")]
+    #[schemars(description = r#"ALL OTHER LNS & LS*3 MO OR LESS RATIO - "#)]
     pub lnot3lesr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 3-5 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3T5")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 3-5 YEARS - "#)]
     pub lnot3t5: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 3-5 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3T5R")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 3-5 YEARS RATIO - "#)]
     pub lnot3t5r: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 3-12 MONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3T12")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 3-12 MONS - "#)]
     pub lnot3t12: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 3-12 MONS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT3T12R")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 3-12 MONS RATIO - "#)]
     pub lnot3t12r: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 5-15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT5T15")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 5-15 YEARS - "#)]
     pub lnot5t15: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * 5-15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOT5T15R")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * 5-15 YEARS RATIO - "#)]
     pub lnot5t15r: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS & LEASES-QBP-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTCI2")]
+    #[schemars(description = r#"OTHER LOANS & LEASES-QBP-CAVG2 - "#)]
     pub lnotci2: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS & LEASES-QBP-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTCI5")]
+    #[schemars(description = r#"OTHER LOANS & LEASES-QBP-CAVG5 - "#)]
     pub lnotci5: Option<f32>,
 
-    #[doc = r#"Title: LN TO NONDEP FIN INST & OTH-FGN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTHERF")]
+    #[schemars(description = r#"LN TO NONDEP FIN INST & OTH-FGN - "#)]
     pub lnotherf: Option<f32>,
 
-    #[doc = r#"Title: LN TO NONDEP FIN INST & OTH-FGN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTHERFR")]
+    #[schemars(description = r#"LN TO NONDEP FIN INST & OTH-FGN RATIO - "#)]
     pub lnotherfr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * OVER 15 YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTOV15")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * OVER 15 YRS - "#)]
     pub lnotov15: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LNS & LS * OVER 15 YRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNOTOV15R")]
+    #[schemars(description = r#"ALL OTHER LNS & LS * OVER 15 YRS RATIO - "#)]
     pub lnotov15r: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 100-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG1")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 100-$ - "#)]
     pub lnreag1: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 100-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG1R")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 100-$ RATIO - "#)]
     pub lnreag1r: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-100-250-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG2")]
+    #[schemars(description = r#"RE AGRICULTURAL-100-250-$ - "#)]
     pub lnreag2: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-100-250-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG2R")]
+    #[schemars(description = r#"RE AGRICULTURAL-100-250-$ RATIO - "#)]
     pub lnreag2r: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-250-500-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG3")]
+    #[schemars(description = r#"RE AGRICULTURAL-250-500-$ - "#)]
     pub lnreag3: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-250-500-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG3R")]
+    #[schemars(description = r#"RE AGRICULTURAL-250-500-$ RATIO - "#)]
     pub lnreag3r: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 500-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG4")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 500-$ - "#)]
     pub lnreag4: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 500-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG4R")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 500-$ RATIO - "#)]
     pub lnreag4r: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 100-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG1N")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 100-NUM - "#)]
     pub lnreag1n: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 100-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG1NR")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 100-NUM RATIO - "#)]
     pub lnreag1nr: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-100-250-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG2N")]
+    #[schemars(description = r#"RE AGRICULTURAL-100-250-NUM - "#)]
     pub lnreag2n: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-100-250-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG2NR")]
+    #[schemars(description = r#"RE AGRICULTURAL-100-250-NUM RATIO - "#)]
     pub lnreag2nr: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-250-500-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG3N")]
+    #[schemars(description = r#"RE AGRICULTURAL-250-500-NUM - "#)]
     pub lnreag3n: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-250-500-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG3NR")]
+    #[schemars(description = r#"RE AGRICULTURAL-250-500-NUM RATIO - "#)]
     pub lnreag3nr: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 500-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG4N")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 500-NUM - "#)]
     pub lnreag4n: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-UNDER 500-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG4NR")]
+    #[schemars(description = r#"RE AGRICULTURAL-UNDER 500-NUM RATIO - "#)]
     pub lnreag4nr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM RE CONSTRUCTION LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECNFM")]
+    #[schemars(description = r#"1-4 FAM RE CONSTRUCTION LOANS - "#)]
     pub lnrecnfm: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM RE CONSTRUCTION LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECNFMR")]
+    #[schemars(description = r#"1-4 FAM RE CONSTRUCTION LOANS RATIO - "#)]
     pub lnrecnfmr: Option<f32>,
 
-    #[doc = r#"Title: OTHER RE CONSTRUCTION & LAND LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECNOT")]
+    #[schemars(description = r#"OTHER RE CONSTRUCTION & LAND LN - "#)]
     pub lnrecnot: Option<f32>,
 
-    #[doc = r#"Title: OTHER RE CONSTRUCTION & LAND LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRECNOTR")]
+    #[schemars(description = r#"OTHER RE CONSTRUCTION & LAND LN - "#)]
     pub lnrecnotr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREOTH")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-1-4 FAMILY - "#)]
     pub lnreoth: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-1-4 FAMILY2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREOTH2")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-1-4 FAMILY2 - "#)]
     pub lnreoth2: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY OTHER LOANS CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREOTH5")]
+    #[schemars(description = r#"RE 1-4 FAMILY OTHER LOANS CAVG5 - "#)]
     pub lnreoth5: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 100-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR1")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 100-$ - "#)]
     pub lnrenr1: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 100-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR1R")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 100-$ RATIO - "#)]
     pub lnrenr1r: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-100-250-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR2")]
+    #[schemars(description = r#"RE NONFARM NONRES-100-250-$ - "#)]
     pub lnrenr2: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-100-250-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR2R")]
+    #[schemars(description = r#"RE NONFARM NONRES-100-250-$ RATIO - "#)]
     pub lnrenr2r: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-250-1M-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR3")]
+    #[schemars(description = r#"RE NONFARM NONRES-250-1M-$ - "#)]
     pub lnrenr3: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-250-1M-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR3R")]
+    #[schemars(description = r#"RE NONFARM NONRES-250-1M-$ RATIO - "#)]
     pub lnrenr3r: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 1M-$"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR4")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 1M-$ - "#)]
     pub lnrenr4: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 1M-$ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR4R")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 1M-$ RATIO - "#)]
     pub lnrenr4r: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 100-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR1N")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 100-NUM - "#)]
     pub lnrenr1n: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 100-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR1NR")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 100-NUM RATIO - "#)]
     pub lnrenr1nr: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-100-250-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR2N")]
+    #[schemars(description = r#"RE NONFARM NONRES-100-250-NUM - "#)]
     pub lnrenr2n: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-100-250-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR2NR")]
+    #[schemars(description = r#"RE NONFARM NONRES-100-250-NUM RATIO - "#)]
     pub lnrenr2nr: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-250-1M-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR3N")]
+    #[schemars(description = r#"RE NONFARM NONRES-250-1M-NUM - "#)]
     pub lnrenr3n: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-250-1M-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR3NR")]
+    #[schemars(description = r#"RE NONFARM NONRES-250-1M-NUM RATIO - "#)]
     pub lnrenr3nr: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 1M-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR4N")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 1M-NUM - "#)]
     pub lnrenr4n: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES-UNDER 1M-NUM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENR4NR")]
+    #[schemars(description = r#"RE NONFARM NONRES-UNDER 1M-NUM RATIO - "#)]
     pub lnrenr4nr: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONFARM NONRES RE LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENROT")]
+    #[schemars(description = r#"OTHER NONFARM NONRES RE LNS - "#)]
     pub lnrenrot: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONFARM NONRES RE LNS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENROTR")]
+    #[schemars(description = r#"OTHER NONFARM NONRES RE LNS RATIO - "#)]
     pub lnrenrotr: Option<f32>,
 
-    #[doc = r#"Title: OWNER-OCC NONFARM NONRES RE LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENROW")]
+    #[schemars(description = r#"OWNER-OCC NONFARM NONRES RE LNS - "#)]
     pub lnrenrow: Option<f32>,
 
-    #[doc = r#"Title: OWNER-OCC NONFARM NONRES RE LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENROWR")]
+    #[schemars(description = r#"OWNER-OCC NONFARM NONRES RE LNS - "#)]
     pub lnrenrowr: Option<f32>,
 
-    #[doc = r#"Title: RE LNS-NON US ADDRESSEES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENUS")]
+    #[schemars(description = r#"RE LNS-NON US ADDRESSEES - "#)]
     pub lnrenus: Option<f32>,
 
-    #[doc = r#"Title: RE LNS-NON US ADDRESSEES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRENUSR")]
+    #[schemars(description = r#"RE LNS-NON US ADDRESSEES RATIO - "#)]
     pub lnrenusr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-FIRST LIENS-ADJUST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSF1")]
+    #[schemars(description = r#"RE 1-4 FAMILY-FIRST LIENS-ADJUST - "#)]
     pub lnrersf1: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-FIRST LIENS-ADJUST RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSF1R")]
+    #[schemars(description = r#"RE 1-4 FAMILY-FIRST LIENS-ADJUST RATIO - "#)]
     pub lnrersf1r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-SECOND LIENS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSF2")]
+    #[schemars(description = r#"RE 1-4 FAMILY-SECOND LIENS - "#)]
     pub lnrersf2: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-SECOND LIENS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSF2R")]
+    #[schemars(description = r#"RE 1-4 FAMILY-SECOND LIENS RATIO - "#)]
     pub lnrersf2r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-FIRST LIENS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSFM")]
+    #[schemars(description = r#"RE 1-4 FAMILY-FIRST LIENS - "#)]
     pub lnrersfm: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY-FIRST LIENS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERSFMR")]
+    #[schemars(description = r#"RE 1-4 FAMILY-FIRST LIENS RATIO - "#)]
     pub lnrersfmr: Option<f32>,
 
-    #[doc = r#"Title: LOAN LOSS RESERVE/N/C LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRESNCR")]
+    #[schemars(description = r#"LOAN LOSS RESERVE/N/C LOANS - "#)]
     pub lnresncr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS1T3")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 1-3 YEARS - "#)]
     pub lnrs1t3: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS1T3R")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 1-3 YEARS RATIO - "#)]
     pub lnrs1t3r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3 MONS OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3LES")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3 MONS OR LESS - "#)]
     pub lnrs3les: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3 MONS OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3LESR")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3 MONS OR LESS RATIO - "#)]
     pub lnrs3lesr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3-5 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3T5")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3-5 YEARS - "#)]
     pub lnrs3t5: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3-5 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3T5R")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3-5 YEARS RATIO - "#)]
     pub lnrs3t5r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3-12 MONTHS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3T12")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3-12 MONTHS - "#)]
     pub lnrs3t12: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 3-12 MONTHS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS3T12R")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 3-12 MONTHS RATIO - "#)]
     pub lnrs3t12r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 5-15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS5T15")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 5-15 YEARS - "#)]
     pub lnrs5t15: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * 5-15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRS5T15R")]
+    #[schemars(description = r#"RE 1-4 FAMILY * 5-15 YEARS RATIO - "#)]
     pub lnrs5t15r: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * OVER 15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRSOV15")]
+    #[schemars(description = r#"RE 1-4 FAMILY * OVER 15 YEARS - "#)]
     pub lnrsov15: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY * OVER 15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRSOV15R")]
+    #[schemars(description = r#"RE 1-4 FAMILY * OVER 15 YEARS RATIO - "#)]
     pub lnrsov15r: Option<f32>,
 
-    #[doc = r#"Title: SMALL BUSINESS LNS SOLD-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSB")]
+    #[schemars(description = r#"SMALL BUSINESS LNS SOLD-AMT - "#)]
     pub lnsb: Option<f32>,
 
-    #[doc = r#"Title: SMALL BUSINESS LNS SOLD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSBR")]
+    #[schemars(description = r#"SMALL BUSINESS LNS SOLD - "#)]
     pub lnsbr: Option<f32>,
 
-    #[doc = r#"Title: PRIN BAL- LNS SERVICE FOR OTHERS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSERV")]
+    #[schemars(description = r#"PRIN BAL- LNS SERVICE FOR OTHERS - "#)]
     pub lnserv: Option<f32>,
 
-    #[doc = r#"Title: PRIN BAL- LNS SERVICE FOR OTHERS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNSERVR")]
+    #[schemars(description = r#"PRIN BAL- LNS SERVICE FOR OTHERS RATIO - "#)]
     pub lnservr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LETTERS OF CREDIT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCCOM")]
+    #[schemars(description = r#"COMMERCIAL LETTERS OF CREDIT - "#)]
     pub loccom: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LETTERS OF CREDIT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCCOMR")]
+    #[schemars(description = r#"COMMERCIAL LETTERS OF CREDIT RATIO - "#)]
     pub loccomr: Option<f32>,
 
-    #[doc = r#"Title: FIN & PERFORM STANDBY LOC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFPSB")]
+    #[schemars(description = r#"FIN & PERFORM STANDBY LOC - "#)]
     pub locfpsb: Option<f32>,
 
-    #[doc = r#"Title: FIN & PERFORM STANDBY LOC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFPSBR")]
+    #[schemars(description = r#"FIN & PERFORM STANDBY LOC RATIO - "#)]
     pub locfpsbr: Option<f32>,
 
-    #[doc = r#"Title: FIN & PERFORM STANDBY LOC-CONVEY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFPSBK")]
+    #[schemars(description = r#"FIN & PERFORM STANDBY LOC-CONVEY - "#)]
     pub locfpsbk: Option<f32>,
 
-    #[doc = r#"Title: FIN & PERFORM STANDBY LOC-CONVEY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFPSBKR")]
+    #[schemars(description = r#"FIN & PERFORM STANDBY LOC-CONVEY RATIO - "#)]
     pub locfpsbkr: Option<f32>,
 
-    #[doc = r#"Title: FINANCIAL STANDBY LOC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFSB")]
+    #[schemars(description = r#"FINANCIAL STANDBY LOC - "#)]
     pub locfsb: Option<f32>,
 
-    #[doc = r#"Title: FINANCIAL STANDBY LOC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFSBR")]
+    #[schemars(description = r#"FINANCIAL STANDBY LOC RATIO - "#)]
     pub locfsbr: Option<f32>,
 
-    #[doc = r#"Title: FINANCIAL STANDBY LOC-CONVEYED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFSBK")]
+    #[schemars(description = r#"FINANCIAL STANDBY LOC-CONVEYED - "#)]
     pub locfsbk: Option<f32>,
 
-    #[doc = r#"Title: FINANCIAL STANDBY LOC-CONVEYED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCFSBKR")]
+    #[schemars(description = r#"FINANCIAL STANDBY LOC-CONVEYED RATIO - "#)]
     pub locfsbkr: Option<f32>,
 
-    #[doc = r#"Title: PERFORMANCE STANDBY LOC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCPSB")]
+    #[schemars(description = r#"PERFORMANCE STANDBY LOC - "#)]
     pub locpsb: Option<f32>,
 
-    #[doc = r#"Title: PERFORMANCE STANDBY LOC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCPSBR")]
+    #[schemars(description = r#"PERFORMANCE STANDBY LOC RATIO - "#)]
     pub locpsbr: Option<f32>,
 
-    #[doc = r#"Title: PERFORMANCE STANDBY LOC-CONVEYED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCPSBK")]
+    #[schemars(description = r#"PERFORMANCE STANDBY LOC-CONVEYED - "#)]
     pub locpsbk: Option<f32>,
 
-    #[doc = r#"Title: PERFORMANCE STANDBY LOC-CONVEYED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOCPSBKR")]
+    #[schemars(description = r#"PERFORMANCE STANDBY LOC-CONVEYED RATIO - "#)]
     pub locpsbkr: Option<f32>,
 
-    #[doc = r#"Title: ORE PROTECTED - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOREGTY")]
+    #[schemars(description = r#"ORE PROTECTED - LOSS SHARE - "#)]
     pub loregty: Option<f32>,
 
-    #[doc = r#"Title: ORE PROTECTED - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOREGTYR")]
+    #[schemars(description = r#"ORE PROTECTED - LOSS SHARE RATIO - "#)]
     pub loregtyr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LN & LS - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOTH")]
+    #[schemars(description = r#"ALL OTHER LN & LS - LOSS SHARE - "#)]
     pub loth: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LN & LS - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LOTHR")]
+    #[schemars(description = r#"ALL OTHER LN & LS - LOSS SHARE RATIO - "#)]
     pub lothr: Option<f32>,
 
-    #[doc = r#"Title: RE FARMLAND LN - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LREAG")]
+    #[schemars(description = r#"RE FARMLAND LN - LOSS SH - "#)]
     pub lreag: Option<f32>,
 
-    #[doc = r#"Title: RE FARMLAND LN - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LREAGR")]
+    #[schemars(description = r#"RE FARMLAND LN - LOSS SH RATIO - "#)]
     pub lreagr: Option<f32>,
 
-    #[doc = r#"Title: RE CONSTRUCT LN - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRECONS")]
+    #[schemars(description = r#"RE CONSTRUCT LN - LOSS SHARE - "#)]
     pub lrecons: Option<f32>,
 
-    #[doc = r#"Title: RE CONSTRUCT LN - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRECONSR")]
+    #[schemars(description = r#"RE CONSTRUCT LN - LOSS SHARE RATIO - "#)]
     pub lreconsr: Option<f32>,
 
-    #[doc = r#"Title: RE MULTIFAMILY LN-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LREMULT")]
+    #[schemars(description = r#"RE MULTIFAMILY LN-LOSS SH - "#)]
     pub lremult: Option<f32>,
 
-    #[doc = r#"Title: RE MULTIFAMILY LN-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LREMULTR")]
+    #[schemars(description = r#"RE MULTIFAMILY LN-LOSS SH RATIO - "#)]
     pub lremultr: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES LN - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRENRES")]
+    #[schemars(description = r#"RE NONFARM NONRES LN - LOSS SH - "#)]
     pub lrenres: Option<f32>,
 
-    #[doc = r#"Title: RE NONFARM NONRES LN - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRENRESR")]
+    #[schemars(description = r#"RE NONFARM NONRES LN - LOSS SH RATIO - "#)]
     pub lrenresr: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY LNS - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRERES")]
+    #[schemars(description = r#"RE 1-4 FAMILY LNS - LOSS SHARE - "#)]
     pub lreres: Option<f32>,
 
-    #[doc = r#"Title: RE 1-4 FAMILY LNS - LOSS SHARE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LRERESR")]
+    #[schemars(description = r#"RE 1-4 FAMILY LNS - LOSS SHARE RATIO - "#)]
     pub lreresr: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE-LNLS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSALNLS")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE-LNLS - "#)]
     pub lsalnls: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE-LNLS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSALNLSR")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE-LNLS RATIO - "#)]
     pub lsalnlsr: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE -OTH ASSET"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSAOA")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE -OTH ASSET - "#)]
     pub lsaoa: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE -OTH ASSET RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSAOAR")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE -OTH ASSET RATIO - "#)]
     pub lsaoar: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE- ORE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSAORE")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE- ORE - "#)]
     pub lsaore: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE- ORE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSAORER")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE- ORE RATIO - "#)]
     pub lsaorer: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE -DEBT SEC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSASCDBT")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE -DEBT SEC - "#)]
     pub lsascdbt: Option<f32>,
 
-    #[doc = r#"Title: CARRY AMT LOSS SHARE -DEBT SEC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSASCDBTR")]
+    #[schemars(description = r#"CARRY AMT LOSS SHARE -DEBT SEC RATIO - "#)]
     pub lsascdbtr: Option<f32>,
 
-    #[doc = r#"Title: LEASES-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSFOR")]
+    #[schemars(description = r#"LEASES-FOR - "#)]
     pub lsfor: Option<f32>,
 
-    #[doc = r#"Title: LEASES-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LSFORR")]
+    #[schemars(description = r#"LEASES-FOR RATIO - "#)]
     pub lsforr: Option<f32>,
 
-    #[doc = r#"Title: FIPS MSA CODE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSA")]
+    #[schemars(description = r#"FIPS MSA CODE - "#)]
     pub msa: Option<f32>,
 
-    #[doc = r#"Title: OUT PRIN BAL MORT W/ RECOURSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRECE")]
+    #[schemars(description = r#"OUT PRIN BAL MORT W/ RECOURSE - "#)]
     pub msrece: Option<f32>,
 
-    #[doc = r#"Title: OUT PRIN BAL MORT W/ RECOURSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRECER")]
+    #[schemars(description = r#"OUT PRIN BAL MORT W/ RECOURSE RATIO - "#)]
     pub msrecer: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FM SERVICED IN FORECLOSURE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRESFCL")]
+    #[schemars(description = r#"1-4 FM SERVICED IN FORECLOSURE - "#)]
     pub msresfcl: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FM SERVICED IN FORECLOSURE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRESFCLR")]
+    #[schemars(description = r#"1-4 FM SERVICED IN FORECLOSURE RATIO - "#)]
     pub msresfclr: Option<f32>,
 
-    #[doc = r#"Title: OUT PRIN BAL MORT W/ NO RECOURSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRNRECE")]
+    #[schemars(description = r#"OUT PRIN BAL MORT W/ NO RECOURSE - "#)]
     pub msrnrece: Option<f32>,
 
-    #[doc = r#"Title: OUT PRIN BAL MORT W/ NO RECOURSE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MSRNRECER")]
+    #[schemars(description = r#"OUT PRIN BAL MORT W/ NO RECOURSE RATIO - "#)]
     pub msrnrecer: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-AGRICULTURAL LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAG")]
+    #[schemars(description = r#"NONACCRUAL-AGRICULTURAL LNS - "#)]
     pub naag: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-AGRICULTURAL LNS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAGR")]
+    #[schemars(description = r#"NONACCRUAL-AGRICULTURAL LNS RATIO - "#)]
     pub naagr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-AG LNS*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAGSM")]
+    #[schemars(description = r#"NONACCRUAL-AG LNS*SMALL BKS - "#)]
     pub naagsm: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-AG LNS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAGSMR")]
+    #[schemars(description = r#"NONACCRUAL-AG LNS*SMALL BKS RATIO - "#)]
     pub naagsmr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAASSET")]
+    #[schemars(description = r#"NONACCRUAL-TOTAL ASSETS - "#)]
     pub naasset: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-AG LNS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAASSETR")]
+    #[schemars(description = r#"NONACCRUAL-AG LNS*SMALL BKS RATIO - "#)]
     pub naassetr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL AUTO LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAUTO")]
+    #[schemars(description = r#"NONACCRUAL AUTO LOANS - "#)]
     pub naauto: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL AUTO LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAAUTOR")]
+    #[schemars(description = r#"NONACCRUAL AUTO LOANS RATIO - "#)]
     pub naautor: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-C&I LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACI")]
+    #[schemars(description = r#"NONACCRUAL-C&I LOANS - "#)]
     pub naci: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-C&I LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACIR")]
+    #[schemars(description = r#"NONACCRUAL-C&I LOANS RATIO - "#)]
     pub nacir: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-C&I*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACINUS")]
+    #[schemars(description = r#"NONACCRUAL-C&I*NON-U.S. - "#)]
     pub nacinus: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-C&I*NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACINUSR")]
+    #[schemars(description = r#"NONACCRUAL-C&I*NON-U.S. RATIO - "#)]
     pub nacinusr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACON")]
+    #[schemars(description = r#"NONACCRUAL-CONSUMER LOANS - "#)]
     pub nacon: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-CONSUMER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACONR")]
+    #[schemars(description = r#"NONACCRUAL-CONSUMER LOANS RATIO - "#)]
     pub naconr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-OTHER CONSUMER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACONOTH")]
+    #[schemars(description = r#"NONACCRUAL-OTHER CONSUMER - "#)]
     pub naconoth: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-OTHER CONSUMER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACONOTHR")]
+    #[schemars(description = r#"NONACCRUAL-OTHER CONSUMER RATIO - "#)]
     pub naconothr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-CREDIT CARD PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACRCD")]
+    #[schemars(description = r#"NONACCRUAL-CREDIT CARD PLANS - "#)]
     pub nacrcd: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-CREDIT CARD PLANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACRCDR")]
+    #[schemars(description = r#"NONACCRUAL-CREDIT CARD PLANS RATIO - "#)]
     pub nacrcdr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEP INST LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NADEP")]
+    #[schemars(description = r#"NONACCRUAL-DEP INST LOANS - "#)]
     pub nadep: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEP INST LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NADEPR")]
+    #[schemars(description = r#"NONACCRUAL-DEP INST LOANS RATIO - "#)]
     pub nadepr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEP INST*NON U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NADEPNUS")]
+    #[schemars(description = r#"NONACCRUAL-DEP INST*NON U.S. - "#)]
     pub nadepnus: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEP INST*NON U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NADEPNUSR")]
+    #[schemars(description = r#"NONACCRUAL-DEP INST*NON U.S. RATIO - "#)]
     pub nadepnusr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-FOREIGN GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAFG")]
+    #[schemars(description = r#"NONACCRUAL-FOREIGN GOVT - "#)]
     pub nafg: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-FOREIGN GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAFGR")]
+    #[schemars(description = r#"NONACCRUAL-FOREIGN GOVT RATIO - "#)]
     pub nafgr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTY")]
+    #[schemars(description = r#"NONACCRUAL-GTY LN&LS - "#)]
     pub nagty: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL -GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTYR")]
+    #[schemars(description = r#"NONACCRUAL -GTY LN&LS - "#)]
     pub nagtyr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL REBOOKED GNMA LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTYGNM")]
+    #[schemars(description = r#"NONACCRUAL REBOOKED GNMA LOANS - "#)]
     pub nagtygnm: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL REBOOKED GNMA LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTYGNMR")]
+    #[schemars(description = r#"NONACCRUAL REBOOKED GNMA LNS - "#)]
     pub nagtygnmr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-PART GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTYPAR")]
+    #[schemars(description = r#"NONACCRUAL-PART GTY LN&LS - "#)]
     pub nagtypar: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-PART GTY LN&LS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAGTYPARR")]
+    #[schemars(description = r#"NONACCRUAL-PART GTY LN&LS RATIO - "#)]
     pub nagtyparr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL AG LOANS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALAG")]
+    #[schemars(description = r#"NONACCRUAL AG LOANS-LOSS SH - "#)]
     pub nalag: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL AG LOANS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALAGR")]
+    #[schemars(description = r#"NONACCRUAL AG LOANS-LOSS SH RATIO - "#)]
     pub nalagr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL C&I LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALCI")]
+    #[schemars(description = r#"NONACCRUAL C&I LNS-LOSS SH - "#)]
     pub nalci: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL C&I LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALCIR")]
+    #[schemars(description = r#"NONACCRUAL C&I LNS-LOSS SH RATIO - "#)]
     pub nalcir: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL CONSUMER LN -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALCON")]
+    #[schemars(description = r#"NONACCRUAL CONSUMER LN -LOSS SH - "#)]
     pub nalcon: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL CONSUMER LN -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALCONR")]
+    #[schemars(description = r#"NONACCRUAL CONSUMER LN -LOSS SH RATIO - "#)]
     pub nalconr: Option<f32>,
 
-    #[doc = r#"Title: NONACCR PROTECT (GTY)-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALGTY")]
+    #[schemars(description = r#"NONACCR PROTECT (GTY)-LOSS SH - "#)]
     pub nalgty: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL PROTECT (GTY)-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALGTYR")]
+    #[schemars(description = r#"NONACCRUAL PROTECT (GTY)-LOSS SH RATIO - "#)]
     pub nalgtyr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-L&L HELD FOR SALE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALNSALE")]
+    #[schemars(description = r#"NONACCRUAL-L&L HELD FOR SALE - "#)]
     pub nalnsale: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-L&L HELD FOR SALE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALNSALER")]
+    #[schemars(description = r#"NONACCRUAL-L&L HELD FOR SALE RATIO - "#)]
     pub nalnsaler: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALOTH")]
+    #[schemars(description = r#"NONACCRUAL OTHER LNS-LOSS SH - "#)]
     pub naloth: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALOTHR")]
+    #[schemars(description = r#"NONACCRUAL OTHER LNS-LOSS SH RATIO - "#)]
     pub nalothr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RE FARM-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALREAG")]
+    #[schemars(description = r#"NONACCRUAL RE FARM-LOSS SH - "#)]
     pub nalreag: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RE FARM LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALREAGR")]
+    #[schemars(description = r#"NONACCRUAL RE FARM LOSS SH RATIO - "#)]
     pub nalreagr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL CONSTR LN -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRECON")]
+    #[schemars(description = r#"NONACCRUAL CONSTR LN -LOSS SH - "#)]
     pub nalrecon: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL CONSTR LN -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRECONR")]
+    #[schemars(description = r#"NONACCRUAL CONSTR LN -LOSS SH RATIO - "#)]
     pub nalreconr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL MULTIFAM - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALREMUL")]
+    #[schemars(description = r#"NONACCRUAL MULTIFAM - LOSS SH - "#)]
     pub nalremul: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL MULTIFAM - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALREMULR")]
+    #[schemars(description = r#"NONACCRUAL MULTIFAM - LOSS SH RATIO - "#)]
     pub nalremulr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL NFNR LN - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRENRS")]
+    #[schemars(description = r#"NONACCRUAL NFNR LN - LOSS SH - "#)]
     pub nalrenrs: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL NFNR LN - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRENRSR")]
+    #[schemars(description = r#"NONACCRUAL NFNR LN - LOSS SH RATIO - "#)]
     pub nalrenrsr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL 1-4 FM LN-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRERES")]
+    #[schemars(description = r#"NONACCRUAL 1-4 FM LN-LOSS SH - "#)]
     pub nalreres: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL 1-4 FM LN-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALRERESR")]
+    #[schemars(description = r#"NONACCRUAL 1-4 FM LN-LOSS SH RATIO - "#)]
     pub nalreresr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALS")]
+    #[schemars(description = r#"NONACCRUAL-LEASES - "#)]
     pub nals: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-LEASES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALSR")]
+    #[schemars(description = r#"NONACCRUAL-LEASES RATIO - "#)]
     pub nalsr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL TOTAL LOANS - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALTOT")]
+    #[schemars(description = r#"NONACCRUAL TOTAL LOANS - LOSS SH - "#)]
     pub naltot: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL TOTAL LOANS - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NALTOTR")]
+    #[schemars(description = r#"NONACCRUAL TOTAL LOANS - LOSS SH RATIO - "#)]
     pub naltotr: Option<f32>,
 
-    #[doc = r#"Title: INSTITUTION NAME (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="NAME")]
+    #[schemars(description = r#"INSTITUTION NAME (Search-Eligible) - This field can be used for search and filtering."#)]
     pub name: Option<String>,
 
-    #[doc = r#"Title: INSTITUTION FULL NAME (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="NAMEFULL")]
+    #[schemars(description = r#"INSTITUTION FULL NAME (Search-Eligible) - This field can be used for search and filtering."#)]
     pub namefull: Option<String>,
 
-    #[doc = r#"Title: NONACCRUAL-ALL OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAOTHLN")]
+    #[schemars(description = r#"NONACCRUAL-ALL OTHER LOANS - "#)]
     pub naothln: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-ALL OTHER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAOTHLNR")]
+    #[schemars(description = r#"NONACCRUAL-ALL OTHER LOANS RATIO - "#)]
     pub naothlnr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-REAL ESTATE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARE")]
+    #[schemars(description = r#"NONACCRUAL-REAL ESTATE LOANS - "#)]
     pub nare: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-REAL ESTATE LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARER")]
+    #[schemars(description = r#"NONACCRUAL-REAL ESTATE LOANS RATIO - "#)]
     pub narer: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREAG")]
+    #[schemars(description = r#"NONACCRUAL-RE*FARMLAND - "#)]
     pub nareag: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*FARMLAND RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREAGR")]
+    #[schemars(description = r#"NONACCRUAL-RE*FARMLAND RATIO - "#)]
     pub nareagr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL 1-4 FAM CONSTRUCT LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECNFM")]
+    #[schemars(description = r#"NONACCRUAL 1-4 FAM CONSTRUCT LN - "#)]
     pub narecnfm: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL 1-4 FAM CONSTRUCT LN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECNFMR")]
+    #[schemars(description = r#"NONACCRUAL 1-4 FAM CONSTRUCT LN RATIO - "#)]
     pub narecnfmr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER CONSTR & LAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECNOT")]
+    #[schemars(description = r#"NONACCRUAL OTHER CONSTR & LAND - "#)]
     pub narecnot: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER CONSTR & LAND RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECNOTR")]
+    #[schemars(description = r#"NONACCRUAL OTHER CONSTR & LAND RATIO - "#)]
     pub narecnotr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECONS")]
+    #[schemars(description = r#"NONACCRUAL-RE*CONSTRUCTION - "#)]
     pub narecons: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*CONSTRUCTION RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARECONSR")]
+    #[schemars(description = r#"NONACCRUAL-RE*CONSTRUCTION RATIO - "#)]
     pub nareconsr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*FOREIGN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREFOR")]
+    #[schemars(description = r#"NONACCRUAL-RE*FOREIGN - "#)]
     pub narefor: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*FOREIGN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREFORR")]
+    #[schemars(description = r#"NONACCRUAL-RE*FOREIGN RATIO - "#)]
     pub nareforr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 FAM LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARELOC")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 FAM LINES - "#)]
     pub nareloc: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 FAM LINES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARELOCR")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 FAM LINES RATIO - "#)]
     pub narelocr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREMULT")]
+    #[schemars(description = r#"NONACCRUAL-RE*MULTIFAMILY - "#)]
     pub naremult: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*MULTIFAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NAREMULTR")]
+    #[schemars(description = r#"NONACCRUAL-RE*MULTIFAMILY RATIO - "#)]
     pub naremultr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENRES")]
+    #[schemars(description = r#"NONACCRUAL-RE*NONFARM NONRES - "#)]
     pub narenres: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*NONFARM NONRES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENRESR")]
+    #[schemars(description = r#"NONACCRUAL-RE*NONFARM NONRES RATIO - "#)]
     pub narenresr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENROT")]
+    #[schemars(description = r#"NONACCRUAL OTHER NONFARM NONRES - "#)]
     pub narenrot: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OTHER NONFARM NONRES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENROTR")]
+    #[schemars(description = r#"NONACCRUAL OTHER NONFARM NONRES RATIO - "#)]
     pub narenrotr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL 0WN-OCC NONFRM NONRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENROW")]
+    #[schemars(description = r#"NONACCRUAL 0WN-OCC NONFRM NONRS - "#)]
     pub narenrow: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL OWN-OCC NONFRM NONRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENROWR")]
+    #[schemars(description = r#"NONACCRUAL OWN-OCC NONFRM NONRS RATIO - "#)]
     pub narenrowr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENUS")]
+    #[schemars(description = r#"NONACCRUAL-RE*NON-U.S. - "#)]
     pub narenus: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARENUSR")]
+    #[schemars(description = r#"NONACCRUAL-RE*NON-U.S. RATIO - "#)]
     pub narenusr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERES")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 FAMILY - "#)]
     pub nareres: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 FAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERESR")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 FAMILY RATIO - "#)]
     pub nareresr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 JUNIOR LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERSF2")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 JUNIOR LIEN - "#)]
     pub narersf2: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 JN LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERSF2R")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 JN LIEN RATIO - "#)]
     pub narersf2r: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 IST LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERSFM")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 IST LIEN - "#)]
     pub narersfm: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-RE*1-4 IST LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARERSFMR")]
+    #[schemars(description = r#"NONACCRUAL-RE*1-4 IST LIEN RATIO - "#)]
     pub narersfmr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRUCT C&I LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSCI")]
+    #[schemars(description = r#"NONACCRUAL RESTRUCT C&I LN - "#)]
     pub narsci: Option<f32>,
 
-    #[doc = r#"Title: NONACCR RESTRUCT CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSCONS")]
+    #[schemars(description = r#"NONACCR RESTRUCT CONSTRUCTION - "#)]
     pub narscons: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRU LN- 1-4 FAM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNFM")]
+    #[schemars(description = r#"NONACCRUAL RESTRU LN- 1-4 FAM - "#)]
     pub narslnfm: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRU LN- 1-4 FAM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNFMR")]
+    #[schemars(description = r#"NONACCRUAL RESTRU LN- 1-4 FAM RATIO - "#)]
     pub narslnfmr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRU LN EXCL 1-4 FM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNLS")]
+    #[schemars(description = r#"NONACCRUAL RESTRU LN EXCL 1-4 FM - "#)]
     pub narslnls: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRU LN EXCL 1-4 FM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNLSR")]
+    #[schemars(description = r#"NONACCRUAL RESTRU LN EXCL 1-4 FM RATIO - "#)]
     pub narslnlsr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRUCT LN- TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNLT")]
+    #[schemars(description = r#"NONACCRUAL RESTRUCT LN- TOTAL - "#)]
     pub narslnlt: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRUCT LN- TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSLNLTR")]
+    #[schemars(description = r#"NONACCRUAL RESTRUCT LN- TOTAL RATIO - "#)]
     pub narslnltr: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRUCT MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSMULT")]
+    #[schemars(description = r#"NONACCRUAL RESTRUCT MULTIFAMILY - "#)]
     pub narsmult: Option<f32>,
 
-    #[doc = r#"Title: NONACCR RESTRUCTURED NFNR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSNRES")]
+    #[schemars(description = r#"NONACCR RESTRUCTURED NFNR LN - "#)]
     pub narsnres: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL RESTRUCT ALL OTH LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARSOTH")]
+    #[schemars(description = r#"NONACCRUAL RESTRUCT ALL OTH LN - "#)]
     pub narsoth: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NASCDEBT")]
+    #[schemars(description = r#"NONACCRUAL-DEBT SECURITIES - "#)]
     pub nascdebt: Option<f32>,
 
-    #[doc = r#"Title: NONACCRUAL-DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NASCDEBTR")]
+    #[schemars(description = r#"NONACCRUAL-DEBT SECURITIES RATIO - "#)]
     pub nascdebtr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-AGRICULTURAL LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCAG")]
+    #[schemars(description = r#"TOTAL N/C-AGRICULTURAL LNS - "#)]
     pub ncag: Option<f32>,
 
-    #[doc = r#"Title: N/C AUTO LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCAUTO")]
+    #[schemars(description = r#"N/C AUTO LOANS - "#)]
     pub ncauto: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-C&I LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCI")]
+    #[schemars(description = r#"TOTAL N/C-C&I LOANS - "#)]
     pub ncci: Option<f32>,
 
-    #[doc = r#"Title: NC COMMERCIAL RE/COMMERCIAL RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCOMRER")]
+    #[schemars(description = r#"NC COMMERCIAL RE/COMMERCIAL RE - "#)]
     pub nccomrer: Option<f32>,
 
-    #[doc = r#"Title: NC COMMERCIAL RE/COMMERCIAL RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCOMRE")]
+    #[schemars(description = r#"NC COMMERCIAL RE/COMMERCIAL RE - "#)]
     pub nccomre: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCON")]
+    #[schemars(description = r#"TOTAL N/C-CONSUMER LOANS - "#)]
     pub nccon: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-OTHER CONSUMER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCONOTH")]
+    #[schemars(description = r#"TOTAL N/C-OTHER CONSUMER - "#)]
     pub ncconoth: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C CREDIT CARD PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCCRCD")]
+    #[schemars(description = r#"TOTAL N/C CREDIT CARD PLANS - "#)]
     pub nccrcd: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-DEP INST LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCDEP")]
+    #[schemars(description = r#"TOTAL N/C-DEP INST LOANS - "#)]
     pub ncdep: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-FOREIGN GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCFG")]
+    #[schemars(description = r#"TOTAL N/C-FOREIGN GOVT - "#)]
     pub ncfg: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-PART GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCGTYPAR")]
+    #[schemars(description = r#"TOTAL N/C-PART GTY LN&LS - "#)]
     pub ncgtypar: Option<f32>,
 
-    #[doc = r#"Title: N/C LNS & LS/GROSS LNS & LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCLNLSR")]
+    #[schemars(description = r#"N/C LNS & LS/GROSS LNS & LS - "#)]
     pub nclnlsr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCLS")]
+    #[schemars(description = r#"TOTAL N/C-LEASES - "#)]
     pub ncls: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-ALL OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCOTHLN")]
+    #[schemars(description = r#"TOTAL N/C-ALL OTHER LOANS - "#)]
     pub ncothln: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C REAL ESTATE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRE")]
+    #[schemars(description = r#"TOTAL N/C REAL ESTATE LOANS - "#)]
     pub ncre: Option<f32>,
 
-    #[doc = r#"Title: N/C CONST REAL ESTATE/CONST RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRECONR")]
+    #[schemars(description = r#"N/C CONST REAL ESTATE/CONST RE - "#)]
     pub ncreconr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C CONST REAL ESTATE CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRECONS")]
+    #[schemars(description = r#"TOTAL N/C CONST REAL ESTATE CONSTRUCTION - "#)]
     pub ncrecons: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-RE 1-4 FAMILY LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRELOC")]
+    #[schemars(description = r#"TOTAL N/C-RE 1-4 FAMILY LINES - "#)]
     pub ncreloc: Option<f32>,
 
-    #[doc = r#"Title: N/C HOME EQUITY/HOME EQUITY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRELOCR")]
+    #[schemars(description = r#"N/C HOME EQUITY/HOME EQUITY - "#)]
     pub ncrelocr: Option<f32>,
 
-    #[doc = r#"Title: N/C MULTIFAMLY RE/MULTIFAMLY RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCREMULR")]
+    #[schemars(description = r#"N/C MULTIFAMLY RE/MULTIFAMLY RE - "#)]
     pub ncremulr: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C MULTIFAMLY RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCREMULT")]
+    #[schemars(description = r#"TOTAL N/C MULTIFAMLY RE - "#)]
     pub ncremult: Option<f32>,
 
-    #[doc = r#"Title: N/C NONFARM NONRES RE/NONRES RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRENRER")]
+    #[schemars(description = r#"N/C NONFARM NONRES RE/NONRES RE - "#)]
     pub ncrenrer: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C NONFARM NONRES RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRENRES")]
+    #[schemars(description = r#"TOTAL N/C NONFARM NONRES RE - "#)]
     pub ncrenres: Option<f32>,
 
-    #[doc = r#"Title: N/C REAL ESTATE LNS/REAL ESTATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRER")]
+    #[schemars(description = r#"N/C REAL ESTATE LNS/REAL ESTATE - "#)]
     pub ncrer: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 OTHER RE/1-4 OTHER RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERESO")]
+    #[schemars(description = r#"N/C 1-4 OTHER RE/1-4 OTHER RE - "#)]
     pub ncrereso: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 OTHER RE/1-4 OTHER RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCREREOR")]
+    #[schemars(description = r#"N/C 1-4 OTHER RE/1-4 OTHER RE - "#)]
     pub ncrereor: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 FAMILY RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERES")]
+    #[schemars(description = r#"N/C 1-4 FAMILY RE - "#)]
     pub ncreres: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 FAMILY RE/1-4 FAMILY RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERESR")]
+    #[schemars(description = r#"N/C 1-4 FAMILY RE/1-4 FAMILY RE - "#)]
     pub ncreresr: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF FIX ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNAST")]
+    #[schemars(description = r#"NET G/L ON SALES OF FIX ASSETS - "#)]
     pub netgnast: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF FIX ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNASTR")]
+    #[schemars(description = r#"NET G/L ON SALES OF FIX ASSETS RATIO - "#)]
     pub netgnastr: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF FIX ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLFXAQ")]
+    #[schemars(description = r#"NET G/L ON SALES OF FIX ASSETS QUARTERLY - "#)]
     pub ntglfxaq: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF FIX ASSETS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLFXAQR")]
+    #[schemars(description = r#"NET G/L ON SALES OF FIX ASSETS QUARTERLY RATIO - "#)]
     pub ntglfxaqr: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNSLN")]
+    #[schemars(description = r#"NET G/L ON SALES OF LOANS - "#)]
     pub netgnsln: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNSLNR")]
+    #[schemars(description = r#"NET G/L ON SALES OF LOANS RATIO - "#)]
     pub netgnslnr: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF LOANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLLNQ")]
+    #[schemars(description = r#"NET G/L ON SALES OF LOANS QUARTERLY - "#)]
     pub ntgllnq: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON SALES OF LOANS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLLNQR")]
+    #[schemars(description = r#"NET G/L ON SALES OF LOANS QUARTERLY RATIO - "#)]
     pub ntgllnqr: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON OTHER RE OWNED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNSRE")]
+    #[schemars(description = r#"NET G/L ON OTHER RE OWNED - "#)]
     pub netgnsre: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON OTHER RE OWNED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETGNSRER")]
+    #[schemars(description = r#"NET G/L ON OTHER RE OWNED RATIO - "#)]
     pub netgnsrer: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON OTHER RE OWNED QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLREQ")]
+    #[schemars(description = r#"NET G/L ON OTHER RE OWNED QUARTERLY - "#)]
     pub ntglreq: Option<f32>,
 
-    #[doc = r#"Title: NET G/L ON OTHER RE OWNED QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTGLREQR")]
+    #[schemars(description = r#"NET G/L ON OTHER RE OWNED QUARTERLY RATIO - "#)]
     pub ntglreqr: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME- BANK- ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NETINCA")]
+    #[schemars(description = r#"NET INCOME- BANK- ANN - "#)]
     pub netinca: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST MARGIN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMY")]
+    #[schemars(description = r#"NET INTEREST MARGIN - "#)]
     pub nimy: Option<f32>,
 
-    #[doc = r#"Title: NET INTEREST MARGIN QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NIMYQ")]
+    #[schemars(description = r#"NET INTEREST MARGIN QUARTERLY - "#)]
     pub nimyq: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJ")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ - "#)]
     pub noij: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJR")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ RATIO - "#)]
     pub noijr: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ/ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJY")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ/ASSETS - "#)]
     pub noijy: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ/ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJYQ")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ/ASSETS QUARTERLY - "#)]
     pub noijyq: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJA")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ ANNUALLY - "#)]
     pub noija: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJQ")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ QUARTERLY - "#)]
     pub noijq: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJQA")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ QUARTERLY - "#)]
     pub noijqa: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-ADJ QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIJQR")]
+    #[schemars(description = r#"NET OPERATING INCOME-ADJ QUARTERLY RATIO - "#)]
     pub noijqr: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST INC/AVERAGE ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIAY")]
+    #[schemars(description = r#"NONINTEREST INC/AVERAGE ASSETS - "#)]
     pub noniiay: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST INC/AVERAGE ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIAYQ")]
+    #[schemars(description = r#"NONINTEREST INC/AVERAGE ASSETS QUARTERLY - "#)]
     pub noniiayq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIA")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME ANNUALLY - "#)]
     pub noniia: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIQ")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME-QTR - "#)]
     pub noniiq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIQA")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME-QTR - "#)]
     pub noniiqa: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST INCOME-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIIQR")]
+    #[schemars(description = r#"TOTAL NONINTEREST INCOME-QTR RATIO - "#)]
     pub noniiqr: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST EXP/AVERAGE ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXAY")]
+    #[schemars(description = r#"NONINTEREST EXP/AVERAGE ASSETS - "#)]
     pub nonixay: Option<f32>,
 
-    #[doc = r#"Title: NONINTEREST EXP/AVERAGE ASSETS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXAYQ")]
+    #[schemars(description = r#"NONINTEREST EXP/AVERAGE ASSETS QUARTERLY - "#)]
     pub nonixayq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL NONINTEREST EXPENSE ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NONIXA")]
+    #[schemars(description = r#"TOTAL NONINTEREST EXPENSE ANNUALLY - "#)]
     pub nonixa: Option<f32>,
 
-    #[doc = r#"Title: NONPERF ASSETS/TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NPERF")]
+    #[schemars(description = r#"NONPERF ASSETS/TOTAL ASSETS - "#)]
     pub nperf: Option<f32>,
 
-    #[doc = r#"Title: NONPERF ASSETS/TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NPERFV")]
+    #[schemars(description = r#"NONPERF ASSETS/TOTAL ASSETS - "#)]
     pub nperfv: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAG")]
+    #[schemars(description = r#"AGRICULTURAL LN NET CHARGE-OFFS - "#)]
     pub ntag: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGR")]
+    #[schemars(description = r#"AGRICULTURAL LN NET CHARGE-OFFS RATIO - "#)]
     pub ntagr: Option<f32>,
 
-    #[doc = r#"Title: AGRICULTURAL LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGA")]
+    #[schemars(description = r#"AGRICULTURAL LN NET-CHG-ANN - "#)]
     pub ntaga: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN NET CHARGE-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGQ")]
+    #[schemars(description = r#"AG LOAN NET CHARGE-OFFS-QTR - "#)]
     pub ntagq: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN NET CHARGE-OFFS-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGQR")]
+    #[schemars(description = r#"AG LOAN NET CHARGE-OFFS-QTR RATIO - "#)]
     pub ntagqr: Option<f32>,
 
-    #[doc = r#"Title: AG LN NET CHARGE-OFFS*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSM")]
+    #[schemars(description = r#"AG LN NET CHARGE-OFFS*SMALL BKS - "#)]
     pub ntagsm: Option<f32>,
 
-    #[doc = r#"Title: AG LN NET CHARGE-OFFS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSMR")]
+    #[schemars(description = r#"AG LN NET CHARGE-OFFS*SMALL BKS RATIO - "#)]
     pub ntagsmr: Option<f32>,
 
-    #[doc = r#"Title: AG LN NET CHARGE-OFFS*SMALL BKS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSMQ")]
+    #[schemars(description = r#"AG LN NET CHARGE-OFFS*SMALL BKS QUARTERLY - "#)]
     pub ntagsmq: Option<f32>,
 
-    #[doc = r#"Title: AG LN NET CHARGE-OFFS*SMALL BKS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSMQR")]
+    #[schemars(description = r#"AG LN NET CHARGE-OFFS*SMALL BKS QUARTERLY RATIO - "#)]
     pub ntagsmqr: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTO")]
+    #[schemars(description = r#"AUTO LOANS - NET CHARGE-OFFS - "#)]
     pub ntauto: Option<f32>,
 
-    #[doc = r#"Title: AUTO LOANS - NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOR")]
+    #[schemars(description = r#"AUTO LOANS - NET CHARGE-OFFS RATIO - "#)]
     pub ntautor: Option<f32>,
 
-    #[doc = r#"Title: AUTO LNS - NET CHG-OFFS - ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOA")]
+    #[schemars(description = r#"AUTO LNS - NET CHG-OFFS - ANN - "#)]
     pub ntautoa: Option<f32>,
 
-    #[doc = r#"Title: AUTO LNS - NET CHG-OFFS - QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOQ")]
+    #[schemars(description = r#"AUTO LNS - NET CHG-OFFS - QTR - "#)]
     pub ntautoq: Option<f32>,
 
-    #[doc = r#"Title: AUTO LNS - NET CHG-OFFS - QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOLNQR")]
+    #[schemars(description = r#"AUTO LNS - NET CHG-OFFS - QTR RATIO - "#)]
     pub ntautolnqr: Option<f32>,
 
-    #[doc = r#"Title: AUTO LN-CHG-OFF- QTR/AUTO LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOQR")]
+    #[schemars(description = r#"AUTO LN-CHG-OFF- QTR/AUTO LN - "#)]
     pub ntautoqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCI")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET CHARGE-OFFS - "#)]
     pub ntci: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCIR")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET CHARGE-OFFS RATIO - "#)]
     pub ntcir: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCIA")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET-CHG-ANN - "#)]
     pub ntcia: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S.COMMERCIAL LN NET CHG-OF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCINUS")]
+    #[schemars(description = r#"NON-U.S.COMMERCIAL LN NET CHG-OF - "#)]
     pub ntcinus: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S.COMMERCIAL LN NET CHG-OF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCINUSR")]
+    #[schemars(description = r#"NON-U.S.COMMERCIAL LN NET CHG-OF RATIO - "#)]
     pub ntcinusr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S.COMMERCIAL LN NET CHG-OF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCINUSQ")]
+    #[schemars(description = r#"NON-U.S.COMMERCIAL LN NET CHG-OF QUARTERLY - "#)]
     pub ntcinusq: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S.COMMERCIAL LN NET CHG-OF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCINUSQR")]
+    #[schemars(description = r#"NON-U.S.COMMERCIAL LN NET CHG-OF QUARTERLY RATIO - "#)]
     pub ntcinusqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCIQ")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET-CHG-QTR - "#)]
     pub ntciq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCIQR")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET-CHG-QTR RATIO - "#)]
     pub ntciqr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE CHG-OFF/COMM RE LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMRER")]
+    #[schemars(description = r#"COMMERCIAL RE CHG-OFF/COMM RE LN - "#)]
     pub ntcomrer: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE CHG-OFF/COMM RE LN QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMREQ")]
+    #[schemars(description = r#"COMMERCIAL RE CHG-OFF/COMM RE LN QUARTERLY - "#)]
     pub ntcomreq: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LN CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMREA")]
+    #[schemars(description = r#"COMMERCIAL RE LN CHG-ANN - "#)]
     pub ntcomrea: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCON")]
+    #[schemars(description = r#"CONSUMER LOAN NET CHARGE-OFFS - "#)]
     pub ntcon: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONR")]
+    #[schemars(description = r#"CONSUMER LOAN NET CHARGE-OFFS RATIO - "#)]
     pub ntconr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONA")]
+    #[schemars(description = r#"CONSUMER LOAN NET-CHG-ANN - "#)]
     pub ntcona: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOAN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTA")]
+    #[schemars(description = r#"OTHER CONSUMER LOAN NET-CHG-ANN - "#)]
     pub ntconota: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LN NET CHARGE-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTH")]
+    #[schemars(description = r#"OTHER CONSUMER LN NET CHARGE-OFF - "#)]
     pub ntconoth: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LN NET CHARGE-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTHR")]
+    #[schemars(description = r#"OTHER CONSUMER LN NET CHARGE-OFF RATIO - "#)]
     pub ntconothr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTQ")]
+    #[schemars(description = r#"OTHER CONSUMER LN NET-CHG-QTR - "#)]
     pub ntconotq: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTQR")]
+    #[schemars(description = r#"OTHER CONSUMER LN NET-CHG-QTR RATIO - "#)]
     pub ntconotqr: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONQ")]
+    #[schemars(description = r#"CONSUMER LOAN NET-CHG-QTR - "#)]
     pub ntconq: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOAN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONQR")]
+    #[schemars(description = r#"CONSUMER LOAN NET-CHG-QTR RATIO - "#)]
     pub ntconqr: Option<f32>,
 
-    #[doc = r#"Title: OTH.CONSUMER CHGOFF-QTR/OTH.CONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONTQR")]
+    #[schemars(description = r#"OTH.CONSUMER CHGOFF-QTR/OTH.CONS - "#)]
     pub ntcontqr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCD")]
+    #[schemars(description = r#"CREDIT CARD LOAN NET CHARGE-OFFS - "#)]
     pub ntcrcd: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCDR")]
+    #[schemars(description = r#"CREDIT CARD LOAN NET CHARGE-OFFS RATIO - "#)]
     pub ntcrcdr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LOAN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCDA")]
+    #[schemars(description = r#"CREDIT CARD LOAN NET-CHG-ANN - "#)]
     pub ntcrcda: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCDQ")]
+    #[schemars(description = r#"CREDIT CARD LN NET-CHG-QTR - "#)]
     pub ntcrcdq: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCDQR")]
+    #[schemars(description = r#"CREDIT CARD LN NET-CHG-QTR RATIO - "#)]
     pub ntcrcdqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEP")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN NET CHG-OFF - "#)]
     pub ntdep: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN NET CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN NET CHG-OFF RATIO - "#)]
     pub ntdepr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEP INST LN NET CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPNUS")]
+    #[schemars(description = r#"FOREIGN DEP INST LN NET CHG-OFFS - "#)]
     pub ntdepnus: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEP INST LN NET CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPNUSR")]
+    #[schemars(description = r#"FOREIGN DEP INST LN NET CHG-OFFS RATIO - "#)]
     pub ntdepnusr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEP INST LN NET CHG-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPNUQ")]
+    #[schemars(description = r#"FOREIGN DEP INST LN NET CHG-OFFS QUARTERLY - "#)]
     pub ntdepnuq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN DEP INST LN NET CHG-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPNUQR")]
+    #[schemars(description = r#"FOREIGN DEP INST LN NET CHG-OFFS QUARTERLY RATIO - "#)]
     pub ntdepnuqr: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPQ")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN NET-CHG-QTR - "#)]
     pub ntdepq: Option<f32>,
 
-    #[doc = r#"Title: DEPOSITORY INST LOAN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTDEPQR")]
+    #[schemars(description = r#"DEPOSITORY INST LOAN NET-CHG-QTR RATIO - "#)]
     pub ntdepqr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LN NET CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTFORGV")]
+    #[schemars(description = r#"FOREIGN GOVT LN NET CHG-OFFS - "#)]
     pub ntforgv: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOVT LN NET CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTFORGVR")]
+    #[schemars(description = r#"FOREIGN GOVT LN NET CHG-OFFS RATIO - "#)]
     pub ntforgvr: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOV LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTFORGVQ")]
+    #[schemars(description = r#"FOREIGN GOV LN NET-CHG-QTR - "#)]
     pub ntforgvq: Option<f32>,
 
-    #[doc = r#"Title: FOREIGN GOV LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTFORGVQR")]
+    #[schemars(description = r#"FOREIGN GOV LN NET-CHG-QTR RATIO - "#)]
     pub ntforgvqr: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME-BK-HIGHER-PP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTINCHPP")]
+    #[schemars(description = r#"NET INCOME-BK-HIGHER-PP - "#)]
     pub ntinchpp: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME-BANK- LOSERS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTINCL")]
+    #[schemars(description = r#"NET INCOME-BANK- LOSERS - "#)]
     pub ntincl: Option<f32>,
 
-    #[doc = r#"Title: NET INCOME-BK-LOSER-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTINCLQ")]
+    #[schemars(description = r#"NET INCOME-BK-LOSER-QTR - "#)]
     pub ntinclq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL LN&LS NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSA")]
+    #[schemars(description = r#"TOTAL LN&LS NET-CHG-ANN - "#)]
     pub ntlnlsa: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTINQHPP")]
+    #[schemars(description = r#" - "#)]
     pub ntinqhpp: Option<f32>,
 
-    #[doc = r#"Title: NET CHARGE-OFFS/LOANS & LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSR")]
+    #[schemars(description = r#"NET CHARGE-OFFS/LOANS & LEASES - "#)]
     pub ntlnlsr: Option<f32>,
 
-    #[doc = r#"Title: NET CHARGE-OFFS/LOANS & LEASES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLNLSQR")]
+    #[schemars(description = r#"NET CHARGE-OFFS/LOANS & LEASES QUARTERLY - "#)]
     pub ntlnlsqr: Option<f32>,
 
-    #[doc = r#"Title: LEASE NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLS")]
+    #[schemars(description = r#"LEASE NET CHARGE-OFFS - "#)]
     pub ntls: Option<f32>,
 
-    #[doc = r#"Title: LEASE NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLSR")]
+    #[schemars(description = r#"LEASE NET CHARGE-OFFS RATIO - "#)]
     pub ntlsr: Option<f32>,
 
-    #[doc = r#"Title: LEASE NET CHARGE-OFFS-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLSQ")]
+    #[schemars(description = r#"LEASE NET CHARGE-OFFS-QTR - "#)]
     pub ntlsq: Option<f32>,
 
-    #[doc = r#"Title: LEASE NET CHARGE-OFFS-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTLSQR")]
+    #[schemars(description = r#"LEASE NET CHARGE-OFFS-QTR RATIO - "#)]
     pub ntlsqr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTOTHER")]
+    #[schemars(description = r#"ALL OTHER LOAN NET CHARGE-OFFS - "#)]
     pub ntother: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOAN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTOTHERR")]
+    #[schemars(description = r#"ALL OTHER LOAN NET CHARGE-OFFS RATIO - "#)]
     pub ntotherr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTOTHQ")]
+    #[schemars(description = r#"ALL OTHER LN NET-CHG-QTR - "#)]
     pub ntothq: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LN NET-CHG-QTRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTOTHQR")]
+    #[schemars(description = r#"ALL OTHER LN NET-CHG-QTRS RATIO - "#)]
     pub ntothqr: Option<f32>,
 
-    #[doc = r#"Title: AMT TIME DEP OF $100,000 OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRCDSM")]
+    #[schemars(description = r#"AMT TIME DEP OF $100,000 OR LESS - "#)]
     pub ntrcdsm: Option<f32>,
 
-    #[doc = r#"Title: AMT TIME DEP OF $100,000 OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRCDSMR")]
+    #[schemars(description = r#"AMT TIME DEP OF $100,000 OR LESS RATIO - "#)]
     pub ntrcdsmr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTN-COM BKS & OTH U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRCOMOT")]
+    #[schemars(description = r#"NONTRANSACTN-COM BKS & OTH U.S. - "#)]
     pub ntrcomot: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTN-COM BKS & OTH U.S RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRCOMOTR")]
+    #[schemars(description = r#"NONTRANSACTN-COM BKS & OTH U.S RATIO - "#)]
     pub ntrcomotr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRE")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS - "#)]
     pub ntre: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMUQA")]
+    #[schemars(description = r#" - "#)]
     pub ntremuqa: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECOQA")]
+    #[schemars(description = r#" - "#)]
     pub ntrecoqa: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELNR")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS RATIO - "#)]
     pub ntrelnr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY - "#)]
     pub ntreq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREQA")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY - "#)]
     pub ntreqa: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub ntrerq: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAG")]
+    #[schemars(description = r#"FARMLAND RE LN NET CHARGE-OFFS - "#)]
     pub ntreag: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAGR")]
+    #[schemars(description = r#"FARMLAND RE LN NET CHARGE-OFFS RATIO - "#)]
     pub ntreagr: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAGQ")]
+    #[schemars(description = r#"FARMLAND RE LN NET-CHG-QTR - "#)]
     pub ntreagq: Option<f32>,
 
-    #[doc = r#"Title: RE LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREA")]
+    #[schemars(description = r#"RE LN NET-CHG-ANN - "#)]
     pub ntrea: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAGQR")]
+    #[schemars(description = r#"FARMLAND RE LN NET-CHG-QTR RATIO - "#)]
     pub ntreagqr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM CONST LN NET-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECNFM")]
+    #[schemars(description = r#"1-4 FAM CONST LN NET-OFF - "#)]
     pub ntrecnfm: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSTRUCT NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECNOT")]
+    #[schemars(description = r#"OTHER CONSTRUCT NET CHG-OFF - "#)]
     pub ntrecnot: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECONQ")]
+    #[schemars(description = r#"CONSTRUCTION RE LN NET-CHG-QTR - "#)]
     pub ntreconq: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECONQR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN NET-CHG-QTR RATIO - "#)]
     pub ntreconqr: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN NET CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECONS")]
+    #[schemars(description = r#"CONSTRUCTION RE LN NET CHG-OFFS - "#)]
     pub ntrecons: Option<f32>,
 
-    #[doc = r#"Title: CONST RE LOANS NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECOSA")]
+    #[schemars(description = r#"CONST RE LOANS NET-CHG-ANN - "#)]
     pub ntrecosa: Option<f32>,
 
-    #[doc = r#"Title: CONSTRUCTION RE LN NET CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECONSR")]
+    #[schemars(description = r#"CONSTRUCTION RE LN NET CHG-OFFS RATIO - "#)]
     pub ntreconsr: Option<f32>,
 
-    #[doc = r#"Title: CONST RE CHG-OFF/CONST RE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECOSR")]
+    #[schemars(description = r#"CONST RE CHG-OFF/CONST RE LOANS - "#)]
     pub ntrecosr: Option<f32>,
 
-    #[doc = r#"Title: CONST RE CHG-OFF/CONST RE LOANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRECOQR")]
+    #[schemars(description = r#"CONST RE CHG-OFF/CONST RE LOANS QUARTERLY - "#)]
     pub ntrecoqr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN NET CHG-OFF-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREFOR")]
+    #[schemars(description = r#"REAL ESTATE LN NET CHG-OFF-FOR - "#)]
     pub ntrefor: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN NET CHG-OFF-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREFORR")]
+    #[schemars(description = r#"REAL ESTATE LN NET CHG-OFF-FOR RATIO - "#)]
     pub ntreforr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN NET CHG-OFF-FOR QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREFORQ")]
+    #[schemars(description = r#"REAL ESTATE LN NET CHG-OFF-FOR QUARTERLY - "#)]
     pub ntreforq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LN NET CHG-OFF-FOR QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREFORQR")]
+    #[schemars(description = r#"REAL ESTATE LN NET CHG-OFF-FOR QUARTERLY RATIO - "#)]
     pub ntreforqr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOC")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN NET CHG-OFF - "#)]
     pub ntreloc: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN NET CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCLNR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN NET CHG-OFF RATIO - "#)]
     pub ntreloclnr: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN NET CHG-OFF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCQ")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN NET CHG-OFF QUARTERLY - "#)]
     pub ntrelocq: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN NET CHG-OFF ANNUALLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCA")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN NET CHG-OFF ANNUALLY - "#)]
     pub ntreloca: Option<f32>,
 
-    #[doc = r#"Title: LINE OF CREDIT RE LN NET CHG-OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCQR")]
+    #[schemars(description = r#"LINE OF CREDIT RE LN NET CHG-OFF QUARTERLY RATIO - "#)]
     pub ntrelocqr: Option<f32>,
 
-    #[doc = r#"Title: HOME EQUITY CHG-OFF/HOME EQ LNS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCRQ")]
+    #[schemars(description = r#"HOME EQUITY CHG-OFF/HOME EQ LNS QUARTERLY RATIO - "#)]
     pub ntrelocrq: Option<f32>,
 
-    #[doc = r#"Title: HOME EQUITY CHG-OFF/HOME EQ LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRELOCR")]
+    #[schemars(description = r#"HOME EQUITY CHG-OFF/HOME EQ LNS - "#)]
     pub ntrelocr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RE LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULQ")]
+    #[schemars(description = r#"MULTIFAMILY RE LN NET-CHG-QTR - "#)]
     pub ntremulq: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RES RE LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULA")]
+    #[schemars(description = r#"MULTIFAMILY RES RE LN NET-CHG-ANN - "#)]
     pub ntremula: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMILY RE LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULQR")]
+    #[schemars(description = r#"MULTIFAMILY RE LN NET-CHG-QTR RATIO - "#)]
     pub ntremulqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAM RE CHG-OFF/MULTI RE LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULR")]
+    #[schemars(description = r#"MULTIFAM RE CHG-OFF/MULTI RE LN - "#)]
     pub ntremulr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAM RE CHG-OFF/MULTI RE LN QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMUQR")]
+    #[schemars(description = r#"MULTIFAM RE CHG-OFF/MULTI RE LN QUARTERLY - "#)]
     pub ntremuqr: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMLY RES RE LN NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULT")]
+    #[schemars(description = r#"MULTIFAMLY RES RE LN NET CHG-OFF - "#)]
     pub ntremult: Option<f32>,
 
-    #[doc = r#"Title: MULTIFAMLY RES RE LN NET CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREMULTR")]
+    #[schemars(description = r#"MULTIFAMLY RES RE LN NET CHG-OFF RATIO - "#)]
     pub ntremultr: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRES")]
+    #[schemars(description = r#"NONFARM NONRES RE LN NET CHG-OFF - "#)]
     pub ntrenres: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN NET CHG-OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRESR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN NET CHG-OFF RATIO - "#)]
     pub ntrenresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER NONFARM NONRS NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENROT")]
+    #[schemars(description = r#"OTHER NONFARM NONRS NET CHG-OFF - "#)]
     pub ntrenrot: Option<f32>,
 
-    #[doc = r#"Title: OWN OCC NONFRM NONRS NET CHG-OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENROW")]
+    #[schemars(description = r#"OWN OCC NONFRM NONRS NET CHG-OFF - "#)]
     pub ntrenrow: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRSA")]
+    #[schemars(description = r#"NONFARM NONRES RE LN NET-CHG-ANN - "#)]
     pub ntrenrsa: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRSQ")]
+    #[schemars(description = r#"NONFARM NONRES RE LN NET-CHG-QTR - "#)]
     pub ntrenrsq: Option<f32>,
 
-    #[doc = r#"Title: NONFARM NONRES RE LN NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRSQR")]
+    #[schemars(description = r#"NONFARM NONRES RE LN NET-CHG-QTR RATIO - "#)]
     pub ntrenrsqr: Option<f32>,
 
-    #[doc = r#"Title: NONRES CHG-OFF/NONRES LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRSR")]
+    #[schemars(description = r#"NONRES CHG-OFF/NONRES LOANS - "#)]
     pub ntrenrsr: Option<f32>,
 
-    #[doc = r#"Title: NONRES CHG-OFF/NONRES LOANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENRQR")]
+    #[schemars(description = r#"NONRES CHG-OFF/NONRES LOANS QUARTERLY - "#)]
     pub ntrenrqr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENUS")]
+    #[schemars(description = r#"NON-U.S. RE LN NET CHARGE-OFFS - "#)]
     pub ntrenus: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN NET CHARGE-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENUSR")]
+    #[schemars(description = r#"NON-U.S. RE LN NET CHARGE-OFFS RATIO - "#)]
     pub ntrenusr: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN NET CHARGE-OFFS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENUSQ")]
+    #[schemars(description = r#"NON-U.S. RE LN NET CHARGE-OFFS QUARTERLY - "#)]
     pub ntrenusq: Option<f32>,
 
-    #[doc = r#"Title: OTHER 1-4 FAM RE OTHER LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOTHA")]
+    #[schemars(description = r#"OTHER 1-4 FAM RE OTHER LN NET-CHG-ANN - "#)]
     pub ntreotha: Option<f32>,
 
-    #[doc = r#"Title: NON-U.S. RE LN NET CHARGE-OFFS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRENUSQR")]
+    #[schemars(description = r#"NON-U.S. RE LN NET CHARGE-OFFS QUARTERLY RATIO - "#)]
     pub ntrenusqr: Option<f32>,
 
-    #[doc = r#"Title: OTHER 1-4 FAM RE CHG-OFF/OTH 1-4"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOTHR")]
+    #[schemars(description = r#"OTHER 1-4 FAM RE CHG-OFF/OTH 1-4 - "#)]
     pub ntreothr: Option<f32>,
 
-    #[doc = r#"Title: OTHER 1-4 FAM RE CHG-OFF/OTH 1-4 QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOTHRQR")]
+    #[schemars(description = r#"OTHER 1-4 FAM RE CHG-OFF/OTH 1-4 QUARTERLY RATIO - "#)]
     pub ntreothrqr: Option<f32>,
 
-    #[doc = r#"Title: OTHER 1-4 FAM RE CHG-OFF/OTH 1-4 QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOTQA")]
+    #[schemars(description = r#"OTHER 1-4 FAM RE CHG-OFF/OTH 1-4 QUARTERLY - "#)]
     pub ntreotqa: Option<f32>,
 
-    #[doc = r#"Title: RE CHARGE-OFF/RE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRER")]
+    #[schemars(description = r#"RE CHARGE-OFF/RE LOANS - "#)]
     pub ntrer: Option<f32>,
 
-    #[doc = r#"Title: RE CHARGE-OFF/RE LOANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREQR")]
+    #[schemars(description = r#"RE CHARGE-OFF/RE LOANS QUARTERLY - "#)]
     pub ntreqr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY NET CHG-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERES")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY NET CHG-OFFS - "#)]
     pub ntreres: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY NET CHG-OFFS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESLNR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY NET CHG-OFFS RATIO - "#)]
     pub ntrereslnr: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY NET-CHG-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESQ")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY NET-CHG-QTR - "#)]
     pub ntreresq: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESA")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY NET-CHG-ANN - "#)]
     pub ntreresa: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS 1-4 FAMILY NET-CHG-QTR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESQR")]
+    #[schemars(description = r#"RE LOANS 1-4 FAMILY NET-CHG-QTR RATIO - "#)]
     pub ntreresqr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM RE CHG-OFF/1-4 FAM LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESR")]
+    #[schemars(description = r#"1-4 FAM RE CHG-OFF/1-4 FAM LOANS - "#)]
     pub ntreresr: Option<f32>,
 
-    #[doc = r#"Title: 1-4 FAM RE CHG-OFF/1-4 FAM LOANS QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERESRQ")]
+    #[schemars(description = r#"1-4 FAM RE CHG-OFF/1-4 FAM LOANS QUARTERLY RATIO - "#)]
     pub ntreresrq: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-NET C/OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSF2")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-NET C/OFF - "#)]
     pub ntrersf2: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-NET C/OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSF2R")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-NET C/OFF RATIO - "#)]
     pub ntrersf2r: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-NET C/OFF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERS2Q")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-NET C/OFF QUARTERLY - "#)]
     pub ntrers2q: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4 FAM JR LIEN-NET C/OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERS2QR")]
+    #[schemars(description = r#"RE LN 1-4 FAM JR LIEN-NET C/OFF QUARTERLY RATIO - "#)]
     pub ntrers2qr: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4FAM IST LIEN-NET C/OFF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSFM")]
+    #[schemars(description = r#"RE LN 1-4FAM IST LIEN-NET C/OFF - "#)]
     pub ntrersfm: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4FAM IST LIEN-NET C/OFF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSFMR")]
+    #[schemars(description = r#"RE LN 1-4FAM IST LIEN-NET C/OFF RATIO - "#)]
     pub ntrersfmr: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4FAM IST LIEN-NET C/OFF QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSFQ")]
+    #[schemars(description = r#"RE LN 1-4FAM IST LIEN-NET C/OFF QUARTERLY - "#)]
     pub ntrersfq: Option<f32>,
 
-    #[doc = r#"Title: RE LN 1-4FAM IST LIEN-NET C/OFF QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRERSFQR")]
+    #[schemars(description = r#"RE LN 1-4FAM IST LIEN-NET C/OFF QUARTERLY RATIO - "#)]
     pub ntrersfqr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOFFDOM")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES - "#)]
     pub ntreoffdom: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOFFDOMR")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES RATIO - "#)]
     pub ntreoffdomr: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOFFDOMQ")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES QUARTERLY - "#)]
     pub ntreoffdomq: Option<f32>,
 
-    #[doc = r#"Title: REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREOFFDOMQR")]
+    #[schemars(description = r#"REAL ESTATE LOAN NET CHARGE-OFFS DOMESTIC OFFICES QUARTERLY RATIO - "#)]
     pub ntreoffdomqr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-FOR COUNTRY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRFC")]
+    #[schemars(description = r#"NONTRANSACTION-FOR COUNTRY - "#)]
     pub ntrfc: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-FOR CNTRY & GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRFCFG")]
+    #[schemars(description = r#"NONTRANSACTION-FOR CNTRY & GOVT - "#)]
     pub ntrfcfg: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-FOR CNTRY & GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRFCFGR")]
+    #[schemars(description = r#"NONTRANSACTION-FOR CNTRY & GOVT RATIO - "#)]
     pub ntrfcfgr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION-FOR GOVERNMENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRFG")]
+    #[schemars(description = r#"NONTRANSACTION-FOR GOVERNMENT - "#)]
     pub ntrfg: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS DEP-MMDA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRSMMDA")]
+    #[schemars(description = r#"SAVINGS DEP-MMDA - "#)]
     pub ntrsmmda: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS DEP-MMDA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRSMMDAR")]
+    #[schemars(description = r#"SAVINGS DEP-MMDA RATIO - "#)]
     pub ntrsmmdar: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS DEP-OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRSOTH")]
+    #[schemars(description = r#"SAVINGS DEP-OTHER - "#)]
     pub ntrsoth: Option<f32>,
 
-    #[doc = r#"Title: SAVINGS DEP-OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRSOTHR")]
+    #[schemars(description = r#"SAVINGS DEP-OTHER RATIO - "#)]
     pub ntrsothr: Option<f32>,
 
-    #[doc = r#"Title: INCOME EARNED NOT COLLECTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OAIENC")]
+    #[schemars(description = r#"INCOME EARNED NOT COLLECTED - "#)]
     pub oaienc: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - GENERAL ACC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFGEN")]
+    #[schemars(description = r#"LIFE INS ASSETS - GENERAL ACC - "#)]
     pub oalifgen: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - GENERAL ACC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFGENR")]
+    #[schemars(description = r#"LIFE INS ASSETS - GENERAL ACC RATIO - "#)]
     pub oalifgenr: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - HYBRID ACC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFHYB")]
+    #[schemars(description = r#"LIFE INS ASSETS - HYBRID ACC - "#)]
     pub oalifhyb: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - HYBRID ACC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFHYBR")]
+    #[schemars(description = r#"LIFE INS ASSETS - HYBRID ACC RATIO - "#)]
     pub oalifhybr: Option<f32>,
 
-    #[doc = r#"Title: LIFE INSURANCE ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFINS")]
+    #[schemars(description = r#"LIFE INSURANCE ASSETS - "#)]
     pub oalifins: Option<f32>,
 
-    #[doc = r#"Title: LIFE INSURANCE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFINSR")]
+    #[schemars(description = r#"LIFE INSURANCE RATIO - "#)]
     pub oalifinsr: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - SEPARATE ACC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFSEP")]
+    #[schemars(description = r#"LIFE INS ASSETS - SEPARATE ACC - "#)]
     pub oalifsep: Option<f32>,
 
-    #[doc = r#"Title: LIFE INS ASSETS - SEPARATE ACC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OALIFSEPR")]
+    #[schemars(description = r#"LIFE INS ASSETS - SEPARATE ACC RATIO - "#)]
     pub oalifsepr: Option<f32>,
 
-    #[doc = r#"Title: OFF-BALANCE SHEET DERIVATIVES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OBSDIR")]
+    #[schemars(description = r#"OFF-BALANCE SHEET DERIVATIVES - "#)]
     pub obsdir: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREAG")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-FARMLAND - "#)]
     pub oreag: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-FARMLAND RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREAGR")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-FARMLAND RATIO - "#)]
     pub oreagr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-CONST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORECONS")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-CONST - "#)]
     pub orecons: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-CONST RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORECONSR")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-CONST RATIO - "#)]
     pub oreconsr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-GNMA LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREGNMA")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-GNMA LOANS - "#)]
     pub oregnma: Option<f32>,
 
-    #[doc = r#"Title: DIRECT & INDIRECT INVEST IN ORE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREINV")]
+    #[schemars(description = r#"DIRECT & INDIRECT INVEST IN ORE - "#)]
     pub oreinv: Option<f32>,
 
-    #[doc = r#"Title: DIRECT & INDIRECT INVEST IN ORE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREINVR")]
+    #[schemars(description = r#"DIRECT & INDIRECT INVEST IN ORE RATIO - "#)]
     pub oreinvr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-MULTI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREMULT")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-MULTI - "#)]
     pub oremult: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-MULTI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREMULTR")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-MULTI RATIO - "#)]
     pub oremultr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-NONFARM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORENRES")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-NONFARM - "#)]
     pub orenres: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-NONFARM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORENRESR")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-NONFARM RATIO - "#)]
     pub orenresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREOTH")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED - "#)]
     pub oreoth: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREOTHR")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED RATIO - "#)]
     pub oreothr: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREOTHF")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED-FOR - "#)]
     pub oreothf: Option<f32>,
 
-    #[doc = r#"Title: OTHER REAL ESTATE OWNED-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OREOTHFR")]
+    #[schemars(description = r#"OTHER REAL ESTATE OWNED-FOR RATIO - "#)]
     pub oreothfr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED-1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORERES")]
+    #[schemars(description = r#"ALL OTHER RE OWNED-1-4 FAMILY - "#)]
     pub oreres: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER RE OWNED 1-4 FAMILIY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ORERESR")]
+    #[schemars(description = r#"ALL OTHER RE OWNED 1-4 FAMILIY RATIO - "#)]
     pub oreresr: Option<f32>,
 
-    #[doc = r#"Title: OTHER BORROWED MONEY-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBORF")]
+    #[schemars(description = r#"OTHER BORROWED MONEY-FOR - "#)]
     pub othborf: Option<f32>,
 
-    #[doc = r#"Title: OTHER-FUTURES & FORWARD CONTRACT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHFFC")]
+    #[schemars(description = r#"OTHER-FUTURES & FORWARD CONTRACT - "#)]
     pub othffc: Option<f32>,
 
-    #[doc = r#"Title: OTHER-FUTURES & FORWARD CONTRACT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHFFCR")]
+    #[schemars(description = r#"OTHER-FUTURES & FORWARD CONTRACT RATIO - "#)]
     pub othffcr: Option<f32>,
 
-    #[doc = r#"Title: OTHER-NOTIONAL VALUE SWAPS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHNVS")]
+    #[schemars(description = r#"OTHER-NOTIONAL VALUE SWAPS - "#)]
     pub othnvs: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH OFF-BALANCE SHEET LIAB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHOFFBS")]
+    #[schemars(description = r#"ALL OTH OFF-BALANCE SHEET LIAB - "#)]
     pub othoffbs: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH OFF-BALANCE SHEET LIAB RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHOFFBSR")]
+    #[schemars(description = r#"ALL OTH OFF-BALANCE SHEET LIAB RATIO - "#)]
     pub othoffbsr: Option<f32>,
 
-    #[doc = r#"Title: OTHER-PURCHASED OPTION CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHPOC")]
+    #[schemars(description = r#"OTHER-PURCHASED OPTION CONTRACTS - "#)]
     pub othpoc: Option<f32>,
 
-    #[doc = r#"Title: OTHER-WRITTEN OPTION CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHWOC")]
+    #[schemars(description = r#"OTHER-WRITTEN OPTION CONTRACTS - "#)]
     pub othwoc: Option<f32>,
 
-    #[doc = r#"Title: OTS REGION NAME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTSREGNM")]
+    #[schemars(description = r#"OTS REGION NAME - "#)]
     pub otsregnm: Option<String>,
 
-    #[doc = r#"Title: REC OWN INTEREST SEC - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNCRCI")]
+    #[schemars(description = r#"REC OWN INTEREST SEC - CI - "#)]
     pub owncrci: Option<f32>,
 
-    #[doc = r#"Title: REC OWN INTEREST SEC - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNCRCRD")]
+    #[schemars(description = r#"REC OWN INTEREST SEC - CRCD - "#)]
     pub owncrcrd: Option<f32>,
 
-    #[doc = r#"Title: REC OWN INTEREST SEC - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNCRHEL")]
+    #[schemars(description = r#"REC OWN INTEREST SEC - HEL - "#)]
     pub owncrhel: Option<f32>,
 
-    #[doc = r#"Title: C/O OWN INTEREST SEC - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNDRCI")]
+    #[schemars(description = r#"C/O OWN INTEREST SEC - CI - "#)]
     pub owndrci: Option<f32>,
 
-    #[doc = r#"Title: C/O OWN INTEREST SEC - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNDRCRD")]
+    #[schemars(description = r#"C/O OWN INTEREST SEC - CRCD - "#)]
     pub owndrcrd: Option<f32>,
 
-    #[doc = r#"Title: C/O OWN INTEREST SEC - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNDRHEL")]
+    #[schemars(description = r#"C/O OWN INTEREST SEC - HEL - "#)]
     pub owndrhel: Option<f32>,
 
-    #[doc = r#"Title: LN SECURE HELD IN SEC - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNLNCI")]
+    #[schemars(description = r#"LN SECURE HELD IN SEC - CI - "#)]
     pub ownlnci: Option<f32>,
 
-    #[doc = r#"Title: LN SECURE HELD IN SEC - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNLNCRD")]
+    #[schemars(description = r#"LN SECURE HELD IN SEC - CRCD - "#)]
     pub ownlncrd: Option<f32>,
 
-    #[doc = r#"Title: LN SECURE HELD IN SEC - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNLNHEL")]
+    #[schemars(description = r#"LN SECURE HELD IN SEC - HEL - "#)]
     pub ownlnhel: Option<f32>,
 
-    #[doc = r#"Title: PD 30-89 OWN INTEREST SEC - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP3CI")]
+    #[schemars(description = r#"PD 30-89 OWN INTEREST SEC - CI - "#)]
     pub ownp3ci: Option<f32>,
 
-    #[doc = r#"Title: PD 30-89 OWN INTEREST SEC - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP3CRD")]
+    #[schemars(description = r#"PD 30-89 OWN INTEREST SEC - CRCD - "#)]
     pub ownp3crd: Option<f32>,
 
-    #[doc = r#"Title: PD30-89 OWN INTEREST SEC - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP3HEL")]
+    #[schemars(description = r#"PD30-89 OWN INTEREST SEC - HEL - "#)]
     pub ownp3hel: Option<f32>,
 
-    #[doc = r#"Title: PD 90 + OWN INTEREST SEC - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP9CI")]
+    #[schemars(description = r#"PD 90 + OWN INTEREST SEC - CI - "#)]
     pub ownp9ci: Option<f32>,
 
-    #[doc = r#"Title: PD 90 + OWN INTEREST SEC - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP9CRD")]
+    #[schemars(description = r#"PD 90 + OWN INTEREST SEC - CRCD - "#)]
     pub ownp9crd: Option<f32>,
 
-    #[doc = r#"Title: PD 90 + OWN INTEREST SEC - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNP9HEL")]
+    #[schemars(description = r#"PD 90 + OWN INTEREST SEC - HEL - "#)]
     pub ownp9hel: Option<f32>,
 
-    #[doc = r#"Title: SEC. SECURE HELD IN RC-B - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNSCCI")]
+    #[schemars(description = r#"SEC. SECURE HELD IN RC-B - CI - "#)]
     pub ownscci: Option<f32>,
 
-    #[doc = r#"Title: SEC. SECURE HELD IN RC-B - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNSCCRD")]
+    #[schemars(description = r#"SEC. SECURE HELD IN RC-B - CRCD - "#)]
     pub ownsccrd: Option<f32>,
 
-    #[doc = r#"Title: SEC. SECURE HELD IN RC-B - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OWNSCHEL")]
+    #[schemars(description = r#"SEC. SECURE HELD IN RC-B - HEL - "#)]
     pub ownschel: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-AGRICULTURAL LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AG")]
+    #[schemars(description = r#"30-89 DAYS P/D-AGRICULTURAL LNS - "#)]
     pub p3ag: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-AGRICULTURAL LNS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AGR")]
+    #[schemars(description = r#"30-89 DAYS P/D-AGRICULTURAL LNS RATIO - "#)]
     pub p3agr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-AG LNS*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AGSM")]
+    #[schemars(description = r#"30-89 DAYS P/D-AG LNS*SMALL BKS - "#)]
     pub p3agsm: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-AG LNS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AGSMR")]
+    #[schemars(description = r#"30-89 DAYS P/D-AG LNS*SMALL BKS RATIO - "#)]
     pub p3agsmr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3ASSET")]
+    #[schemars(description = r#"30-89 DAYS P/D-TOTAL ASSETS - "#)]
     pub p3asset: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D TOTAL ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3ASSETR")]
+    #[schemars(description = r#"30-89 DAYS P/D TOTAL ASSETS RATIO - "#)]
     pub p3assetr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D AUTO LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AUTO")]
+    #[schemars(description = r#"30-89 DAYS P/D AUTO LOANS - "#)]
     pub p3auto: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D AUTO LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3AUTOR")]
+    #[schemars(description = r#"30-89 DAYS P/D AUTO LOANS RATIO - "#)]
     pub p3autor: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-C&I LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CI")]
+    #[schemars(description = r#"30-89 DAYS P/D-C&I LOANS - "#)]
     pub p3ci: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-C&I LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CIR")]
+    #[schemars(description = r#"30-89 DAYS P/D-C&I LOANS RATIO - "#)]
     pub p3cir: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-C&I*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CINUS")]
+    #[schemars(description = r#"30-89 DAYS P/D-C&I*NON-U.S. - "#)]
     pub p3cinus: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-C&I*NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CINUSR")]
+    #[schemars(description = r#"30-89 DAYS P/D-C&I*NON-U.S. RATIO - "#)]
     pub p3cinusr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CON")]
+    #[schemars(description = r#"30-89 DAYS P/D-CONSUMER LOANS - "#)]
     pub p3con: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-CONSUMER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CONR")]
+    #[schemars(description = r#"30-89 DAYS P/D-CONSUMER LOANS RATIO - "#)]
     pub p3conr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-OTHER CONSUMER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CONOTH")]
+    #[schemars(description = r#"30-89 DAYS P/D-OTHER CONSUMER - "#)]
     pub p3conoth: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-OTHER CONSUMER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CONOTHR")]
+    #[schemars(description = r#"30-89 DAYS P/D-OTHER CONSUMER RATIO - "#)]
     pub p3conothr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-CREDIT CARD PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CRCD")]
+    #[schemars(description = r#"30-89 DAYS P/D-CREDIT CARD PLANS - "#)]
     pub p3crcd: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-CREDIT CARD PLANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3CRCDR")]
+    #[schemars(description = r#"30-89 DAYS P/D-CREDIT CARD PLANS RATIO - "#)]
     pub p3crcdr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEP INST LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3DEP")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEP INST LOANS - "#)]
     pub p3dep: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEP INST LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3DEPR")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEP INST LOANS - "#)]
     pub p3depr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEP INST*NON U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3DEPNUS")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEP INST*NON U.S. - "#)]
     pub p3depnus: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEP INST*NON U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3DEPNUSR")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEP INST*NON U.S. - "#)]
     pub p3depnusr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-FOREIGN GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3FG")]
+    #[schemars(description = r#"30-89 DAYS P/D-FOREIGN GOVT - "#)]
     pub p3fg: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-FOREIGN GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3FGR")]
+    #[schemars(description = r#"30-89 DAYS P/D-FOREIGN GOVT RATIO - "#)]
     pub p3fgr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTY")]
+    #[schemars(description = r#"30-89 DAYS P/D-GTY LN&LS - "#)]
     pub p3gty: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTYR")]
+    #[schemars(description = r#"30-89 DAYS P/D-GTY LN&LS - "#)]
     pub p3gtyr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D-REBOOKED GNMA LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTYGNM")]
+    #[schemars(description = r#"30-89 DAY P/D-REBOOKED GNMA LNS - "#)]
     pub p3gtygnm: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D-REBOOKED GNMA LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTYGNMR")]
+    #[schemars(description = r#"30-89 DAY P/D-REBOOKED GNMA LNS - "#)]
     pub p3gtygnmr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-PART GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTYPAR")]
+    #[schemars(description = r#"30-89 DAYS P/D-PART GTY LN&LS - "#)]
     pub p3gtypar: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-PART GTY LN&LS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3GTYPARR")]
+    #[schemars(description = r#"30-89 DAYS P/D-PART GTY LN&LS RATIO - "#)]
     pub p3gtyparr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D AG LOANS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LAG")]
+    #[schemars(description = r#"30-89 DAY P/D AG LOANS-LOSS SH - "#)]
     pub p3lag: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D AG LOANS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LAGR")]
+    #[schemars(description = r#"30-89 DAY P/D AG LOANS-LOSS SH RATIO - "#)]
     pub p3lagr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D C&I LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LCI")]
+    #[schemars(description = r#"30-89 DAYS P/D C&I LNS-LOSS SH - "#)]
     pub p3lci: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D C&I LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LCIR")]
+    #[schemars(description = r#"30-89 DAYS P/D C&I LNS-LOSS SH RATIO - "#)]
     pub p3lcir: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D CONSUMER -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LCON")]
+    #[schemars(description = r#"30-89 D P/D CONSUMER -LOSS SH - "#)]
     pub p3lcon: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D CONSUMER -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LCONR")]
+    #[schemars(description = r#"30-89 D P/D CONSUMER -LOSS SH RATIO - "#)]
     pub p3lconr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D PROTECT (GTY)-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LGTY")]
+    #[schemars(description = r#"30-89 P/D PROTECT (GTY)-LOSS SH - "#)]
     pub p3lgty: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D PROTECT (GTY)-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LGTYR")]
+    #[schemars(description = r#"30-89 P/D PROTECT (GTY)-LOSS SH RATIO - "#)]
     pub p3lgtyr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-L&L HELD FOR SALE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LNSALE")]
+    #[schemars(description = r#"30-89 DAYS P/D-L&L HELD FOR SALE - "#)]
     pub p3lnsale: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-L&L HELD FOR SALE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LNSALER")]
+    #[schemars(description = r#"30-89 DAYS P/D-L&L HELD FOR SALE RATIO - "#)]
     pub p3lnsaler: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LOTH")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH LNS-LOSS SH - "#)]
     pub p3loth: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LOTHR")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH LNS-LOSS SH RATIO - "#)]
     pub p3lothr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RE FARM-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LREAG")]
+    #[schemars(description = r#"30-89 DAY P/D RE FARM-LOSS SH - "#)]
     pub p3lreag: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RE FARM-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LREAGR")]
+    #[schemars(description = r#"30-89 DAY P/D RE FARM-LOSS SH RATIO - "#)]
     pub p3lreagr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D CONSTRUCTION -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRECON")]
+    #[schemars(description = r#"30-89 P/D CONSTRUCTION -LOSS SH - "#)]
     pub p3lrecon: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D CONSTRUCTION -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRECONR")]
+    #[schemars(description = r#"30-89 P/D CONSTRUCTION -LOSS SH RATIO - "#)]
     pub p3lreconr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D MULTIFAM -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LREMUL")]
+    #[schemars(description = r#"30-89 DAY P/D MULTIFAM -LOSS SH - "#)]
     pub p3lremul: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D MULTIFAM -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LREMULR")]
+    #[schemars(description = r#"30-89 DAY P/D MULTIFAM -LOSS SH RATIO - "#)]
     pub p3lremulr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D NONFRM NONRS -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRENRS")]
+    #[schemars(description = r#"30-89 P/D NONFRM NONRS -LOSS SH - "#)]
     pub p3lrenrs: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D NONFRM NONRS -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRENRSR")]
+    #[schemars(description = r#"30-89 P/D NONFRM NONRS -LOSS SH RATIO - "#)]
     pub p3lrenrsr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D 1-4 FAMILY -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRERES")]
+    #[schemars(description = r#"30-89 D P/D 1-4 FAMILY -LOSS SH - "#)]
     pub p3lreres: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D 1-4 FAMILY -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LRERESR")]
+    #[schemars(description = r#"30-89 P/D 1-4 FAMILY -LOSS SH RATIO - "#)]
     pub p3lreresr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LS")]
+    #[schemars(description = r#"30-89 DAYS P/D-LEASES - "#)]
     pub p3ls: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-LEASES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LSR")]
+    #[schemars(description = r#"30-89 DAYS P/D-LEASES RATIO - "#)]
     pub p3lsr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D TOTAL LOANS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LTOT")]
+    #[schemars(description = r#"30-89 D P/D TOTAL LOANS-LOSS SH - "#)]
     pub p3ltot: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-TOTAL LOANS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3LTOTR")]
+    #[schemars(description = r#"30-89 DAYS P/D-TOTAL LOANS-LOSS SH RATIO - "#)]
     pub p3ltotr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-ALL OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3OTHLN")]
+    #[schemars(description = r#"30-89 DAYS P/D-ALL OTHER LOANS - "#)]
     pub p3othln: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-ALL OTHER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3OTHLNR")]
+    #[schemars(description = r#"30-89 DAYS P/D-ALL OTHER LOANS RATIO - "#)]
     pub p3othlnr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-REAL ESTATE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RE")]
+    #[schemars(description = r#"30-89 DAYS P/D-REAL ESTATE LOANS - "#)]
     pub p3re: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-REAL ESTATE LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RER")]
+    #[schemars(description = r#"30-89 DAYS P/D-REAL ESTATE LOANS RATIO - "#)]
     pub p3rer: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REAG")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*FARMLAND - "#)]
     pub p3reag: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REAGR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*FARMLAND - "#)]
     pub p3reagr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D 1-4 FAM CONSTR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECNFM")]
+    #[schemars(description = r#"30-89 DAYS P/D 1-4 FAM CONSTR LN - "#)]
     pub p3recnfm: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D 1-4 FAM CONSTR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECNFMR")]
+    #[schemars(description = r#"30-89 DAYS P/D 1-4 FAM CONSTR LN - "#)]
     pub p3recnfmr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH CONSTR & LAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECNOT")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH CONSTR & LAND - "#)]
     pub p3recnot: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH CONSTR & LAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECNOTR")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH CONSTR & LAND - "#)]
     pub p3recnotr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECONS")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*CONSTRUCTION - "#)]
     pub p3recons: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECONSR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*CONSTRUCTION - "#)]
     pub p3reconsr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*FOREIGN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REFOR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*FOREIGN - "#)]
     pub p3refor: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*FOREIGN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REFORR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*FOREIGN RATIO - "#)]
     pub p3reforr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 FAM LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RELOC")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 FAM LINES - "#)]
     pub p3reloc: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 FAM LINES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RELOCR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 FAM LINES RATIO - "#)]
     pub p3relocr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REMULT")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*MULTIFAMILY - "#)]
     pub p3remult: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3REMULTR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*MULTIFAMILY - "#)]
     pub p3remultr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENRES")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*NONFARM NONRES - "#)]
     pub p3renres: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENRESR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*NONFARM NONRES - "#)]
     pub p3renresr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH NONFRM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENROT")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH NONFRM NONRES - "#)]
     pub p3renrot: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OTH NONFRM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENROTR")]
+    #[schemars(description = r#"30-89 DAYS P/D OTH NONFRM NONRES - "#)]
     pub p3renrotr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D 0WN-OCC NONF NONRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENROW")]
+    #[schemars(description = r#"30-89 DAYS P/D 0WN-OCC NONF NONRS - "#)]
     pub p3renrow: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D OWN-OCC NONF NONRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENROWR")]
+    #[schemars(description = r#"30-89 DAYS P/D OWN-OCC NONF NONRS RATIO - "#)]
     pub p3renrowr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENUS")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*NON-U.S. - "#)]
     pub p3renus: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RENUSR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*NON-U.S. - "#)]
     pub p3renusr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERES")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 FAMILY - "#)]
     pub p3reres: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERESR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 FAMILY - "#)]
     pub p3reresr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 JN LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERSF2")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 JN LIEN - "#)]
     pub p3rersf2: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 JN LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERSF2R")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 JN LIEN RATIO - "#)]
     pub p3rersf2r: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 IST LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERSFM")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 IST LIEN - "#)]
     pub p3rersfm: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-RE*1-4 IST LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERSFMR")]
+    #[schemars(description = r#"30-89 DAYS P/D-RE*1-4 IST LIEN RATIO - "#)]
     pub p3rersfmr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTRUCT C&I LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSCI")]
+    #[schemars(description = r#"30-89 DAY P/D RESTRUCT C&I LN - "#)]
     pub p3rsci: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D RESTRUCT CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSCONS")]
+    #[schemars(description = r#"30-89 P/D RESTRUCT CONSTRUCTION - "#)]
     pub p3rscons: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTR LN- 1-4 FAM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNFM")]
+    #[schemars(description = r#"30-89 DAY P/D RESTR LN- 1-4 FAM - "#)]
     pub p3rslnfm: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTR LN- 1-4 FAM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNFMR")]
+    #[schemars(description = r#"30-89 DAY P/D RESTR LN- 1-4 FAM RATIO - "#)]
     pub p3rslnfmr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D RESTR LN EXCL1-4 FM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNLS")]
+    #[schemars(description = r#"30-89 D P/D RESTR LN EXCL1-4 FM - "#)]
     pub p3rslnls: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D RESTR LN EXCL1-4 FM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNLSR")]
+    #[schemars(description = r#"30-89 D P/D RESTR LN EXCL1-4 FM RATIO - "#)]
     pub p3rslnlsr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTR LN- TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNLT")]
+    #[schemars(description = r#"30-89 DAY P/D RESTR LN- TOTAL - "#)]
     pub p3rslnlt: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTR LN- TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSLNLTR")]
+    #[schemars(description = r#"30-89 DAY P/D RESTR LN- TOTAL RATIO - "#)]
     pub p3rslnltr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D RESTRUCT MULTIFAM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSMULT")]
+    #[schemars(description = r#"30-89 D P/D RESTRUCT MULTIFAM - "#)]
     pub p3rsmult: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAY P/D RESTRUCT NFNR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSNRES")]
+    #[schemars(description = r#"30-89 DAY P/D RESTRUCT NFNR LN - "#)]
     pub p3rsnres: Option<f32>,
 
-    #[doc = r#"Title: 30-89 D P/D RESTRUCT ALL OTH LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RSOTH")]
+    #[schemars(description = r#"30-89 D P/D RESTRUCT ALL OTH LN - "#)]
     pub p3rsoth: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3SCDEBT")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEBT SECURITIES - "#)]
     pub p3scdebt: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3SCDEBTR")]
+    #[schemars(description = r#"30-89 DAYS P/D-DEBT SECURITIES RATIO - "#)]
     pub p3scdebtr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-AGRICULTURAL LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AG")]
+    #[schemars(description = r#"90+ DAYS P/D-AGRICULTURAL LNS - "#)]
     pub p9ag: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-AGRICULTURAL LNS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AGR")]
+    #[schemars(description = r#"90+ DAYS P/D-AGRICULTURAL LNS RATIO - "#)]
     pub p9agr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-AG LNS*SMALL BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AGSM")]
+    #[schemars(description = r#"90+ DAYS P/D-AG LNS*SMALL BKS - "#)]
     pub p9agsm: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-AG LNS*SMALL BKS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AGSMR")]
+    #[schemars(description = r#"90+ DAYS P/D-AG LNS*SMALL BKS RATIO - "#)]
     pub p9agsmr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9ASSET")]
+    #[schemars(description = r#"90+ DAYS P/D-TOTAL ASSETS - "#)]
     pub p9asset: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-TOTAL ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9ASSETR")]
+    #[schemars(description = r#"90+ DAYS P/D-TOTAL ASSETS RATIO - "#)]
     pub p9assetr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D AUTO LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AUTO")]
+    #[schemars(description = r#"90+ DAYS P/D AUTO LOANS - "#)]
     pub p9auto: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D AUTO LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9AUTOR")]
+    #[schemars(description = r#"90+ DAYS P/D AUTO LOANS RATIO - "#)]
     pub p9autor: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-C&I LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CI")]
+    #[schemars(description = r#"90+ DAYS P/D-C&I LOANS - "#)]
     pub p9ci: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-C&I LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CIR")]
+    #[schemars(description = r#"90+ DAYS P/D-C&I LOANS RATIO - "#)]
     pub p9cir: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-C&I*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CINUS")]
+    #[schemars(description = r#"90+ DAYS P/D-C&I*NON-U.S. - "#)]
     pub p9cinus: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-C&I*NON-U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CINUSR")]
+    #[schemars(description = r#"90+ DAYS P/D-C&I*NON-U.S. RATIO - "#)]
     pub p9cinusr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CON")]
+    #[schemars(description = r#"90+ DAYS P/D-CONSUMER LOANS - "#)]
     pub p9con: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-CONSUMER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CONR")]
+    #[schemars(description = r#"90+ DAYS P/D-CONSUMER LOANS RATIO - "#)]
     pub p9conr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-OTHER CONSUMER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CONOTH")]
+    #[schemars(description = r#"90+ DAYS P/D-OTHER CONSUMER - "#)]
     pub p9conoth: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-OTHER CONSUMER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CONOTHR")]
+    #[schemars(description = r#"90+ DAYS P/D-OTHER CONSUMER RATIO - "#)]
     pub p9conothr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-CREDIT CARD PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CRCD")]
+    #[schemars(description = r#"90+ DAYS P/D-CREDIT CARD PLANS - "#)]
     pub p9crcd: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-CREDIT CARD PLANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9CRCDR")]
+    #[schemars(description = r#"90+ DAYS P/D-CREDIT CARD PLANS RATIO - "#)]
     pub p9crcdr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEP INST LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9DEP")]
+    #[schemars(description = r#"90+ DAYS P/D-DEP INST LOANS - "#)]
     pub p9dep: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEP INST LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9DEPR")]
+    #[schemars(description = r#"90+ DAYS P/D-DEP INST LOANS RATIO - "#)]
     pub p9depr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEP INST*NON U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9DEPNUS")]
+    #[schemars(description = r#"90+ DAYS P/D-DEP INST*NON U.S. - "#)]
     pub p9depnus: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEP INST*NON U.S. RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9DEPNUSR")]
+    #[schemars(description = r#"90+ DAYS P/D-DEP INST*NON U.S. RATIO - "#)]
     pub p9depnusr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-FOREIGN GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9FG")]
+    #[schemars(description = r#"90+ DAYS P/D-FOREIGN GOVT - "#)]
     pub p9fg: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-FOREIGN GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9FGR")]
+    #[schemars(description = r#"90+ DAYS P/D-FOREIGN GOVT RATIO - "#)]
     pub p9fgr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTY")]
+    #[schemars(description = r#"90+ DAYS P/D-GTY LN&LS - "#)]
     pub p9gty: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTYR")]
+    #[schemars(description = r#"90+ DAYS P/D-GTY LN&LS - "#)]
     pub p9gtyr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-REBOOKED GNMA LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTYGNM")]
+    #[schemars(description = r#"90+ DAYS P/D-REBOOKED GNMA LNS - "#)]
     pub p9gtygnm: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D-REBOOKED GNMA LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTYGNMR")]
+    #[schemars(description = r#"90+ DAY P/D-REBOOKED GNMA LNS - "#)]
     pub p9gtygnmr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-PART GTY LN&LS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTYPAR")]
+    #[schemars(description = r#"90+ DAYS P/D-PART GTY LN&LS - "#)]
     pub p9gtypar: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-PART GTY LN&LS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9GTYPARR")]
+    #[schemars(description = r#"90+ DAYS P/D-PART GTY LN&LS RATIO - "#)]
     pub p9gtyparr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D AG LOANS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LAG")]
+    #[schemars(description = r#"90+ DAYS P/D AG LOANS-LOSS SH - "#)]
     pub p9lag: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D AG LOANS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LAGR")]
+    #[schemars(description = r#"90+ DAYS P/D AG LOANS-LOSS SH RATIO - "#)]
     pub p9lagr: Option<f32>,
 
-    #[doc = r#"Title: 90+DAYS P/D C&I LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LCI")]
+    #[schemars(description = r#"90+DAYS P/D C&I LNS-LOSS SH - "#)]
     pub p9lci: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D C&I LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LCIR")]
+    #[schemars(description = r#"90+ DAYS P/D C&I LNS-LOSS SH RATIO - "#)]
     pub p9lcir: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D CONSUMER LN - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LCON")]
+    #[schemars(description = r#"90+ D P/D CONSUMER LN - LOSS SH - "#)]
     pub p9lcon: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D CONSUMER LN - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LCONR")]
+    #[schemars(description = r#"90+ D P/D CONSUMER LN - LOSS SH RATIO - "#)]
     pub p9lconr: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D PROTECT (GTY)-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LGTY")]
+    #[schemars(description = r#"90+ D P/D PROTECT (GTY)-LOSS SH - "#)]
     pub p9lgty: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D PROTECT (GTY)-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LGTYR")]
+    #[schemars(description = r#"90+ D P/D PROTECT (GTY)-LOSS SH RATIO - "#)]
     pub p9lgtyr: Option<f32>,
 
-    #[doc = r#"Title: 90 DAYS P/D-L&L HELD FOR SALE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LNSALE")]
+    #[schemars(description = r#"90 DAYS P/D-L&L HELD FOR SALE - "#)]
     pub p9lnsale: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-L&L HELD FOR SALE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LNSALER")]
+    #[schemars(description = r#"90+ DAYS P/D-L&L HELD FOR SALE RATIO - "#)]
     pub p9lnsaler: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER LNS-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LOTH")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER LNS-LOSS SH - "#)]
     pub p9loth: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER LNS-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LOTHR")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER LNS-LOSS SH RATIO - "#)]
     pub p9lothr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RE FARM-LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LREAG")]
+    #[schemars(description = r#"90+ DAY P/D RE FARM-LOSS SH - "#)]
     pub p9lreag: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RE FARM-LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LREAGR")]
+    #[schemars(description = r#"90+ DAY P/D RE FARM-LOSS SH RATIO - "#)]
     pub p9lreagr: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D CONSTRUCTION -LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRECON")]
+    #[schemars(description = r#"90+ D P/D CONSTRUCTION -LOSS SH - "#)]
     pub p9lrecon: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D CONSTRUCTION -LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRECONR")]
+    #[schemars(description = r#"90+ D P/D CONSTRUCTION -LOSS SH RATIO - "#)]
     pub p9lreconr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D MULTIFAM - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LREMUL")]
+    #[schemars(description = r#"90+ DAY P/D MULTIFAM - LOSS SH - "#)]
     pub p9lremul: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D MULTIFAM - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LREMULR")]
+    #[schemars(description = r#"90+ DAY P/D MULTIFAM - LOSS SH RATIO - "#)]
     pub p9lremulr: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D NFNR - LOSS SHARE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRENRS")]
+    #[schemars(description = r#"90+ D P/D NFNR - LOSS SHARE - "#)]
     pub p9lrenrs: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D NFNR - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRENRSR")]
+    #[schemars(description = r#"90+ D P/D NFNR - LOSS SH RATIO - "#)]
     pub p9lrenrsr: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D 1-4 FAMILY - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRERES")]
+    #[schemars(description = r#"90+ D P/D 1-4 FAMILY - LOSS SH - "#)]
     pub p9lreres: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D 1-4 FAMILY - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LRERESR")]
+    #[schemars(description = r#"90+ D P/D 1-4 FAMILY - LOSS SH RATIO - "#)]
     pub p9lreresr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LS")]
+    #[schemars(description = r#"90+ DAYS P/D-LEASES - "#)]
     pub p9ls: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-LEASES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LSR")]
+    #[schemars(description = r#"90+ DAYS P/D-LEASES RATIO - "#)]
     pub p9lsr: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D TOTAL LOANS - LOSS SH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LTOT")]
+    #[schemars(description = r#"90+ D P/D TOTAL LOANS - LOSS SH - "#)]
     pub p9ltot: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D TOTAL LOANS - LOSS SH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9LTOTR")]
+    #[schemars(description = r#"90+ D P/D TOTAL LOANS - LOSS SH RATIO - "#)]
     pub p9ltotr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-ALL OTHER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9OTHLN")]
+    #[schemars(description = r#"90+ DAYS P/D-ALL OTHER LOANS - "#)]
     pub p9othln: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-ALL OTHER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9OTHLNR")]
+    #[schemars(description = r#"90+ DAYS P/D-ALL OTHER LOANS RATIO - "#)]
     pub p9othlnr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-REAL ESTATE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RE")]
+    #[schemars(description = r#"90+ DAYS P/D-REAL ESTATE LOANS - "#)]
     pub p9re: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-REAL ESTATE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RER")]
+    #[schemars(description = r#"90+ DAYS P/D-REAL ESTATE RATIO - "#)]
     pub p9rer: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REAG")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*FARMLAND - "#)]
     pub p9reag: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REAGR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*FARMLAND - "#)]
     pub p9reagr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D 1-4 FAM CONSTRUC LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECNFM")]
+    #[schemars(description = r#"90+ DAYS P/D 1-4 FAM CONSTRUC LN - "#)]
     pub p9recnfm: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D 1-4 FAM CONSTRUC LN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECNFMR")]
+    #[schemars(description = r#"90+ DAYS P/D 1-4 FAM CONSTRUC LN RATIO - "#)]
     pub p9recnfmr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER CONSTR & LAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECNOT")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER CONSTR & LAND - "#)]
     pub p9recnot: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER CONSTR & LAND RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECNOTR")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER CONSTR & LAND RATIO - "#)]
     pub p9recnotr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECONS")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*CONSTRUCTION - "#)]
     pub p9recons: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*CONSTRUCTION RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RECONSR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*CONSTRUCTION RATIO - "#)]
     pub p9reconsr: Option<f32>,
 
-    #[doc = r#"Title: 90 + DAYS P/D-RE*FOREIGN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REFOR")]
+    #[schemars(description = r#"90 + DAYS P/D-RE*FOREIGN - "#)]
     pub p9refor: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*FOREIGN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REFORR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*FOREIGN RATIO - "#)]
     pub p9reforr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 FAM LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RELOC")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 FAM LINES - "#)]
     pub p9reloc: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 FAM LINES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RELOCR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 FAM LINES RATIO - "#)]
     pub p9relocr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REMULT")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*MULTIFAMILY - "#)]
     pub p9remult: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*MULTIFAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9REMULTR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*MULTIFAMILY RATIO - "#)]
     pub p9remultr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENRES")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*NONFARM NONRES - "#)]
     pub p9renres: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*NONFARM NONRES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENRESR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*NONFARM NONRES RATIO - "#)]
     pub p9renresr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER NONFRM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENROT")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER NONFRM NONRES - "#)]
     pub p9renrot: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OTHER NONFRM NONRES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENROTR")]
+    #[schemars(description = r#"90+ DAYS P/D OTHER NONFRM NONRES RATIO - "#)]
     pub p9renrotr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D 0WN-OCC NONFR NONRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENROW")]
+    #[schemars(description = r#"90+ DAYS P/D 0WN-OCC NONFR NONRS - "#)]
     pub p9renrow: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D OWN-OCC NONFR NONRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENROWR")]
+    #[schemars(description = r#"90+ DAYS P/D OWN-OCC NONFR NONRS RATIO - "#)]
     pub p9renrowr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENUS")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*NON-U.S. - "#)]
     pub p9renus: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*NON-U.S."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RENUSR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*NON-U.S. - "#)]
     pub p9renusr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERES")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 FAMILY - "#)]
     pub p9reres: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 FAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERESR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 FAMILY RATIO - "#)]
     pub p9reresr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 JN LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERSF2")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 JN LIEN - "#)]
     pub p9rersf2: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 JN LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERSF2R")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 JN LIEN RATIO - "#)]
     pub p9rersf2r: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 IST LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERSFM")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 IST LIEN - "#)]
     pub p9rersfm: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-RE*1-4 IST LIEN RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RERSFMR")]
+    #[schemars(description = r#"90+ DAYS P/D-RE*1-4 IST LIEN RATIO - "#)]
     pub p9rersfmr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTRUCT C&I LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSCI")]
+    #[schemars(description = r#"90+ DAY P/D RESTRUCT C&I LN - "#)]
     pub p9rsci: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D RESTRUCT CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSCONS")]
+    #[schemars(description = r#"90+ D P/D RESTRUCT CONSTRUCTION - "#)]
     pub p9rscons: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D RESTR LN- 1-4 FAM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNFM")]
+    #[schemars(description = r#"90+ DAYS P/D RESTR LN- 1-4 FAM - "#)]
     pub p9rslnfm: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D RESTR LN- 1-4 FAM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNFMR")]
+    #[schemars(description = r#"90+ DAYS P/D RESTR LN- 1-4 FAM RATIO - "#)]
     pub p9rslnfmr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTRU LN EXCL 1-4 FM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNLS")]
+    #[schemars(description = r#"90+ DAY P/D RESTRU LN EXCL 1-4 FM - "#)]
     pub p9rslnls: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTRU LN EXCL 1-4 FM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNLSR")]
+    #[schemars(description = r#"90+ DAY P/D RESTRU LN EXCL 1-4 FM RATIO - "#)]
     pub p9rslnlsr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTR LN- TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNLT")]
+    #[schemars(description = r#"90+ DAY P/D RESTR LN- TOTAL - "#)]
     pub p9rslnlt: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTR LN- TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSLNLTR")]
+    #[schemars(description = r#"90+ DAY P/D RESTR LN- TOTAL RATIO - "#)]
     pub p9rslnltr: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTRUCT MULTIFAM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSMULT")]
+    #[schemars(description = r#"90+ DAY P/D RESTRUCT MULTIFAM - "#)]
     pub p9rsmult: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAY P/D RESTRUCT NFNR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSNRES")]
+    #[schemars(description = r#"90+ DAY P/D RESTRUCT NFNR LN - "#)]
     pub p9rsnres: Option<f32>,
 
-    #[doc = r#"Title: 90+ D P/D RESTRUCT ALL OTH LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RSOTH")]
+    #[schemars(description = r#"90+ D P/D RESTRUCT ALL OTH LN - "#)]
     pub p9rsoth: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9SCDEBT")]
+    #[schemars(description = r#"90+ DAYS P/D-DEBT SECURITIES - "#)]
     pub p9scdebt: Option<f32>,
 
-    #[doc = r#"Title: 90+ DAYS P/D-DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9SCDEBTR")]
+    #[schemars(description = r#"90+ DAYS P/D-DEBT SECURITIES RATIO - "#)]
     pub p9scdebtr: Option<f32>,
 
-    #[doc = r#"Title: PARTICIPATIONS ACQUIRED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PARTACQU")]
+    #[schemars(description = r#"PARTICIPATIONS ACQUIRED - "#)]
     pub partacqu: Option<f32>,
 
-    #[doc = r#"Title: PARTICIPATIONS CONVEYED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PARTCONV")]
+    #[schemars(description = r#"PARTICIPATIONS CONVEYED - "#)]
     pub partconv: Option<f32>,
 
-    #[doc = r#"Title: PARTICIPATIONS CONVEYED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PARTCONVR")]
+    #[schemars(description = r#"PARTICIPATIONS CONVEYED RATIO - "#)]
     pub partconvr: Option<f32>,
 
-    #[doc = r#"Title: ALLOWANCE FOR L&L IN TIER 2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RB2LNRES")]
+    #[schemars(description = r#"ALLOWANCE FOR L&L IN TIER 2 - "#)]
     pub rb2lnres: Option<f32>,
 
-    #[doc = r#"Title: ALLOWANCE FOR L&L IN TIER 2 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RB2LNRESR")]
+    #[schemars(description = r#"ALLOWANCE FOR L&L IN TIER 2 RATIO - "#)]
     pub rb2lnresr: Option<f32>,
 
-    #[doc = r#"Title: RBC-TOTAL-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBC")]
+    #[schemars(description = r#"RBC-TOTAL-PCA - "#)]
     pub rbc: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 RBC-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1")]
+    #[schemars(description = r#"TIER 1 RBC-PCA - "#)]
     pub rbct1: Option<f32>,
 
-    #[doc = r#"Title: RBC-TIER2-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT2")]
+    #[schemars(description = r#"RBC-TIER2-PCA - "#)]
     pub rbct2: Option<f32>,
 
-    #[doc = r#"Title: RBC-TIER2-PCA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT2R")]
+    #[schemars(description = r#"RBC-TIER2-PCA RATIO - "#)]
     pub rbct2r: Option<f32>,
 
-    #[doc = r#"Title: RC-R COMMON EQ TIER 1 CAPITAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1C")]
+    #[schemars(description = r#"RC-R COMMON EQ TIER 1 CAPITAL - "#)]
     pub rbct1c: Option<f32>,
 
-    #[doc = r#"Title: COMMON EQUITY TIER 1 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1CER")]
+    #[schemars(description = r#"COMMON EQUITY TIER 1 RATIO - "#)]
     pub rbct1cer: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 RBC ADJUSTED LLR - PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1J")]
+    #[schemars(description = r#"TIER 1 RBC ADJUSTED LLR - PCA - "#)]
     pub rbct1j: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 RBC ADJUSTED LLR - PCA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1JR")]
+    #[schemars(description = r#"TIER 1 RBC ADJUSTED LLR - PCA RATIO - "#)]
     pub rbct1jr: Option<f32>,
 
-    #[doc = r#"Title: LEVERAGE RATIO-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBC1AAJ")]
+    #[schemars(description = r#"LEVERAGE RATIO-PCA - "#)]
     pub rbc1aaj: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 RBC RATIO-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBC1RWAJ")]
+    #[schemars(description = r#"TIER 1 RBC RATIO-PCA - "#)]
     pub rbc1rwaj: Option<f32>,
 
-    #[doc = r#"Title: TOTAL RBC RATIO-PCA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCRWAJ")]
+    #[schemars(description = r#"TOTAL RBC RATIO-PCA - "#)]
     pub rbcrwaj: Option<f32>,
 
-    #[doc = r#"Title: REPURCHASE AGREEMENT-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="REPOPURF")]
+    #[schemars(description = r#"REPURCHASE AGREEMENT-FOR - "#)]
     pub repopurf: Option<f32>,
 
-    #[doc = r#"Title: REVERSE REPURCHASE AGREEMENT-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="REPOSLDF")]
+    #[schemars(description = r#"REVERSE REPURCHASE AGREEMENT-FOR - "#)]
     pub reposldf: Option<f32>,
 
-    #[doc = r#"Title: RETAINED EARNINGS/AVG BK EQUITY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ROEINJR")]
+    #[schemars(description = r#"RETAINED EARNINGS/AVG BK EQUITY - "#)]
     pub roeinjr: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN - C&I"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSCI")]
+    #[schemars(description = r#"RESTRUCTURED LN - C&I - "#)]
     pub rsci: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN - CONSTRUCTION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSCONS")]
+    #[schemars(description = r#"RESTRUCTURED LN - CONSTRUCTION - "#)]
     pub rscons: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN EXCL 1-4 FM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNLS")]
+    #[schemars(description = r#"RESTRUCTURED LN EXCL 1-4 FM - "#)]
     pub rslnls: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN EXCL 1-4 FM RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNLSR")]
+    #[schemars(description = r#"RESTRUCTURED LN EXCL 1-4 FM RATIO - "#)]
     pub rslnlsr: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LOANS - TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNLTOT")]
+    #[schemars(description = r#"RESTRUCTURED LOANS - TOTAL - "#)]
     pub rslnltot: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LOANS - TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNLTOTR")]
+    #[schemars(description = r#"RESTRUCTURED LOANS - TOTAL RATIO - "#)]
     pub rslnltotr: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LOANS - 1-4 FAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNREFM")]
+    #[schemars(description = r#"RESTRUCTURED LOANS - 1-4 FAMILY - "#)]
     pub rslnrefm: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LOANS - 1-4 FAMILY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSLNREFMR")]
+    #[schemars(description = r#"RESTRUCTURED LOANS - 1-4 FAMILY RATIO - "#)]
     pub rslnrefmr: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN - MULTIFAMILY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSMULT")]
+    #[schemars(description = r#"RESTRUCTURED LN - MULTIFAMILY - "#)]
     pub rsmult: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCT LN - NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSNRES")]
+    #[schemars(description = r#"RESTRUCT LN - NONFARM NONRES - "#)]
     pub rsnres: Option<f32>,
 
-    #[doc = r#"Title: RESTRUCTURED LN - ALL OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSOTHER")]
+    #[schemars(description = r#"RESTRUCTURED LN - ALL OTHER - "#)]
     pub rsother: Option<f32>,
 
-    #[doc = r#"Title: FEDERAL RESERVE ID NUMBER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RSSDID")]
+    #[schemars(description = r#"FEDERAL RESERVE ID NUMBER - "#)]
     pub rssdid: Option<f32>,
 
-    #[doc = r#"Title: INTEREST RATE-TOTAL CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RT")]
+    #[schemars(description = r#"INTEREST RATE-TOTAL CONTRACTS - "#)]
     pub rt: Option<f32>,
 
-    #[doc = r#"Title: INT RATE-FUTURES & FORWARD CONTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RTFFC")]
+    #[schemars(description = r#"INT RATE-FUTURES & FORWARD CONTR - "#)]
     pub rtffc: Option<f32>,
 
-    #[doc = r#"Title: INT RATE-SWAPS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RTNVS")]
+    #[schemars(description = r#"INT RATE-SWAPS - "#)]
     pub rtnvs: Option<f32>,
 
-    #[doc = r#"Title: INT RATE-PUR OPTION CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RTPOC")]
+    #[schemars(description = r#"INT RATE-PUR OPTION CONTRACTS - "#)]
     pub rtpoc: Option<f32>,
 
-    #[doc = r#"Title: INT RATE-WRITTEN OPTION CONTRACT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RTWOC")]
+    #[schemars(description = r#"INT RATE-WRITTEN OPTION CONTRACT - "#)]
     pub rtwoc: Option<f32>,
 
-    #[doc = r#"Title: RWA-ADJUST-PCA-T1 & CET1 RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RWAJ")]
+    #[schemars(description = r#"RWA-ADJUST-PCA-T1 & CET1 RATIO - "#)]
     pub rwaj: Option<f32>,
 
-    #[doc = r#"Title: RWA-ADJUSTED-PCA-TOTAL RBC RAT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RWAJT")]
+    #[schemars(description = r#"RWA-ADJUSTED-PCA-TOTAL RBC RAT - "#)]
     pub rwajt: Option<f32>,
 
-    #[doc = r#"Title: RWA-ADJUSTED-PCA-TOTAL RBC RAT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RWAJTR")]
+    #[schemars(description = r#"RWA-ADJUSTED-PCA-TOTAL RBC RAT RATIO - "#)]
     pub rwajtr: Option<f32>,
 
-    #[doc = r#"Title: ABS-TOTAL-B/S"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCABS")]
+    #[schemars(description = r#"ABS-TOTAL-B/S - "#)]
     pub scabs: Option<f32>,
 
-    #[doc = r#"Title: ABS-TOTAL-B/S RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCABSR")]
+    #[schemars(description = r#"ABS-TOTAL-B/S RATIO - "#)]
     pub scabsr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-AF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCAF")]
+    #[schemars(description = r#"SECURITIES-AF - "#)]
     pub scaf: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-AF RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCAFR")]
+    #[schemars(description = r#"SECURITIES-AF RATIO - "#)]
     pub scafr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ALL OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCAOT")]
+    #[schemars(description = r#"U.S. AGENCY ALL OTH - "#)]
     pub scaot: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL MBS - TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMMB")]
+    #[schemars(description = r#"COMMERCIAL MBS - TOTAL - "#)]
     pub sccmmb: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMMERCIAL MBS-GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOG")]
+    #[schemars(description = r#"OTHER COMMERCIAL MBS-GOVT - "#)]
     pub sccmog: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMMERCIAL MBS-GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOGR")]
+    #[schemars(description = r#"OTHER COMMERCIAL MBS-GOVT RATIO - "#)]
     pub sccmogr: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMMERCIAL MBS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOT")]
+    #[schemars(description = r#"OTHER COMMERCIAL MBS - "#)]
     pub sccmot: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMMERCIAL MBS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOTR")]
+    #[schemars(description = r#"OTHER COMMERCIAL MBS RATIO - "#)]
     pub sccmotr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL MBS PASS-THROUGH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMPT")]
+    #[schemars(description = r#"COMMERCIAL MBS PASS-THROUGH - "#)]
     pub sccmpt: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL MBS PASS-THROUGH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMPTR")]
+    #[schemars(description = r#"COMMERCIAL MBS PASS-THROUGH RATIO - "#)]
     pub sccmptr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY COLLATERAL MTG-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCOL")]
+    #[schemars(description = r#"U.S. AGENCY COLLATERAL MTG-RES - "#)]
     pub sccol: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY COLLATERAL MTG-RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCOLR")]
+    #[schemars(description = r#"U.S. AGENCY COLLATERAL MTG-RES RATIO - "#)]
     pub sccolr: Option<f32>,
 
-    #[doc = r#"Title: COMM MBS PASS-THRU-GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCPTG")]
+    #[schemars(description = r#"COMM MBS PASS-THRU-GOVT - "#)]
     pub sccptg: Option<f32>,
 
-    #[doc = r#"Title: COMM MBS PASS-THRU-GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCPTGR")]
+    #[schemars(description = r#"COMM MBS PASS-THRU-GOVT RATIO - "#)]
     pub sccptgr: Option<f32>,
 
-    #[doc = r#"Title: EQ SEC READILY DET FV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCEQFV")]
+    #[schemars(description = r#"EQ SEC READILY DET FV - "#)]
     pub sceqfv: Option<f32>,
 
-    #[doc = r#"Title: EQ SEC READILY DET FV RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCEQFVR")]
+    #[schemars(description = r#"EQ SEC READILY DET FV RATIO - "#)]
     pub sceqfvr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ISSUED*FNMA-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCFMN")]
+    #[schemars(description = r#"U.S. AGENCY ISSUED*FNMA-RES - "#)]
     pub scfmn: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ISSUED*FNMA-RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCFMNR")]
+    #[schemars(description = r#"U.S. AGENCY ISSUED*FNMA-RES RATIO - "#)]
     pub scfmnr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY GTY BY GNMA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCGNM")]
+    #[schemars(description = r#"U.S. AGENCY GTY BY GNMA - "#)]
     pub scgnm: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY GTY BY GNMA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCGNMR")]
+    #[schemars(description = r#"U.S. AGENCY GTY BY GNMA RATIO - "#)]
     pub scgnmr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ISSUED OR GTY-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCGTY")]
+    #[schemars(description = r#"U.S. AGENCY ISSUED OR GTY-RES - "#)]
     pub scgty: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY ISSUED OR GTY-RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCGTYR")]
+    #[schemars(description = r#"U.S. AGENCY ISSUED OR GTY-RES RATIO - "#)]
     pub scgtyr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-HA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCHA")]
+    #[schemars(description = r#"SECURITIES-HA - "#)]
     pub scha: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-HA RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCHAR")]
+    #[schemars(description = r#"SECURITIES-HA RATIO - "#)]
     pub schar: Option<f32>,
 
-    #[doc = r#"Title: LESS ALLOW FOR CREDIT LOSSES ON HELD TO MATURITY DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCHTMRES")]
+    #[schemars(description = r#"LESS ALLOW FOR CREDIT LOSSES ON HELD TO MATURITY DEBT SECURITIES - "#)]
     pub schtmres: Option<f32>,
 
-    #[doc = r#"Title: LESS ALLOW FOR CREDIT LOSSES ON HELD TO MATURITY DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCHTMRESR")]
+    #[schemars(description = r#"LESS ALLOW FOR CREDIT LOSSES ON HELD TO MATURITY DEBT SECURITIES RATIO - "#)]
     pub schtmresr: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES LENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCLENT")]
+    #[schemars(description = r#"SECURITIES LENT - "#)]
     pub sclent: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES LENT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCLENTR")]
+    #[schemars(description = r#"SECURITIES LENT RATIO - "#)]
     pub sclentr: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM1T3")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 1-3 YEARS - "#)]
     pub scnm1t3: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM1T3R")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 1-3 YEARS RATIO - "#)]
     pub scnm1t3r: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC*3 MONS OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3LES")]
+    #[schemars(description = r#"NONMTG DEBT SEC*3 MONS OR LESS - "#)]
     pub scnm3les: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC*3 MONS OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3LESR")]
+    #[schemars(description = r#"NONMTG DEBT SEC*3 MONS OR LESS RATIO - "#)]
     pub scnm3lesr: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 3-5 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3T5")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 3-5 YEARS - "#)]
     pub scnm3t5: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 3-5 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3T5R")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 3-5 YEARS RATIO - "#)]
     pub scnm3t5r: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 3-12 MONTHS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3T12")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 3-12 MONTHS - "#)]
     pub scnm3t12: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 3-12 MONTHS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM3T12R")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 3-12 MONTHS RATIO - "#)]
     pub scnm3t12r: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 5-15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM5T15")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 5-15 YEARS - "#)]
     pub scnm5t15: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * 5-15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNM5T15R")]
+    #[schemars(description = r#"NONMTG DEBT SEC * 5-15 YEARS RATIO - "#)]
     pub scnm5t15r: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * OVER 15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNMOV15")]
+    #[schemars(description = r#"NONMTG DEBT SEC * OVER 15 YEARS - "#)]
     pub scnmov15: Option<f32>,
 
-    #[doc = r#"Title: NONMTG DEBT SEC * OVER 15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCNMOV15R")]
+    #[schemars(description = r#"NONMTG DEBT SEC * OVER 15 YEARS RATIO - "#)]
     pub scnmov15r: Option<f32>,
 
-    #[doc = r#"Title: OTH MORTGAGE SEC * 3 YR OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCO3YLES")]
+    #[schemars(description = r#"OTH MORTGAGE SEC * 3 YR OR LESS - "#)]
     pub sco3yles: Option<f32>,
 
-    #[doc = r#"Title: OTH MORTGAGE SEC * 3 YR OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCO3YLESR")]
+    #[schemars(description = r#"OTH MORTGAGE SEC * 3 YR OR LESS RATIO - "#)]
     pub sco3ylesr: Option<f32>,
 
-    #[doc = r#"Title: Fixed and floating rate debt securities (included above) with remaining maturity of one year or less"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SC1LES")]
+    #[schemars(description = r#"Fixed and floating rate debt securities (included above) with remaining maturity of one year or less - "#)]
     pub sc1les: Option<f32>,
 
-    #[doc = r#"Title: Fixed and floating rate debt securities (included above) with remaining maturity of one year or less ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SC1LESR")]
+    #[schemars(description = r#"Fixed and floating rate debt securities (included above) with remaining maturity of one year or less ratio - "#)]
     pub sc1lesr: Option<f32>,
 
-    #[doc = r#"Title: OTH DOM DEBT*ALL OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODOT")]
+    #[schemars(description = r#"OTH DOM DEBT*ALL OTHER - "#)]
     pub scodot: Option<f32>,
 
-    #[doc = r#"Title: OTH DOM DEBT*ALL OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODOTR")]
+    #[schemars(description = r#"OTH DOM DEBT*ALL OTHER RATIO - "#)]
     pub scodotr: Option<f32>,
 
-    #[doc = r#"Title: CMO PRIV ISSUED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODPI")]
+    #[schemars(description = r#"CMO PRIV ISSUED - "#)]
     pub scodpi: Option<f32>,
 
-    #[doc = r#"Title: CMO PRIV ISSUED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCODPIR")]
+    #[schemars(description = r#"CMO PRIV ISSUED RATIO - "#)]
     pub scodpir: Option<f32>,
 
-    #[doc = r#"Title: OTH MORTGAGE SEC * OVER 3 YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCOOV3Y")]
+    #[schemars(description = r#"OTH MORTGAGE SEC * OVER 3 YRS - "#)]
     pub scoov3y: Option<f32>,
 
-    #[doc = r#"Title: OTH MORTGAGE SEC * OVER 3 YRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCOOV3YR")]
+    #[schemars(description = r#"OTH MORTGAGE SEC * OVER 3 YRS RATIO - "#)]
     pub scoov3yr: Option<f32>,
 
-    #[doc = r#"Title: PLEDGED SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPLEDGE")]
+    #[schemars(description = r#"PLEDGED SECURITIES - "#)]
     pub scpledge: Option<f32>,
 
-    #[doc = r#"Title: PLEDGED SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPLEDGER")]
+    #[schemars(description = r#"PLEDGED SECURITIES RATIO - "#)]
     pub scpledger: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 1-3 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT1T3")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 1-3 YEARS - "#)]
     pub scpt1t3: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 1-3 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT1T3R")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 1-3 YEARS RATIO - "#)]
     pub scpt1t3r: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC*3 MON OR LESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3LES")]
+    #[schemars(description = r#"MTG PASS-THRU SEC*3 MON OR LESS - "#)]
     pub scpt3les: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC*3 MON OR LESS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3LESR")]
+    #[schemars(description = r#"MTG PASS-THRU SEC*3 MON OR LESS RATIO - "#)]
     pub scpt3lesr: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 3-5 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3T5")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 3-5 YEARS - "#)]
     pub scpt3t5: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 3-5 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3T5R")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 3-5 YEARS RATIO - "#)]
     pub scpt3t5r: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 3-12 MONTHS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3T12")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 3-12 MONTHS - "#)]
     pub scpt3t12: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 3-12 MONTHS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT3T12R")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 3-12 MONTHS RATIO - "#)]
     pub scpt3t12r: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 5-15 YEARS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT5T15")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 5-15 YEARS - "#)]
     pub scpt5t15: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * 5-15 YEARS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPT5T15R")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * 5-15 YEARS RATIO - "#)]
     pub scpt5t15r: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * OVER 15 YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPTOV15")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * OVER 15 YRS - "#)]
     pub scptov15: Option<f32>,
 
-    #[doc = r#"Title: MTG PASS-THRU SEC * OVER 15 YRS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCPTOV15R")]
+    #[schemars(description = r#"MTG PASS-THRU SEC * OVER 15 YRS RATIO - "#)]
     pub scptov15r: Option<f32>,
 
-    #[doc = r#"Title: DEBT SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCRDEBT")]
+    #[schemars(description = r#"DEBT SECURITIES - "#)]
     pub scrdebt: Option<f32>,
 
-    #[doc = r#"Title: DEBT SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCRDEBTR")]
+    #[schemars(description = r#"DEBT SECURITIES RATIO - "#)]
     pub scrdebtr: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED FIN PROD - TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSFP")]
+    #[schemars(description = r#"STRUCTURED FIN PROD - TOTAL - "#)]
     pub scsfp: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED FIN PROD - TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSFPR")]
+    #[schemars(description = r#"STRUCTURED FIN PROD - TOTAL RATIO - "#)]
     pub scsfpr: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED NOTES AMORTIZED COST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSNHAA")]
+    #[schemars(description = r#"STRUCTURED NOTES AMORTIZED COST - "#)]
     pub scsnhaa: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED NOTES AMORTIZED COST RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSNHAAR")]
+    #[schemars(description = r#"STRUCTURED NOTES AMORTIZED COST RATIO - "#)]
     pub scsnhaar: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED NOTES-FAIR VALUE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSNHAF")]
+    #[schemars(description = r#"STRUCTURED NOTES-FAIR VALUE - "#)]
     pub scsnhaf: Option<f32>,
 
-    #[doc = r#"Title: STRUCTURED NOTES-FAIR VALUE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSNHAFR")]
+    #[schemars(description = r#"STRUCTURED NOTES-FAIR VALUE RATIO - "#)]
     pub scsnhafr: Option<f32>,
 
-    #[doc = r#"Title: U.S. AGENCY GOVT SPONSORED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCSPN")]
+    #[schemars(description = r#"U.S. AGENCY GOVT SPONSORED - "#)]
     pub scspn: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30AUTO")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-AUTO - "#)]
     pub sz30auto: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30AUTOR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-AUTO RATIO - "#)]
     pub sz30autor: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CI")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CI - "#)]
     pub sz30ci: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CIR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CI RATIO - "#)]
     pub sz30cir: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CON")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CON - "#)]
     pub sz30con: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CONR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CON RATIO - "#)]
     pub sz30conr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CRCD")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CRCD - "#)]
     pub sz30crcd: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30CRCDR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-CRCD RATIO - "#)]
     pub sz30crcdr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30HEL")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-HEL - "#)]
     pub sz30hel: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30HELR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-HEL RATIO - "#)]
     pub sz30helr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30OTH")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-OTH - "#)]
     pub sz30oth: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION-OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30OTHR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION-OTH RATIO - "#)]
     pub sz30othr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION -RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30RES")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION -RES - "#)]
     pub sz30res: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PD LN-SECURITIZATION -RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ30RESR")]
+    #[schemars(description = r#"30-89 PD LN-SECURITIZATION -RES RATIO - "#)]
     pub sz30resr: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90AUTO")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-AUTO - "#)]
     pub sz90auto: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90AUTOR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-AUTO RATIO - "#)]
     pub sz90autor: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CI")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CI - "#)]
     pub sz90ci: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CIR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CI RATIO - "#)]
     pub sz90cir: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CON")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CON - "#)]
     pub sz90con: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CONR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CON RATIO - "#)]
     pub sz90conr: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CRCD")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CRCD - "#)]
     pub sz90crcd: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90CRCDR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-CRCD RATIO - "#)]
     pub sz90crcdr: Option<f32>,
 
-    #[doc = r#"Title: 90+ PD LN-SECURITIZATION-HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90HEL")]
+    #[schemars(description = r#"90+ PD LN-SECURITIZATION-HEL - "#)]
     pub sz90hel: Option<f32>,
 
-    #[doc = r#"Title: 90+ PD LN-SECURITIZATION-HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90HELR")]
+    #[schemars(description = r#"90+ PD LN-SECURITIZATION-HEL RATIO - "#)]
     pub sz90helr: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90OTH")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-OTH - "#)]
     pub sz90oth: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90OTHR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-OTH RATIO - "#)]
     pub sz90othr: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90RES")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-RES - "#)]
     pub sz90res: Option<f32>,
 
-    #[doc = r#"Title: 90 + PD LN-SECURITIZATION-RES RATION"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZ90RESR")]
+    #[schemars(description = r#"90 + PD LN-SECURITIZATION-RES RATION - "#)]
     pub sz90resr: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRAUTO")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-AUTO - "#)]
     pub szcrauto: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRAUTOR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-AUTO - "#)]
     pub szcrautor: Option<f32>,
 
-    #[doc = r#"Title: OUTSTDG CC FEES IN SECURITZD CC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCDFE")]
+    #[schemars(description = r#"OUTSTDG CC FEES IN SECURITZD CC - "#)]
     pub szcrcdfe: Option<f32>,
 
-    #[doc = r#"Title: OUTSTDG CC FEES IN SECURITZD CC RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCDFER")]
+    #[schemars(description = r#"OUTSTDG CC FEES IN SECURITZD CC RATIO - "#)]
     pub szcrcdfer: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCI")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-CI - "#)]
     pub szcrci: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCIR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-CI RATIO - "#)]
     pub szcrcir: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCON")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-CON - "#)]
     pub szcrcon: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCONR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-CON RATIO - "#)]
     pub szcrconr: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCRCD")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION - CRCD - "#)]
     pub szcrcrcd: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION - CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRCRCDR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION - CRCD RATIO - "#)]
     pub szcrcrcdr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD-HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRHEL")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD-HEL - "#)]
     pub szcrhel: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD-HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRHELR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD-HEL RATIO - "#)]
     pub szcrhelr: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCROTH")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION- - "#)]
     pub szcroth: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION- RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCROTHR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION- RATIO - "#)]
     pub szcrothr: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRRES")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-RES - "#)]
     pub szcrres: Option<f32>,
 
-    #[doc = r#"Title: REC ASSET SECURITIZATION-RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZCRRESR")]
+    #[schemars(description = r#"REC ASSET SECURITIZATION-RES RATIO - "#)]
     pub szcrresr: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRAUTO")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-AUTO - "#)]
     pub szdrauto: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRAUTOR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-AUTO RATIO - "#)]
     pub szdrautor: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCI")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CI - "#)]
     pub szdrci: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCIR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CI RATIO - "#)]
     pub szdrcir: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCON")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CON - "#)]
     pub szdrcon: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCONR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CON RATIO - "#)]
     pub szdrconr: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCRCD")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CRCD - "#)]
     pub szdrcrcd: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRCRCDR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-CRCD RATIO - "#)]
     pub szdrcrcdr: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRHEL")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-HEL - "#)]
     pub szdrhel: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRHELR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-HEL RATIO - "#)]
     pub szdrhelr: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDROTH")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-OTH - "#)]
     pub szdroth: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDROTHR")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-OTH RATIO - "#)]
     pub szdrothr: Option<f32>,
 
-    #[doc = r#"Title: C/O ON ASSET SECURITIZATION-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZDRRES")]
+    #[schemars(description = r#"C/O ON ASSET SECURITIZATION-RES - "#)]
     pub szdrres: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLAUT")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - AUTO - "#)]
     pub szislaut: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLAUTR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - AUTO RATIO - "#)]
     pub szislautr: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCCD")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - CRCD - "#)]
     pub szislccd: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCCDR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - CRCD RATIO - "#)]
     pub szislccdr: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN -CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCI")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN -CI - "#)]
     pub szislci: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN -CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCIR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN -CI RATIO - "#)]
     pub szislcir: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCON")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - CON - "#)]
     pub szislcon: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - CON RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLCONR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - CON RATIO - "#)]
     pub szislconr: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLHEL")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - HEL - "#)]
     pub szislhel: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN - HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLHELR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN - HEL RATIO - "#)]
     pub szislhelr: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN -OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLOTH")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN -OTH - "#)]
     pub szisloth: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATN -OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLOTHR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATN -OTH RATIO - "#)]
     pub szislothr: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATION RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLRES")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATION RES - "#)]
     pub szislres: Option<f32>,
 
-    #[doc = r#"Title: CR EXP ON SECURITIZATION RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZISLRESR")]
+    #[schemars(description = r#"CR EXP ON SECURITIZATION RES RATIO - "#)]
     pub szislresr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLAUTO")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - AUTO - "#)]
     pub szlauto: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - AUTO RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLAUTOR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - AUTO RATIO - "#)]
     pub szlautor: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCI")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CI - "#)]
     pub szlnci: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CI RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCIR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CI RATIO - "#)]
     pub szlncir: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCON")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CONS - "#)]
     pub szlncon: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CONS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCONR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CONS RATIO - "#)]
     pub szlnconr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCRCD")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CRCD - "#)]
     pub szlncrcd: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - CRCD RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNCRCDR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - CRCD RATIO - "#)]
     pub szlncrcdr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNHEL")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - HEL - "#)]
     pub szlnhel: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - HEL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNHELR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - HEL RATIO - "#)]
     pub szlnhelr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNOTH")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - OTH - "#)]
     pub szlnoth: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD - OTH RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNOTHR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD - OTH RATIO - "#)]
     pub szlnothr: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD-RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNRES")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD-RES - "#)]
     pub szlnres: Option<f32>,
 
-    #[doc = r#"Title: RE PRIN SEC ASSET SOLD-RES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZLNRESR")]
+    #[schemars(description = r#"RE PRIN SEC ASSET SOLD-RES RATIO - "#)]
     pub szlnresr: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCAUTO")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - AUTO - "#)]
     pub szucauto: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCCI")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - CI - "#)]
     pub szucci: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCCON")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - CON - "#)]
     pub szuccon: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCCRCD")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - CRCD - "#)]
     pub szuccrcd: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCHEL")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY - HEL - "#)]
     pub szuchel: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCOTH")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - OTH - "#)]
     pub szucoth: Option<f32>,
 
-    #[doc = r#"Title: COMMITS FOR LIQUIDITY  - RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SZUCRES")]
+    #[schemars(description = r#"COMMITS FOR LIQUIDITY  - RES - "#)]
     pub szucres: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCAMA")]
+    #[schemars(description = r#"CORP TRUST-MANAGED-AMT - "#)]
     pub tcama: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCAMANUM")]
+    #[schemars(description = r#"CORP TRUST-MANAGED-NUM - "#)]
     pub tcamanum: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-NON-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCANMA")]
+    #[schemars(description = r#"CORP TRUST-NON-MANAGED-AMT - "#)]
     pub tcanma: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-NON-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCANMNUM")]
+    #[schemars(description = r#"CORP TRUST-NON-MANAGED-NUM - "#)]
     pub tcanmnum: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-TRUSTEESHIPS-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCANUM")]
+    #[schemars(description = r#"CORP TRUST-TRUSTEESHIPS-NUM - "#)]
     pub tcanum: Option<f32>,
 
-    #[doc = r#"Title: CORP & MUNI-TRUSTEE-DEFAULT-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCANUMD")]
+    #[schemars(description = r#"CORP & MUNI-TRUSTEE-DEFAULT-NUM - "#)]
     pub tcanumd: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-TRUSTEESHIPS-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCAPAO")]
+    #[schemars(description = r#"CORP TRUST-TRUSTEESHIPS-AMT - "#)]
     pub tcapao: Option<f32>,
 
-    #[doc = r#"Title: CORP & MUNI-TRUSTEE-DEFAULT-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCAPAOD")]
+    #[schemars(description = r#"CORP & MUNI-TRUSTEE-DEFAULT-AMT - "#)]
     pub tcapaod: Option<f32>,
 
-    #[doc = r#"Title: CORP TRUST-TRANSFER-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCATNUM")]
+    #[schemars(description = r#"CORP TRUST-TRANSFER-NUM - "#)]
     pub tcatnum: Option<f32>,
 
-    #[doc = r#"Title: CIFS -DOM EQUITY-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCDEMV")]
+    #[schemars(description = r#"CIFS -DOM EQUITY-AMT - "#)]
     pub tcdemv: Option<f32>,
 
-    #[doc = r#"Title: CIFS -DOM EQUITY-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCDENUM")]
+    #[schemars(description = r#"CIFS -DOM EQUITY-NUM - "#)]
     pub tcdenum: Option<f32>,
 
-    #[doc = r#"Title: CIFS -INTL/GLOBAL-EQ-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCIEMV")]
+    #[schemars(description = r#"CIFS -INTL/GLOBAL-EQ-AMT - "#)]
     pub tciemv: Option<f32>,
 
-    #[doc = r#"Title: CIFS -INTL/GLOBAL-EQ-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCIENUM")]
+    #[schemars(description = r#"CIFS -INTL/GLOBAL-EQ-NUM - "#)]
     pub tcienum: Option<f32>,
 
-    #[doc = r#"Title: CIFS-MUNICIPAL BOND-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCMBMV")]
+    #[schemars(description = r#"CIFS-MUNICIPAL BOND-AMT - "#)]
     pub tcmbmv: Option<f32>,
 
-    #[doc = r#"Title: CIFS-MUNICIPAL BOND-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCMBNUM")]
+    #[schemars(description = r#"CIFS-MUNICIPAL BOND-NUM - "#)]
     pub tcmbnum: Option<f32>,
 
-    #[doc = r#"Title: CIFS -STOCK/BOND-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSBMV")]
+    #[schemars(description = r#"CIFS -STOCK/BOND-AMT - "#)]
     pub tcsbmv: Option<f32>,
 
-    #[doc = r#"Title: CIFS -STOCK/BOND-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSBNUM")]
+    #[schemars(description = r#"CIFS -STOCK/BOND-NUM - "#)]
     pub tcsbnum: Option<f32>,
 
-    #[doc = r#"Title: CUST AND SAFE ACCT-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSNMA")]
+    #[schemars(description = r#"CUST AND SAFE ACCT-NON-MAN-AMT - "#)]
     pub tcsnma: Option<f32>,
 
-    #[doc = r#"Title: CUST AND SAFE ACCT-NON-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSNMNUM")]
+    #[schemars(description = r#"CUST AND SAFE ACCT-NON-MAN-NUM - "#)]
     pub tcsnmnum: Option<f32>,
 
-    #[doc = r#"Title: CIFS-SPECIALTY/OTHER-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSOMV")]
+    #[schemars(description = r#"CIFS-SPECIALTY/OTHER-AMT - "#)]
     pub tcsomv: Option<f32>,
 
-    #[doc = r#"Title: CIFS-SPECIALTY/OTHER-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSONUM")]
+    #[schemars(description = r#"CIFS-SPECIALTY/OTHER-NUM - "#)]
     pub tcsonum: Option<f32>,
 
-    #[doc = r#"Title: CIFS-SHORT TERM INV-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSTMV")]
+    #[schemars(description = r#"CIFS-SHORT TERM INV-AMT - "#)]
     pub tcstmv: Option<f32>,
 
-    #[doc = r#"Title: CIFS-SHORT TERM INV-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCSTNUM")]
+    #[schemars(description = r#"CIFS-SHORT TERM INV-NUM - "#)]
     pub tcstnum: Option<f32>,
 
-    #[doc = r#"Title: CIFS - TAXABLE BOND-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCTBMV")]
+    #[schemars(description = r#"CIFS - TAXABLE BOND-AMT - "#)]
     pub tctbmv: Option<f32>,
 
-    #[doc = r#"Title: CIFS - TAXABLE BOND-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCTBNUM")]
+    #[schemars(description = r#"CIFS - TAXABLE BOND-NUM - "#)]
     pub tctbnum: Option<f32>,
 
-    #[doc = r#"Title: CIFS-TOTAL-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCTOTMV")]
+    #[schemars(description = r#"CIFS-TOTAL-AMT - "#)]
     pub tctotmv: Option<f32>,
 
-    #[doc = r#"Title: CIFS-TOTAL-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TCTOTNUM")]
+    #[schemars(description = r#"CIFS-TOTAL-NUM - "#)]
     pub tctotnum: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-DEF BENE-MANAGE-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEBMA")]
+    #[schemars(description = r#"EMP BENE-DEF BENE-MANAGE-AMT - "#)]
     pub tebma: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-DEF BENE-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEBMANUM")]
+    #[schemars(description = r#"EMP BENE-DEF BENE-MANAGED-NUM - "#)]
     pub tebmanum: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-DEF BENE-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEBNMA")]
+    #[schemars(description = r#"EMP BENE-DEF BENE-NON-MAN-AMT - "#)]
     pub tebnma: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-DEF BENE-NON-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEBNMNUM")]
+    #[schemars(description = r#"EMP BENE-DEF BENE-NON-MAN-NUM - "#)]
     pub tebnmnum: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-CONTRIB-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TECMA")]
+    #[schemars(description = r#"EMP BENE-CONTRIB-MANAGED-AMT - "#)]
     pub tecma: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-CONTRI-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TECMANUM")]
+    #[schemars(description = r#"EMP BENE-CONTRI-MANAGED-NUM - "#)]
     pub tecmanum: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-CONTRI-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TECNMA")]
+    #[schemars(description = r#"EMP BENE-CONTRI-NON-MAN-AMT - "#)]
     pub tecnma: Option<f32>,
 
-    #[doc = r#"Title: EMP BENE-CONTRI-NON-MANAGE-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TECNMNUM")]
+    #[schemars(description = r#"EMP BENE-CONTRI-NON-MANAGE-NUM - "#)]
     pub tecnmnum: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - COM & PF STK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TECPS")]
+    #[schemars(description = r#"EMP BEN & RET TR - COM & PF STK - "#)]
     pub tecps: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - EQ MUT FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEEQF")]
+    #[schemars(description = r#"EMP BEN & RET TR - EQ MUT FUND - "#)]
     pub teeqf: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - INT BEARING"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEI")]
+    #[schemars(description = r#"EMP BEN & RET TR - INT BEARING - "#)]
     pub tei: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR-TOT MANAGE AST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEMATOT")]
+    #[schemars(description = r#"EMP BEN & RET TR-TOT MANAGE AST - "#)]
     pub tematot: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - MISC ASSET"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEMISC")]
+    #[schemars(description = r#"EMP BEN & RET TR - MISC ASSET - "#)]
     pub temisc: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - MONEY MKT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEMMF")]
+    #[schemars(description = r#"EMP BEN & RET TR - MONEY MKT - "#)]
     pub temmf: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - NONINT BEAR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TENI")]
+    #[schemars(description = r#"EMP BEN & RET TR - NONINT BEAR - "#)]
     pub teni: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR-OTH NOTE & BND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEOTHB")]
+    #[schemars(description = r#"EMP BEN & RET TR-OTH NOTE & BND - "#)]
     pub teothb: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - OTH MUT FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEOTHF")]
+    #[schemars(description = r#"EMP BEN & RET TR - OTH MUT FUND - "#)]
     pub teothf: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - REAL ESTATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TERE")]
+    #[schemars(description = r#"EMP BEN & RET TR - REAL ESTATE - "#)]
     pub tere: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - RE MTG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEREMTG")]
+    #[schemars(description = r#"EMP BEN & RET TR - RE MTG - "#)]
     pub teremtg: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - MUNI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TESCMUN")]
+    #[schemars(description = r#"EMP BEN & RET TR - MUNI - "#)]
     pub tescmun: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR -U.S TREAS & OB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TESCUS")]
+    #[schemars(description = r#"EMP BEN & RET TR -U.S TREAS & OB - "#)]
     pub tescus: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - SHRT TERM OB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TESTO")]
+    #[schemars(description = r#"EMP BEN & RET TR - SHRT TERM OB - "#)]
     pub testo: Option<f32>,
 
-    #[doc = r#"Title: EXPENSE FIDUCIARY - YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TETOT")]
+    #[schemars(description = r#"EXPENSE FIDUCIARY - YTD - "#)]
     pub tetot: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - TRUST FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TETRF")]
+    #[schemars(description = r#"EMP BEN & RET TR - TRUST FUND - "#)]
     pub tetrf: Option<f32>,
 
-    #[doc = r#"Title: EMP BEN & RET TR - UNREG FUNDS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TEUF")]
+    #[schemars(description = r#"EMP BEN & RET TR - UNREG FUNDS - "#)]
     pub teuf: Option<f32>,
 
-    #[doc = r#"Title: FOUNDATION & ENDOW-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TFEMA")]
+    #[schemars(description = r#"FOUNDATION & ENDOW-MANAGED-AMT - "#)]
     pub tfema: Option<f32>,
 
-    #[doc = r#"Title: FOUNDATION & ENDOW-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TFEMANUM")]
+    #[schemars(description = r#"FOUNDATION & ENDOW-MANAGED-NUM - "#)]
     pub tfemanum: Option<f32>,
 
-    #[doc = r#"Title: FOUNDATION & END-NON-MANAGE-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TFENMA")]
+    #[schemars(description = r#"FOUNDATION & END-NON-MANAGE-AMT - "#)]
     pub tfenma: Option<f32>,
 
-    #[doc = r#"Title: FOUNDATION & END-NON-MANAGE-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TFENMNUM")]
+    #[schemars(description = r#"FOUNDATION & END-NON-MANAGE-NUM - "#)]
     pub tfenmnum: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-CORP TRUST & AGENCY-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TICA")]
+    #[schemars(description = r#"GR.INC-CORP TRUST & AGENCY-YTD - "#)]
     pub tica: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-CUSTODY-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TICS")]
+    #[schemars(description = r#"GR.INC-CUSTODY-YTD - "#)]
     pub tics: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-EMP. BENEFIT-BENEFIT-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIEB")]
+    #[schemars(description = r#"GR.INC-EMP. BENEFIT-BENEFIT-YTD - "#)]
     pub tieb: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-EMP. BENEFIT- CONTRI-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIEC")]
+    #[schemars(description = r#"GR.INC-EMP. BENEFIT- CONTRI-YTD - "#)]
     pub tiec: Option<f32>,
 
-    #[doc = r#"Title: GR. INC- FOUNDATION & ENDOW-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIFE")]
+    #[schemars(description = r#"GR. INC- FOUNDATION & ENDOW-YTD - "#)]
     pub tife: Option<f32>,
 
-    #[doc = r#"Title: GR.INC - INVESTMENT AGCY - YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIMA")]
+    #[schemars(description = r#"GR.INC - INVESTMENT AGCY - YTD - "#)]
     pub tima: Option<f32>,
 
-    #[doc = r#"Title: INVESTMENT AGENCY-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIMMA")]
+    #[schemars(description = r#"INVESTMENT AGENCY-MANAGED-AMT - "#)]
     pub timma: Option<f32>,
 
-    #[doc = r#"Title: INVESTMENT AGENCY-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIMMANUM")]
+    #[schemars(description = r#"INVESTMENT AGENCY-MANAGED-NUM - "#)]
     pub timmanum: Option<f32>,
 
-    #[doc = r#"Title: INVESTMENT AGCY NON-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIMNMA")]
+    #[schemars(description = r#"INVESTMENT AGCY NON-MANAGED-AMT - "#)]
     pub timnma: Option<f32>,
 
-    #[doc = r#"Title: INVESTMENT AGCY NON-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIMNMNUM")]
+    #[schemars(description = r#"INVESTMENT AGCY NON-MANAGED-NUM - "#)]
     pub timnmnum: Option<f32>,
 
-    #[doc = r#"Title: INTRACOMPANY INC FIDUCIARY-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TINTRA")]
+    #[schemars(description = r#"INTRACOMPANY INC FIDUCIARY-YTD - "#)]
     pub tintra: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-OTHER FIDUCIARY-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIOF")]
+    #[schemars(description = r#"GR.INC-OTHER FIDUCIARY-YTD - "#)]
     pub tiof: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-OTHER RETIREMENT -YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIOR")]
+    #[schemars(description = r#"GR.INC-OTHER RETIREMENT -YTD - "#)]
     pub tior: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-PERSONAL & AG ACCTS-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIP")]
+    #[schemars(description = r#"GR.INC-PERSONAL & AG ACCTS-YTD - "#)]
     pub tip: Option<f32>,
 
-    #[doc = r#"Title: GR.INC-RELATED SERV-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TIR")]
+    #[schemars(description = r#"GR.INC-RELATED SERV-YTD - "#)]
     pub tir: Option<f32>,
 
-    #[doc = r#"Title: TOT FOREIGN OFF GROSS FIDUC-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TITOTF")]
+    #[schemars(description = r#"TOT FOREIGN OFF GROSS FIDUC-YTD - "#)]
     pub titotf: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY FGN OFF-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TMAF")]
+    #[schemars(description = r#"FIDUCIARY FGN OFF-MANAGED-AMT - "#)]
     pub tmaf: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY FGN OFF-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TMAFNUM")]
+    #[schemars(description = r#"FIDUCIARY FGN OFF-MANAGED-AMT - "#)]
     pub tmafnum: Option<f32>,
 
-    #[doc = r#"Title: ADVISED/SPONSORED MUT FND -AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TMASMF")]
+    #[schemars(description = r#"ADVISED/SPONSORED MUT FND -AMT - "#)]
     pub tmasmf: Option<f32>,
 
-    #[doc = r#"Title: ADVISED/SPONSORED MUTAL FND-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TMASMFN")]
+    #[schemars(description = r#"ADVISED/SPONSORED MUTAL FND-NUM - "#)]
     pub tmasmfn: Option<f32>,
 
-    #[doc = r#"Title: NET FIDUCIARY INCOME -YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TNI")]
+    #[schemars(description = r#"NET FIDUCIARY INCOME -YTD - "#)]
     pub tni: Option<f32>,
 
-    #[doc = r#"Title: NET LOSS FROM FIDUCIARY-YTD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TNL")]
+    #[schemars(description = r#"NET LOSS FROM FIDUCIARY-YTD - "#)]
     pub tnl: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY FGN OFF-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TNMAF")]
+    #[schemars(description = r#"FIDUCIARY FGN OFF-NON-MAN-AMT - "#)]
     pub tnmaf: Option<f32>,
 
-    #[doc = r#"Title: FIDUCIARY FGN OFF-NON-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TNMNUMF")]
+    #[schemars(description = r#"FIDUCIARY FGN OFF-NON-MAN-NUM - "#)]
     pub tnmnumf: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET-COM & PFD STK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOCPS")]
+    #[schemars(description = r#"ALL OTH MAN ASSET-COM & PFD STK - "#)]
     pub tocps: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MANAGE AST - EQ MUT FND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOEQF")]
+    #[schemars(description = r#"ALL OTH MANAGE AST - EQ MUT FND - "#)]
     pub toeqf: Option<f32>,
 
-    #[doc = r#"Title: OTH FIDUCIARY-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOFMA")]
+    #[schemars(description = r#"OTH FIDUCIARY-MANAGED-AMT - "#)]
     pub tofma: Option<f32>,
 
-    #[doc = r#"Title: OTH FIDUCIARY-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOFMANUM")]
+    #[schemars(description = r#"OTH FIDUCIARY-MANAGED-NUM - "#)]
     pub tofmanum: Option<f32>,
 
-    #[doc = r#"Title: OTH FIDUCIARY NON-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOFNMA")]
+    #[schemars(description = r#"OTH FIDUCIARY NON-MANAGED-AMT - "#)]
     pub tofnma: Option<f32>,
 
-    #[doc = r#"Title: OTH FIDUCIARY-NON-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOFNMNUM")]
+    #[schemars(description = r#"OTH FIDUCIARY-NON-MANAGED-NUM - "#)]
     pub tofnmnum: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MANAGE ASSET - INT BEAR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOI")]
+    #[schemars(description = r#"ALL OTH MANAGE ASSET - INT BEAR - "#)]
     pub toi: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER MANAGED ASSET- TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOMATOT")]
+    #[schemars(description = r#"ALL OTHER MANAGED ASSET- TOTAL - "#)]
     pub tomatot: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - MISC ASSET"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOMISC")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - MISC ASSET - "#)]
     pub tomisc: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MANAGE AST - MONEY MKT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOMMF")]
+    #[schemars(description = r#"ALL OTH MANAGE AST - MONEY MKT - "#)]
     pub tommf: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - NONINT BEAR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TONI")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - NONINT BEAR - "#)]
     pub toni: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN AST -OTH NOTE & BND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOOTHB")]
+    #[schemars(description = r#"ALL OTH MAN AST -OTH NOTE & BND - "#)]
     pub toothb: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - OTH MUT FND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOOTHF")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - OTH MUT FND - "#)]
     pub toothf: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - REAL ESTATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TORE")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - REAL ESTATE - "#)]
     pub tore: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER MANAGE ASSET - RE MTG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOREMTG")]
+    #[schemars(description = r#"ALL OTHER MANAGE ASSET - RE MTG - "#)]
     pub toremtg: Option<f32>,
 
-    #[doc = r#"Title: OTH RETIREMENT-MANAGED-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TORMA")]
+    #[schemars(description = r#"OTH RETIREMENT-MANAGED-AMT - "#)]
     pub torma: Option<f32>,
 
-    #[doc = r#"Title: OTH RETIREMENT-MANAGED-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TORMANUM")]
+    #[schemars(description = r#"OTH RETIREMENT-MANAGED-NUM - "#)]
     pub tormanum: Option<f32>,
 
-    #[doc = r#"Title: OTH RETIREMENT-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TORNMA")]
+    #[schemars(description = r#"OTH RETIREMENT-NON-MAN-AMT - "#)]
     pub tornma: Option<f32>,
 
-    #[doc = r#"Title: OTH RETIREMENT-NON-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TORNMNUM")]
+    #[schemars(description = r#"OTH RETIREMENT-NON-MAN-NUM - "#)]
     pub tornmnum: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER MANAGED ASSET - MUNI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOSCMUN")]
+    #[schemars(description = r#"ALL OTHER MANAGED ASSET - MUNI - "#)]
     pub toscmun: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN AST-U.S. TREAS & OB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOSCUS")]
+    #[schemars(description = r#"ALL OTH MAN AST-U.S. TREAS & OB - "#)]
     pub toscus: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN AST - SHRT TERM OBL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOSTO")]
+    #[schemars(description = r#"ALL OTH MAN AST - SHRT TERM OBL - "#)]
     pub tosto: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - TRUST FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOTRF")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - TRUST FUND - "#)]
     pub totrf: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH MAN ASSET - UNREG FUNDS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TOUF")]
+    #[schemars(description = r#"ALL OTH MAN ASSET - UNREG FUNDS - "#)]
     pub touf: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY- COM & PRF STK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPICPS")]
+    #[schemars(description = r#"PER TR & INV AGY- COM & PRF STK - "#)]
     pub tpicps: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - EQ MUT FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIEQF")]
+    #[schemars(description = r#"PER TR & INV AGY - EQ MUT FUND - "#)]
     pub tpieqf: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - INT BEARING"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPII")]
+    #[schemars(description = r#"PER TR & INV AGY - INT BEARING - "#)]
     pub tpii: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY-TOT MANAGE AST"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIMATOT")]
+    #[schemars(description = r#"PER TR & INV AGY-TOT MANAGE AST - "#)]
     pub tpimatot: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - MISC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIMISC")]
+    #[schemars(description = r#"PER TR & INV AGY - MISC - "#)]
     pub tpimisc: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - MONEY MKT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIMMF")]
+    #[schemars(description = r#"PER TR & INV AGY - MONEY MKT - "#)]
     pub tpimmf: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY-NONINT BEARING"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPINI")]
+    #[schemars(description = r#"PER TR & INV AGY-NONINT BEARING - "#)]
     pub tpini: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY-OTH NOTE & BND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIOTHB")]
+    #[schemars(description = r#"PER TR & INV AGY-OTH NOTE & BND - "#)]
     pub tpiothb: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - OTH MUT FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIOTHF")]
+    #[schemars(description = r#"PER TR & INV AGY - OTH MUT FUND - "#)]
     pub tpiothf: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - REAL ESTATE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIRE")]
+    #[schemars(description = r#"PER TR & INV AGY - REAL ESTATE - "#)]
     pub tpire: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - RE MTG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIREMTG")]
+    #[schemars(description = r#"PER TR & INV AGY - RE MTG - "#)]
     pub tpiremtg: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - MUNI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPISCMUN")]
+    #[schemars(description = r#"PER TR & INV AGY - MUNI - "#)]
     pub tpiscmun: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY-U.S TREAS & OB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPISCUS")]
+    #[schemars(description = r#"PER TR & INV AGY-U.S TREAS & OB - "#)]
     pub tpiscus: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - SHRT TERM OB"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPISTO")]
+    #[schemars(description = r#"PER TR & INV AGY - SHRT TERM OB - "#)]
     pub tpisto: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY - TRUST FUND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPITRF")]
+    #[schemars(description = r#"PER TR & INV AGY - TRUST FUND - "#)]
     pub tpitrf: Option<f32>,
 
-    #[doc = r#"Title: PER TR & INV AGY- UNREG FUNDS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPIUF")]
+    #[schemars(description = r#"PER TR & INV AGY- UNREG FUNDS - "#)]
     pub tpiuf: Option<f32>,
 
-    #[doc = r#"Title: MANAGED ASSET-PER & AGEN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPMA")]
+    #[schemars(description = r#"MANAGED ASSET-PER & AGEN-AMT - "#)]
     pub tpma: Option<f32>,
 
-    #[doc = r#"Title: MANAGED ASSET - PER&AGEN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPMANUM")]
+    #[schemars(description = r#"MANAGED ASSET - PER&AGEN-NUM - "#)]
     pub tpmanum: Option<f32>,
 
-    #[doc = r#"Title: NON-MANAGED - PER&AGEN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPNMA")]
+    #[schemars(description = r#"NON-MANAGED - PER&AGEN-AMT - "#)]
     pub tpnma: Option<f32>,
 
-    #[doc = r#"Title: NON-MANAGED ASSET-PER&AGEN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TPNMNUM")]
+    #[schemars(description = r#"NON-MANAGED ASSET-PER&AGEN-NUM - "#)]
     pub tpnmnum: Option<f32>,
 
-    #[doc = r#"Title: TRUST POWERS EXERCISED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TREXER")]
+    #[schemars(description = r#"TRUST POWERS EXERCISED - "#)]
     pub trexer: Option<f32>,
 
-    #[doc = r#"Title: TRADING ACCOUNTS-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRFOR")]
+    #[schemars(description = r#"TRADING ACCOUNTS-FOR - "#)]
     pub trfor: Option<f32>,
 
-    #[doc = r#"Title: IRA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRHMA")]
+    #[schemars(description = r#"IRA - "#)]
     pub trhma: Option<f32>,
 
-    #[doc = r#"Title: IRA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRHMANUM")]
+    #[schemars(description = r#"IRA - "#)]
     pub trhmanum: Option<f32>,
 
-    #[doc = r#"Title: IRA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRHNMA")]
+    #[schemars(description = r#"IRA - "#)]
     pub trhnma: Option<f32>,
 
-    #[doc = r#"Title: IRA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRHNMNUM")]
+    #[schemars(description = r#"IRA - "#)]
     pub trhnmnum: Option<f32>,
 
-    #[doc = r#"Title: TRADE-DERIVATIVES NEG VAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRLREVAL")]
+    #[schemars(description = r#"TRADE-DERIVATIVES NEG VAL - "#)]
     pub trlreval: Option<f32>,
 
-    #[doc = r#"Title: TRADE-DERIVATED NEG VAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRLREVALR")]
+    #[schemars(description = r#"TRADE-DERIVATED NEG VAL RATIO - "#)]
     pub trlrevalr: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-COM BKS& OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNCBO")]
+    #[schemars(description = r#"TRANSACTION-COM BKS& OTHER - "#)]
     pub trncbo: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-COM BKS& OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNCBOR")]
+    #[schemars(description = r#"TRANSACTION-COM BKS& OTHER RATIO - "#)]
     pub trncbor: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-FOR COUNTRY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNFC")]
+    #[schemars(description = r#"TRANSACTION-FOR COUNTRY - "#)]
     pub trnfc: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-FOR COUNTRY & GOVT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNFCFG")]
+    #[schemars(description = r#"TRANSACTION-FOR COUNTRY & GOVT - "#)]
     pub trnfcfg: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-FOR COUNTRY & GOVT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNFCFGR")]
+    #[schemars(description = r#"TRANSACTION-FOR COUNTRY & GOVT RATIO - "#)]
     pub trnfcfgr: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION-FOREIGN GOVERNMENT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNFG")]
+    #[schemars(description = r#"TRANSACTION-FOREIGN GOVERNMENT - "#)]
     pub trnfg: Option<f32>,
 
-    #[doc = r#"Title: AMT NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNNIA")]
+    #[schemars(description = r#"AMT NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000 - "#)]
     pub trnnia: Option<f32>,
 
-    #[doc = r#"Title: AMT NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNNIAR")]
+    #[schemars(description = r#"AMT NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000 - "#)]
     pub trnniar: Option<f32>,
 
-    #[doc = r#"Title: NUM NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRNNIN")]
+    #[schemars(description = r#"NUM NON-INTEREST BEARING TRANSACTION ACC MORE THAN $250,000 - "#)]
     pub trnnin: Option<f32>,
 
-    #[doc = r#"Title: INSTITUTION HAS TRUST POWER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRPOWER")]
+    #[schemars(description = r#"INSTITUTION HAS TRUST POWER - "#)]
     pub trpower: Option<f32>,
 
-    #[doc = r#"Title: TRADE-DERIV POS VAL-DOM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRREVALD")]
+    #[schemars(description = r#"TRADE-DERIV POS VAL-DOM - "#)]
     pub trrevald: Option<f32>,
 
-    #[doc = r#"Title: TRADE-DERIV POS VALUE-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRREVALF")]
+    #[schemars(description = r#"TRADE-DERIV POS VALUE-FOR - "#)]
     pub trrevalf: Option<f32>,
 
-    #[doc = r#"Title: REVALUATION GAINS ON OFF-BALANCE SHEET CONTRACTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRREVALSUM")]
+    #[schemars(description = r#"REVALUATION GAINS ON OFF-BALANCE SHEET CONTRACTS - "#)]
     pub trrevalsum: Option<f32>,
 
-    #[doc = r#"Title: REVALUATION GAINS ON OFF-BALANCE SHEET CONTRACTS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TRREVALSUMR")]
+    #[schemars(description = r#"REVALUATION GAINS ON OFF-BALANCE SHEET CONTRACTS RATIO - "#)]
     pub trrevalsumr: Option<f32>,
 
-    #[doc = r#"Title: TOT FIDUCIARY ACCTS-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTMA")]
+    #[schemars(description = r#"TOT FIDUCIARY ACCTS-MAN-AMT - "#)]
     pub ttma: Option<f32>,
 
-    #[doc = r#"Title: TOT FIDUCIARY ACCTS-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTNANUM")]
+    #[schemars(description = r#"TOT FIDUCIARY ACCTS-MAN-NUM - "#)]
     pub ttnanum: Option<f32>,
 
-    #[doc = r#"Title: TOT FIDUCIARY ACCTS-NON-MAN-AMT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTNMA")]
+    #[schemars(description = r#"TOT FIDUCIARY ACCTS-NON-MAN-AMT - "#)]
     pub ttnma: Option<f32>,
 
-    #[doc = r#"Title: TOT FIDUCIARY ACCTS-NON-MAN-NUM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="TTNMNUM")]
+    #[schemars(description = r#"TOT FIDUCIARY ACCTS-NON-MAN-NUM - "#)]
     pub ttnmnum: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-TOTAL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UC")]
+    #[schemars(description = r#"UNUSED COMMIT-TOTAL - "#)]
     pub uc: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-TOTAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCR")]
+    #[schemars(description = r#"UNUSED COMMIT-TOTAL RATIO - "#)]
     pub ucr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-COM RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMRE")]
+    #[schemars(description = r#"UNUSED COMMIT-COM RE - "#)]
     pub uccomre: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-COM RE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMRER")]
+    #[schemars(description = r#"UNUSED COMMIT-COM RE RATIO - "#)]
     pub uccomrer: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-SECURED COM RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMRES")]
+    #[schemars(description = r#"UNUSED COMMIT-SECURED COM RE - "#)]
     pub uccomres: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-SECURED COM RE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMRESR")]
+    #[schemars(description = r#"UNUSED COMMIT-SECURED COM RE RATIO - "#)]
     pub uccomresr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-UNSECURED COM RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMREU")]
+    #[schemars(description = r#"UNUSED COMMIT-UNSECURED COM RE - "#)]
     pub uccomreu: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-UNSECURED COM RE RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCOMREUR")]
+    #[schemars(description = r#"UNUSED COMMIT-UNSECURED COM RE RATIO - "#)]
     pub uccomreur: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-CREDIT CARD LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCRCD")]
+    #[schemars(description = r#"UNUSED COMMIT-CREDIT CARD LINES - "#)]
     pub uccrcd: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-CREDIT CARD LINES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCCRCDR")]
+    #[schemars(description = r#"UNUSED COMMIT-CREDIT CARD LINES RATIO - "#)]
     pub uccrcdr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-TOTAL LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCLN")]
+    #[schemars(description = r#"UNUSED COMMIT-TOTAL LOANS - "#)]
     pub ucln: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-HOME EQUITY LINES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCLOC")]
+    #[schemars(description = r#"UNUSED COMMIT-HOME EQUITY LINES - "#)]
     pub ucloc: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-HOME EQUITY LINES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCLOCR")]
+    #[schemars(description = r#"UNUSED COMMIT-HOME EQUITY LINES RATIO - "#)]
     pub uclocr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-ALL OTHER"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCOTHER")]
+    #[schemars(description = r#"UNUSED COMMIT-ALL OTHER - "#)]
     pub ucother: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-ALL OTHER RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCOTHERR")]
+    #[schemars(description = r#"UNUSED COMMIT-ALL OTHER RATIO - "#)]
     pub ucotherr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COM-OVER 1 YR-RC-R COL A"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCOVER1")]
+    #[schemars(description = r#"UNUSED COM-OVER 1 YR-RC-R COL A - "#)]
     pub ucover1: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COM-OVER 1 YR-RC-R COL A RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCOVER1R")]
+    #[schemars(description = r#"UNUSED COM-OVER 1 YR-RC-R COL A RATIO - "#)]
     pub ucover1r: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-SEC UNDERWRITING"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSC")]
+    #[schemars(description = r#"UNUSED COMMIT-SEC UNDERWRITING - "#)]
     pub ucsc: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT-SEC UNDERWRITING RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSCR")]
+    #[schemars(description = r#"UNUSED COMMIT-SEC UNDERWRITING RATIO - "#)]
     pub ucscr: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - AUTO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZAUTO")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - AUTO - "#)]
     pub ucszauto: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - CI"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZCI")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - CI - "#)]
     pub ucszci: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - CON"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZCON")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - CON - "#)]
     pub ucszcon: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - CRCD"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZCRCD")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - CRCD - "#)]
     pub ucszcrcd: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - HEL"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZHEL")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - HEL - "#)]
     pub ucszhel: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - OTH"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZOTH")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - OTH - "#)]
     pub ucszoth: Option<f32>,
 
-    #[doc = r#"Title: UNUSED COMMIT FOR SECUR. - RES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UCSZRES")]
+    #[schemars(description = r#"UNUSED COMMIT FOR SECUR. - RES - "#)]
     pub ucszres: Option<f32>,
 
-    #[doc = r#"Title: UNEARNED INCOME-FOR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UNINCFOR")]
+    #[schemars(description = r#"UNEARNED INCOME-FOR - "#)]
     pub unincfor: Option<f32>,
 
-    #[doc = r#"Title: UNEARNED INCOME-FOR RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UNINCFORR")]
+    #[schemars(description = r#"UNEARNED INCOME-FOR RATIO - "#)]
     pub unincforr: Option<f32>,
 
-    #[doc = r#"Title: VOLATILE LIABILITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="VOLIAB")]
+    #[schemars(description = r#"VOLATILE LIABILITIES - "#)]
     pub voliab: Option<f32>,
 
-    #[doc = r#"Title: VOLATILE LIABILITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="VOLIABR")]
+    #[schemars(description = r#"VOLATILE LIABILITIES RATIO - "#)]
     pub voliabr: Option<f32>,
 
-    #[doc = r#"Title: ZIP CODE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ZIP")]
+    #[schemars(description = r#"ZIP CODE - "#)]
     pub zip: Option<f32>,
 
-    #[doc = r#"Title: NONMORTGAGE LOANS IN PROCESS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LIPNMTG")]
+    #[schemars(description = r#"NONMORTGAGE LOANS IN PROCESS - "#)]
     pub lipnmtg: Option<f32>,
 
-    #[doc = r#"Title: UNAMORTIZED YIELD ADJ-NONMTG LNS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UYANMTG")]
+    #[schemars(description = r#"UNAMORTIZED YIELD ADJ-NONMTG LNS - "#)]
     pub uyanmtg: Option<f32>,
 
-    #[doc = r#"Title: LOAN & LEASE INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNLS")]
+    #[schemars(description = r#"LOAN & LEASE INCOME - "#)]
     pub ilnls: Option<f32>,
 
-    #[doc = r#"Title: BANKS UNIT"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="UNIT")]
+    #[schemars(description = r#"BANKS UNIT - "#)]
     pub unit: Option<f32>,
 
-    #[doc = r#"Title: PRE-TAX NET INCOME OPERATING INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PTAXNETINC")]
+    #[schemars(description = r#"PRE-TAX NET INCOME OPERATING INCOME - "#)]
     pub ptaxnetinc: Option<f32>,
 
-    #[doc = r#"Title: PRE-TAX NET INCOME OPERATING INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PTAXNETINCR")]
+    #[schemars(description = r#"PRE-TAX NET INCOME OPERATING INCOME RATIO - "#)]
     pub ptaxnetincr: Option<f32>,
 
-    #[doc = r#"Title: PRE-TAX NET INCOME OPERATING INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PTAXNETINCQ")]
+    #[schemars(description = r#"PRE-TAX NET INCOME OPERATING INCOME QUARTERLY - "#)]
     pub ptaxnetincq: Option<f32>,
 
-    #[doc = r#"Title: PRE-TAX NET INCOME OPERATING INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PTAXNETINCQR")]
+    #[schemars(description = r#"PRE-TAX NET INCOME OPERATING INCOME QUARTERLY RATIO - "#)]
     pub ptaxnetincqr: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST INCOME"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONII")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST INCOME - "#)]
     pub addnonii: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST INCOME RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONIIR")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST INCOME RATIO - "#)]
     pub addnoniir: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST INCOME QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONIIQ")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST INCOME QUARTERLY - "#)]
     pub addnoniiq: Option<f32>,
 
-    #[doc = r#"Title: ADDITIONAL NONINTEREST INCOME QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ADDNONIIQR")]
+    #[schemars(description = r#"ADDITIONAL NONINTEREST INCOME QUARTERLY RATIO - "#)]
     pub addnoniiqr: Option<f32>,
 
-    #[doc = r#"Title: Quarterly average amount of assets purchased under the MMLF and excluded from “Total assets for the leverage ratio.”"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVMMLF")]
+    #[schemars(description = r#"Quarterly average amount of assets purchased under the MMLF and excluded from “Total assets for the leverage ratio.” - "#)]
     pub avmmlf: Option<f32>,
 
-    #[doc = r#"Title: Quarterly average amount of assets purchased under the MMLF and excluded from “Total assets for the leverage ratio.” ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVMMLFR")]
+    #[schemars(description = r#"Quarterly average amount of assets purchased under the MMLF and excluded from “Total assets for the leverage ratio.” ratio - "#)]
     pub avmmlfr: Option<f32>,
 
-    #[doc = r#"Title: Quarterly average amount of PPP loans pledged to the PPPLF and excluded from “Total assets for the leverage ratio.”"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVPPPPLG")]
+    #[schemars(description = r#"Quarterly average amount of PPP loans pledged to the PPPLF and excluded from “Total assets for the leverage ratio.” - "#)]
     pub avpppplg: Option<f32>,
 
-    #[doc = r#"Title: Quarterly average amount of PPP loans pledged to the PPPLF and excluded from “Total assets for the leverage ratio.” ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVPPPPLGR")]
+    #[schemars(description = r#"Quarterly average amount of PPP loans pledged to the PPPLF and excluded from “Total assets for the leverage ratio.” ratio - "#)]
     pub avpppplgr: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of assets purchased under the Money Market Mutual Fund Liquidity Facility (MMLF)."#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MMLFBAL")]
+    #[schemars(description = r#"Outstanding balance of assets purchased under the Money Market Mutual Fund Liquidity Facility (MMLF). - "#)]
     pub mmlfbal: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of assets purchased under the Money Market Mutual Fund Liquidity Facility (MMLF) ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="MMLFBALR")]
+    #[schemars(description = r#"Outstanding balance of assets purchased under the Money Market Mutual Fund Liquidity Facility (MMLF) ratio - "#)]
     pub mmlfbalr: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance under the PPPLF with a remaining maturity of more than one year"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLFOV1")]
+    #[schemars(description = r#"Outstanding balance under the PPPLF with a remaining maturity of more than one year - "#)]
     pub ppplfov1: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance under the PPPLF with a remaining maturity of more than one year ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLFOV1R")]
+    #[schemars(description = r#"Outstanding balance under the PPPLF with a remaining maturity of more than one year ratio - "#)]
     pub ppplfov1r: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of PPP loans"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNBAL")]
+    #[schemars(description = r#"Outstanding balance of PPP loans - "#)]
     pub ppplnbal: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of PPP loans ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNBALR")]
+    #[schemars(description = r#"Outstanding balance of PPP loans ratio - "#)]
     pub ppplnbalr: Option<f32>,
 
-    #[doc = r#"Title: Number of PPP loans outstanding"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNNUM")]
+    #[schemars(description = r#"Number of PPP loans outstanding - "#)]
     pub ppplnnum: Option<f32>,
 
-    #[doc = r#"Title: Number of PPP loans outstanding ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNNUMR")]
+    #[schemars(description = r#"Number of PPP loans outstanding ratio - "#)]
     pub ppplnnumr: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of PPP loans pledged to the PPPLF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNPLG")]
+    #[schemars(description = r#"Outstanding balance of PPP loans pledged to the PPPLF - "#)]
     pub ppplnplg: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance of PPP loans pledged to the PPPLF ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLNPLGR")]
+    #[schemars(description = r#"Outstanding balance of PPP loans pledged to the PPPLF ratio - "#)]
     pub ppplnplgr: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance under the PPPLF with a remaining maturity of one year or less"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLF1LS")]
+    #[schemars(description = r#"Outstanding balance under the PPPLF with a remaining maturity of one year or less - "#)]
     pub ppplf1ls: Option<f32>,
 
-    #[doc = r#"Title: Outstanding balance under the PPPLF with a remaining maturity of one year or less ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="PPPLF1LSR")]
+    #[schemars(description = r#"Outstanding balance under the PPPLF with a remaining maturity of one year or less ratio - "#)]
     pub ppplf1lsr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL & INDUSTRIAL LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCIR")]
+    #[schemars(description = r#"COMMERCIAL & INDUSTRIAL LOANS - "#)]
     pub idntcir: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL & INDUSTRIAL LOANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCIQR")]
+    #[schemars(description = r#"COMMERCIAL & INDUSTRIAL LOANS QUARTERLY - "#)]
     pub idntciqr: Option<f32>,
 
-    #[doc = r#"Title: LOANS TO INDIVIDUALS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCONR")]
+    #[schemars(description = r#"LOANS TO INDIVIDUALS - "#)]
     pub idntconr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARDS & RELATED PLANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCRDR")]
+    #[schemars(description = r#"CREDIT CARDS & RELATED PLANS - "#)]
     pub idntcrdr: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS TO INDIVIDUALS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCOOR")]
+    #[schemars(description = r#"OTHER LOANS TO INDIVIDUALS - "#)]
     pub idntcoor: Option<f32>,
 
-    #[doc = r#"Title: OTHER LOANS TO INDIVIDUALS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCOOQR")]
+    #[schemars(description = r#"OTHER LOANS TO INDIVIDUALS - "#)]
     pub idntcooqr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARDS & RELATED PLANS QUARTERLY"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCRDQR")]
+    #[schemars(description = r#"CREDIT CARDS & RELATED PLANS QUARTERLY - "#)]
     pub idntcrdqr: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INSTCNT")]
+    #[schemars(description = r#" - "#)]
     pub instcnt: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTILR")]
+    #[schemars(description = r#" - "#)]
     pub idntilr: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDOTHNII")]
+    #[schemars(description = r#" - "#)]
     pub idothnii: Option<f32>,
 
-    #[doc = r#"Title: AUTOMOBILE LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAUTOPR")]
+    #[schemars(description = r#"AUTOMOBILE LOANS - "#)]
     pub ntautopr: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOANS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONOTR")]
+    #[schemars(description = r#"OTHER CONSUMER LOANS - "#)]
     pub ntconotr: Option<f32>,
 
-    #[doc = r#"Title: EARNINGS COVERAGE OF NET LOAN CHARGE-OFFS (X)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDERNCVR")]
+    #[schemars(description = r#"EARNINGS COVERAGE OF NET LOAN CHARGE-OFFS (X) - "#)]
     pub iderncvr: Option<f32>,
 
-    #[doc = r#"Title: Earnings coverage of net loan charge-offs"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDERNCVQR")]
+    #[schemars(description = r#"Earnings coverage of net loan charge-offs - "#)]
     pub iderncvqr: Option<f32>,
 
-    #[doc = r#"Title: CASH DIVIDENDS TO NET INCOME (YTD ONLY)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQCDIVNTINC")]
+    #[schemars(description = r#"CASH DIVIDENDS TO NET INCOME (YTD ONLY) - "#)]
     pub eqcdivntinc: Option<f32>,
 
-    #[doc = r#"Title: NOTIONAL AMOUNT OF CREDIT DERIVATIVES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NACDIR")]
+    #[schemars(description = r#"NOTIONAL AMOUNT OF CREDIT DERIVATIVES - "#)]
     pub nacdir: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE CHG-OFF/COMM RE LN QUARTERLY RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMREQR")]
+    #[schemars(description = r#"COMMERCIAL RE CHG-OFF/COMM RE LN QUARTERLY RATIO - "#)]
     pub ntcomreqr: Option<f32>,
 
-    #[doc = r#"Title: Net Charge-offs All other loans & leases (including farm) Numerator"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTALLOTHNUM")]
+    #[schemars(description = r#"Net Charge-offs All other loans & leases (including farm) Numerator - "#)]
     pub ntallothnum: Option<f32>,
 
-    #[doc = r#"Title: Net Charge-offs All other loans & leases (including farm) denominator"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTALLOTHDEN")]
+    #[schemars(description = r#"Net Charge-offs All other loans & leases (including farm) denominator - "#)]
     pub ntallothden: Option<f32>,
 
-    #[doc = r#"Title: ALL OTHER LOANS & LEASES (INCLUDING FARM)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTALLOTHR")]
+    #[schemars(description = r#"ALL OTHER LOANS & LEASES (INCLUDING FARM) - "#)]
     pub ntallothr: Option<f32>,
 
-    #[doc = r#"Title: Net Charge-offs All other loans & leases (including farm)"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTALLOTHQR")]
+    #[schemars(description = r#"Net Charge-offs All other loans & leases (including farm) - "#)]
     pub ntallothqr: Option<f32>,
 
-    #[doc = r#"Title: Other loans to individuals"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCCOOR")]
+    #[schemars(description = r#"Other loans to individuals - "#)]
     pub idnccoor: Option<f32>,
 
-    #[doc = r#"Title: All other loans & leases (including farm )"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCOTHR")]
+    #[schemars(description = r#"All other loans & leases (including farm ) - "#)]
     pub idncothr: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL & INDUSTRIAL LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCCIR")]
+    #[schemars(description = r#"COMMERCIAL & INDUSTRIAL LOANS RATIO - "#)]
     pub idnccir: Option<f32>,
 
-    #[doc = r#"Title: LOANS TO INDIVIDUALS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCCONR")]
+    #[schemars(description = r#"LOANS TO INDIVIDUALS RATIO - "#)]
     pub idncconr: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARDS & RELATED PLANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCCRDR")]
+    #[schemars(description = r#"CREDIT CARDS & RELATED PLANS RATIO - "#)]
     pub idnccrdr: Option<f32>,
 
-    #[doc = r#"Title: AUTOMOBILE LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCATOR")]
+    #[schemars(description = r#"AUTOMOBILE LOANS RATIO - "#)]
     pub idncator: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTATOR")]
+    #[schemars(description = r#" - "#)]
     pub idntator: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNTCOTR")]
+    #[schemars(description = r#" - "#)]
     pub idntcotr: Option<f32>,
 
-    #[doc = r#"Title: IDDEPINR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDDEPINR")]
+    #[schemars(description = r#"IDDEPINR - "#)]
     pub iddepinr: Option<f32>,
 
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDDIVNIR")]
+    #[schemars(description = r#" - "#)]
     pub iddivnir: Option<f32>,
 
-    #[doc = r#"Title: OTHER CONSUMER LOANS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCCOTR")]
+    #[schemars(description = r#"OTHER CONSUMER LOANS RATIO - "#)]
     pub idnccotr: Option<f32>,
 
-    #[doc = r#"Title: INTEREST INCOME TO EARNING ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="INTINCY")]
+    #[schemars(description = r#"INTEREST INCOME TO EARNING ASSETS RATIO - "#)]
     pub intincy: Option<f32>,
 
-    #[doc = r#"Title: NONCURRENT LOANS WHICH ARE WHOLLY OR PARTIALLY GUARANTEED BY THE U.S. GOVERNMENT RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDNCGTPR")]
+    #[schemars(description = r#"NONCURRENT LOANS WHICH ARE WHOLLY OR PARTIALLY GUARANTEED BY THE U.S. GOVERNMENT RATIO - "#)]
     pub idncgtpr: Option<f32>,
 
-    #[doc = r#"Title: NET LOANS AND LEASES TO CORE DEPOSITS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDLNCORR")]
+    #[schemars(description = r#"NET LOANS AND LEASES TO CORE DEPOSITS RATIO - "#)]
     pub idlncorr: Option<f32>,
 
-    #[doc = r#"Title: ID NO CB FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDT1CNOCB")]
+    #[schemars(description = r#"ID NO CB FLAG - "#)]
     pub idt1cnocb: Option<f32>,
 
-    #[doc = r#"Title: ID NO J CB FLAG"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDT1JNOCB")]
+    #[schemars(description = r#"ID NO J CB FLAG - "#)]
     pub idt1jnocb: Option<f32>,
 
-    #[doc = r#"Title: COMMON EQUITY TIER 1 CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDT1CER")]
+    #[schemars(description = r#"COMMON EQUITY TIER 1 CAPITAL RATIO - "#)]
     pub idt1cer: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 RISK-BASED CAPITAL RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IDT1RWAJR")]
+    #[schemars(description = r#"TIER 1 RISK-BASED CAPITAL RATIO - "#)]
     pub idt1rwajr: Option<f32>,
 
-    #[doc = r#"Title: EQUITY SECURITIES NOT HELD FOR TRADING"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCEQNFT")]
+    #[schemars(description = r#"EQUITY SECURITIES NOT HELD FOR TRADING - "#)]
     pub sceqnft: Option<f32>,
 
-    #[doc = r#"Title: PRIV ISSUED RES MORTGAGE-BACKED SECURITIES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCRMBPI")]
+    #[schemars(description = r#"PRIV ISSUED RES MORTGAGE-BACKED SECURITIES - "#)]
     pub scrmbpi: Option<f32>,
 
-    #[doc = r#"Title: PRIV ISSUED RES MORTGAGE-BACKED SECURITIES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCRMBPIR")]
+    #[schemars(description = r#"PRIV ISSUED RES MORTGAGE-BACKED SECURITIES RATIO - "#)]
     pub scrmbpir: Option<f32>,
 
-    #[doc = r#"Title: U.S GOVERNMENT OBLIGATIONS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUSO")]
+    #[schemars(description = r#"U.S GOVERNMENT OBLIGATIONS - "#)]
     pub scuso: Option<f32>,
 
-    #[doc = r#"Title: U.S GOVERNMENT OBLIGATIONS RATIOS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCUSOR")]
+    #[schemars(description = r#"U.S GOVERNMENT OBLIGATIONS RATIOS - "#)]
     pub scusor: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMM MORTGAGE-BACKED SEC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOS")]
+    #[schemars(description = r#"OTHER COMM MORTGAGE-BACKED SEC - "#)]
     pub sccmos: Option<f32>,
 
-    #[doc = r#"Title: OTHER COMM MORTGAGE-BACKED SEC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCCMOSR")]
+    #[schemars(description = r#"OTHER COMM MORTGAGE-BACKED SEC - "#)]
     pub sccmosr: Option<f32>,
 
-    #[doc = r#"Title: ASSETS HELD IN TRADING ACCOUNTS FOR TFR REPORTERS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCTATFR")]
+    #[schemars(description = r#"ASSETS HELD IN TRADING ACCOUNTS FOR TFR REPORTERS - "#)]
     pub sctatfr: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES, GROSS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRS")]
+    #[schemars(description = r#"LOANS AND LEASES, GROSS - "#)]
     pub lnlsgrs: Option<f32>,
 
-    #[doc = r#"Title: LOANS AND LEASES, GROSS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSGRSR")]
+    #[schemars(description = r#"LOANS AND LEASES, GROSS RATIO - "#)]
     pub lnlsgrsr: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AOA")]
+    #[schemars(description = r#"ALL OTH ASSETS - "#)]
     pub aoa: Option<f32>,
 
-    #[doc = r#"Title: ALL OTH ASSETS RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AOAR")]
+    #[schemars(description = r#"ALL OTH ASSETS RATIO - "#)]
     pub aoar: Option<f32>,
 
-    #[doc = r#"Title: PERCENTAGE INSURED ESTIMATED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESTINS")]
+    #[schemars(description = r#"PERCENTAGE INSURED ESTIMATED - "#)]
     pub estins: Option<f32>,
 
-    #[doc = r#"Title: PERCENTAGE INSURED ESTIMATED RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESTINSR")]
+    #[schemars(description = r#"PERCENTAGE INSURED ESTIMATED RATIO - "#)]
     pub estinsr: Option<f32>,
 
-    #[doc = r#"Title: P/D 30-89 REAL ESTATE LOANS IN DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RELNDO")]
+    #[schemars(description = r#"P/D 30-89 REAL ESTATE LOANS IN DOMESTIC OFFICES - "#)]
     pub p3relndo: Option<f32>,
 
-    #[doc = r#"Title: P/D 30-89 REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RELNDOR")]
+    #[schemars(description = r#"P/D 30-89 REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO - "#)]
     pub p3relndor: Option<f32>,
 
-    #[doc = r#"Title: 90+ REAL ESTATE LOANS IN DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RELNDO")]
+    #[schemars(description = r#"90+ REAL ESTATE LOANS IN DOMESTIC OFFICES - "#)]
     pub p9relndo: Option<f32>,
 
-    #[doc = r#"Title: 90+ REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P9RELNDOR")]
+    #[schemars(description = r#"90+ REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO - "#)]
     pub p9relndor: Option<f32>,
 
-    #[doc = r#"Title: 90+ REAL ESTATE LOANS IN DOMESTIC OFFICES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARELNDO")]
+    #[schemars(description = r#"90+ REAL ESTATE LOANS IN DOMESTIC OFFICES - "#)]
     pub narelndo: Option<f32>,
 
-    #[doc = r#"Title: 90+ REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NARELNDOR")]
+    #[schemars(description = r#"90+ REAL ESTATE LOANS IN DOMESTIC OFFICES RATIO - "#)]
     pub narelndor: Option<f32>,
 
-    #[doc = r#"Title: State and County Nunber"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="STCNTY")]
+    #[schemars(description = r#"State and County Nunber - "#)]
     pub stcnty: Option<String>,
 
-    #[doc = r#"Title: Metropolitan Statistical Area"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CBSA")]
+    #[schemars(description = r#"Metropolitan Statistical Area - "#)]
     pub cbsa: Option<String>,
 
-    #[doc = r#"Title: Date of Deposit Insurance (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="INSDATE")]
+    #[schemars(description = r#"Date of Deposit Insurance (Search-Eligible) - This field can be used for search and filtering."#)]
     pub insdate: Option<String>,
 
-    #[doc = r#"Title: Last Structure Change Process Date (Search-Eligible)"#]
-    #[doc = r#"Description: This field can be used for search and filtering."#]
-    #[serde(rename="UPDDATE")]
+    #[schemars(description = r#"Last Structure Change Process Date (Search-Eligible) - This field can be used for search and filtering."#)]
     pub upddate: Option<String>,
 
-    #[doc = r#"Title: Total Assets Ratio"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ASSETR")]
+    #[schemars(description = r#"Total Assets Ratio - "#)]
     pub assetr: Option<f32>,
 
-    #[doc = r#"Title: AVG TOTAL ASSETS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="AVASSET")]
+    #[schemars(description = r#"AVG TOTAL ASSETS - "#)]
     pub avasset: Option<f32>,
 
-    #[doc = r#"Title: BROKERED DEP-INSURED-LARGE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="BROINSLG")]
+    #[schemars(description = r#"BROKERED DEP-INSURED-LARGE - "#)]
     pub broinslg: Option<f32>,
 
-    #[doc = r#"Title: RC-R TOTAL ADJ & DED COM EQ T1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CT1AJTOT")]
+    #[schemars(description = r#"RC-R TOTAL ADJ & DED COM EQ T1 - "#)]
     pub ct1ajtot: Option<f32>,
 
-    #[doc = r#"Title: RC-R COM EQUITY T1 BEFORE ADJ"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="CT1BADJ")]
+    #[schemars(description = r#"RC-R COM EQUITY T1 BEFORE ADJ - "#)]
     pub ct1badj: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEP2")]
+    #[schemars(description = r#"TOTAL DEPOSITS-CAVG2 - "#)]
     pub dep2: Option<f32>,
 
-    #[doc = r#"Title: TOTAL DEPOSITS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEP5")]
+    #[schemars(description = r#"TOTAL DEPOSITS-CAVG5 - "#)]
     pub dep5: Option<f32>,
 
-    #[doc = r#"Title: INTEREST-BEARING-DEP-Y1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="DEPIY1")]
+    #[schemars(description = r#"INTEREST-BEARING-DEP-Y1 - "#)]
     pub depiy1: Option<f32>,
 
-    #[doc = r#"Title: INT EXPENSE TIME CD GT $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ECD100")]
+    #[schemars(description = r#"INT EXPENSE TIME CD GT $250 - "#)]
     pub ecd100: Option<f32>,
 
-    #[doc = r#"Title: INT EXP TIME CD GT $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ECD100A")]
+    #[schemars(description = r#"INT EXP TIME CD GT $250 - "#)]
     pub ecd100a: Option<f32>,
 
-    #[doc = r#"Title: INT EXP TIME CD GT $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ECD100Q")]
+    #[schemars(description = r#"INT EXP TIME CD GT $250 - "#)]
     pub ecd100q: Option<f32>,
 
-    #[doc = r#"Title: FED FUNDS & REPO INT EXPENSE-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EFREPPA")]
+    #[schemars(description = r#"FED FUNDS & REPO INT EXPENSE-ANN - "#)]
     pub efreppa: Option<f32>,
 
-    #[doc = r#"Title: INT EXP TIME CD LE $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHTIMA")]
+    #[schemars(description = r#"INT EXP TIME CD LE $250 - "#)]
     pub eothtima: Option<f32>,
 
-    #[doc = r#"Title: INT EXPENSE TIME CD LE $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHTIME")]
+    #[schemars(description = r#"INT EXPENSE TIME CD LE $250 - "#)]
     pub eothtime: Option<f32>,
 
-    #[doc = r#"Title: INT EXP TIME CD LE $250"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EOTHTIMQ")]
+    #[schemars(description = r#"INT EXP TIME CD LE $250 - "#)]
     pub eothtimq: Option<f32>,
 
-    #[doc = r#"Title: UNDIVIDED PROFITS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="EQUPGR")]
+    #[schemars(description = r#"UNDIVIDED PROFITS - "#)]
     pub equpgr: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACTION SAV ACCTS INT EXP"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESAVDP")]
+    #[schemars(description = r#"NONTRANSACTION SAV ACCTS INT EXP - "#)]
     pub esavdp: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACT SAV ACCT INT EXT-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESAVDPA")]
+    #[schemars(description = r#"NONTRANSACT SAV ACCT INT EXT-ANN - "#)]
     pub esavdpa: Option<f32>,
 
-    #[doc = r#"Title: NONTRANSACT SAV ACCT INT EXP-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESAVDPQ")]
+    #[schemars(description = r#"NONTRANSACT SAV ACCT INT EXP-QTR - "#)]
     pub esavdpq: Option<f32>,
 
-    #[doc = r#"Title: SUBORDINATED NOTES INT EXP-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ESUBNDA")]
+    #[schemars(description = r#"SUBORDINATED NOTES INT EXP-ANN - "#)]
     pub esubnda: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION ACCOUNTS INT EXPENSE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETRANDEP")]
+    #[schemars(description = r#"TRANSACTION ACCOUNTS INT EXPENSE - "#)]
     pub etrandep: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION ACCOUNTS INT EXP-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETRANDPA")]
+    #[schemars(description = r#"TRANSACTION ACCOUNTS INT EXP-ANN - "#)]
     pub etrandpa: Option<f32>,
 
-    #[doc = r#"Title: TRANSACTION ACCOUNTS INT EXP-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETRANDPQ")]
+    #[schemars(description = r#"TRANSACTION ACCOUNTS INT EXP-QTR - "#)]
     pub etrandpq: Option<f32>,
 
-    #[doc = r#"Title: TT&L & OTHER BORROW INT EXP-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETTLOTBA")]
+    #[schemars(description = r#"TT&L & OTHER BORROW INT EXP-ANN - "#)]
     pub ettlotba: Option<f32>,
 
-    #[doc = r#"Title: TT&L & OTHER BORROW INT EXP-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ETTLOTBQ")]
+    #[schemars(description = r#"TT&L & OTHER BORROW INT EXP-QTR - "#)]
     pub ettlotbq: Option<f32>,
 
-    #[doc = r#"Title: FEDERAL FUNDS PURCHASED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="FFPUR")]
+    #[schemars(description = r#"FEDERAL FUNDS PURCHASED - "#)]
     pub ffpur: Option<f32>,
 
-    #[doc = r#"Title: INC BEFORE INC TAXS & DISC-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IBEFTXA")]
+    #[schemars(description = r#"INC BEFORE INC TAXS & DISC-ANN - "#)]
     pub ibeftxa: Option<f32>,
 
-    #[doc = r#"Title: AVAILABLE-FOR-SALE SECS G/L"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSCA")]
+    #[schemars(description = r#"AVAILABLE-FOR-SALE SECS G/L - "#)]
     pub iglsca: Option<f32>,
 
-    #[doc = r#"Title: AVAILABLE-FOR-SALE SEC G/L-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSCAQ")]
+    #[schemars(description = r#"AVAILABLE-FOR-SALE SEC G/L-QTR - "#)]
     pub iglscaq: Option<f32>,
 
-    #[doc = r#"Title: HELD-TO-MATURITY SECS G/L"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="IGLSCH")]
+    #[schemars(description = r#"HELD-TO-MATURITY SECS G/L - "#)]
     pub iglsch: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNA")]
+    #[schemars(description = r#"LOAN INCOME-ANN - "#)]
     pub ilna: Option<f32>,
 
-    #[doc = r#"Title: LOAN & LEASE INCOME-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNLSA")]
+    #[schemars(description = r#"LOAN & LEASE INCOME-ANN - "#)]
     pub ilnlsa: Option<f32>,
 
-    #[doc = r#"Title: LOAN & LEASE INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNLSQ")]
+    #[schemars(description = r#"LOAN & LEASE INCOME-QTR - "#)]
     pub ilnlsq: Option<f32>,
 
-    #[doc = r#"Title: TAX-EXEMPT LN & LS INT INC-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNLSXA")]
+    #[schemars(description = r#"TAX-EXEMPT LN & LS INT INC-ANN - "#)]
     pub ilnlsxa: Option<f32>,
 
-    #[doc = r#"Title: TAX-EXEMPT LN & LS INT INC-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNLSXQ")]
+    #[schemars(description = r#"TAX-EXEMPT LN & LS INT INC-QTR - "#)]
     pub ilnlsxq: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL LOAN INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNMUNIQ")]
+    #[schemars(description = r#"MUNICIPAL LOAN INCOME-QTR - "#)]
     pub ilnmuniq: Option<f32>,
 
-    #[doc = r#"Title: LOAN INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ILNQ")]
+    #[schemars(description = r#"LOAN INCOME-QTR - "#)]
     pub ilnq: Option<f32>,
 
-    #[doc = r#"Title: TOTAL SECURITY INCOME-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISCA")]
+    #[schemars(description = r#"TOTAL SECURITY INCOME-ANN - "#)]
     pub isca: Option<f32>,
 
-    #[doc = r#"Title: SERVICE CHARGE ON DEP ACCTS-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ISERCHGA")]
+    #[schemars(description = r#"SERVICE CHARGE ON DEP ACCTS-ANN - "#)]
     pub iserchga: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAXA")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES-ANN - "#)]
     pub itaxa: Option<f32>,
 
-    #[doc = r#"Title: APPLICABLE INCOME TAXES-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="ITAXQA")]
+    #[schemars(description = r#"APPLICABLE INCOME TAXES-QTR-ANN - "#)]
     pub itaxqa: Option<f32>,
 
-    #[doc = r#"Title: CONSTR & LAND DEV LNS/TIER 1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCDT1R")]
+    #[schemars(description = r#"CONSTR & LAND DEV LNS/TIER 1 - "#)]
     pub lncdt1r: Option<f32>,
 
-    #[doc = r#"Title: C&I LOANS/TIER 1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCIT1R")]
+    #[schemars(description = r#"C&I LOANS/TIER 1 - "#)]
     pub lncit1r: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LOANS/TIER 1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNCONT1R")]
+    #[schemars(description = r#"CONSUMER LOANS/TIER 1 - "#)]
     pub lncont1r: Option<f32>,
 
-    #[doc = r#"Title: ALLOWANCE FOR LOAN AND LEASES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNLSRES")]
+    #[schemars(description = r#"ALLOWANCE FOR LOAN AND LEASES - "#)]
     pub lnlsres: Option<f32>,
 
-    #[doc = r#"Title: RE AGRICULTURAL-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNREAG5")]
+    #[schemars(description = r#"RE AGRICULTURAL-CAVG5 - "#)]
     pub lnreag5: Option<f32>,
 
-    #[doc = r#"Title: RE LOANS/TIER 1"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="LNRERT1R")]
+    #[schemars(description = r#"RE LOANS/TIER 1 - "#)]
     pub lnrert1r: Option<f32>,
 
-    #[doc = r#"Title: TOTAL N/C-RE*FARMLAND"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCREAG")]
+    #[schemars(description = r#"TOTAL N/C-RE*FARMLAND - "#)]
     pub ncreag: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 FAMILY CONSTRUCTION LOAN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRECNFM")]
+    #[schemars(description = r#"N/C 1-4 FAMILY CONSTRUCTION LOAN - "#)]
     pub ncrecnfm: Option<f32>,
 
-    #[doc = r#"Title: N/C OTHER CONSTRUCT & LAND DEV"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRECNOT")]
+    #[schemars(description = r#"N/C OTHER CONSTRUCT & LAND DEV - "#)]
     pub ncrecnot: Option<f32>,
 
-    #[doc = r#"Title: N/C OTHER NONFARM NONRES RE LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRENROT")]
+    #[schemars(description = r#"N/C OTHER NONFARM NONRES RE LN - "#)]
     pub ncrenrot: Option<f32>,
 
-    #[doc = r#"Title: N/C OWN-OCCUPIED NONFARM NONRES"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRENROW")]
+    #[schemars(description = r#"N/C OWN-OCCUPIED NONFARM NONRES - "#)]
     pub ncrenrow: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 FAM JR LN/1-4 FAM JR LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERS2R")]
+    #[schemars(description = r#"N/C 1-4 FAM JR LN/1-4 FAM JR LN - "#)]
     pub ncrers2r: Option<f32>,
 
-    #[doc = r#"Title: N/C RE 1-4 FAM JUNIOR LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERSF2")]
+    #[schemars(description = r#"N/C RE 1-4 FAM JUNIOR LIEN - "#)]
     pub ncrersf2: Option<f32>,
 
-    #[doc = r#"Title: N/C RE 1-4 FAM FIRST LIEN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERSFM")]
+    #[schemars(description = r#"N/C RE 1-4 FAM FIRST LIEN - "#)]
     pub ncrersfm: Option<f32>,
 
-    #[doc = r#"Title: N/C 1-4 FAM 1STLN/1-4 FAM IST LN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRERSFR")]
+    #[schemars(description = r#"N/C 1-4 FAM 1STLN/1-4 FAM IST LN - "#)]
     pub ncrersfr: Option<f32>,
 
-    #[doc = r#"Title: NC RESTRUCT LOANS EXCL 1-4 FM"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NCRSLNLS")]
+    #[schemars(description = r#"NC RESTRUCT LOANS EXCL 1-4 FM - "#)]
     pub ncrslnls: Option<f32>,
 
-    #[doc = r#"Title: NET OPERATING INCOME-QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NOIQ")]
+    #[schemars(description = r#"NET OPERATING INCOME-QTR - "#)]
     pub noiq: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN NET CHARGE-OFFS-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGQA")]
+    #[schemars(description = r#"AG LOAN NET CHARGE-OFFS-QTR-ANN - "#)]
     pub ntagqa: Option<f32>,
 
-    #[doc = r#"Title: AG LN NET CHARGE-OFFS ANN*SM BKS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSMA")]
+    #[schemars(description = r#"AG LN NET CHARGE-OFFS ANN*SM BKS - "#)]
     pub ntagsma: Option<f32>,
 
-    #[doc = r#"Title: AG LOAN NET-CHG-QTR-ANN*SMALL BK"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTAGSMQA")]
+    #[schemars(description = r#"AG LOAN NET-CHG-QTR-ANN*SMALL BK - "#)]
     pub ntagsmqa: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL LOAN NET-CHG-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCIQA")]
+    #[schemars(description = r#"COMMERCIAL LOAN NET-CHG-QTR-ANN - "#)]
     pub ntciqa: Option<f32>,
 
-    #[doc = r#"Title: COMMERCIAL RE LN NET CHARGE-OFFS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMRE")]
+    #[schemars(description = r#"COMMERCIAL RE LN NET CHARGE-OFFS - "#)]
     pub ntcomre: Option<f32>,
 
-    #[doc = r#"Title: COMML RE NET-CHARGE-OFF-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCOMRQA")]
+    #[schemars(description = r#"COMML RE NET-CHARGE-OFF-QTR-ANN - "#)]
     pub ntcomrqa: Option<f32>,
 
-    #[doc = r#"Title: CONSUMER LN NET-CHG-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCONQA")]
+    #[schemars(description = r#"CONSUMER LN NET-CHG-QTR-ANN - "#)]
     pub ntconqa: Option<f32>,
 
-    #[doc = r#"Title: CREDIT CARD LN NET-CHG-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTCRCDQA")]
+    #[schemars(description = r#"CREDIT CARD LN NET-CHG-QTR-ANN - "#)]
     pub ntcrcdqa: Option<f32>,
 
-    #[doc = r#"Title: RETAINED EARNINGS- BANK- QTR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTIRTQ")]
+    #[schemars(description = r#"RETAINED EARNINGS- BANK- QTR - "#)]
     pub ntirtq: Option<f32>,
 
-    #[doc = r#"Title: Time Deposits Less Than Or Equal To insurance Limit"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTRCDSMJ")]
+    #[schemars(description = r#"Time Deposits Less Than Or Equal To insurance Limit - "#)]
     pub ntrcdsmj: Option<f32>,
 
-    #[doc = r#"Title: FARMLAND RE LN NET-CHG-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAGA")]
+    #[schemars(description = r#"FARMLAND RE LN NET-CHG-ANN - "#)]
     pub ntreaga: Option<f32>,
 
-    #[doc = r#"Title: FARM RE LN NET CHRG-OFF-QTR-ANN"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="NTREAGQA")]
+    #[schemars(description = r#"FARM RE LN NET CHRG-OFF-QTR-ANN - "#)]
     pub ntreagqa: Option<f32>,
 
-    #[doc = r#"Title: OTHER BORROWED FUNDS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OBOR")]
+    #[schemars(description = r#"OTHER BORROWED FUNDS - "#)]
     pub obor: Option<f32>,
 
-    #[doc = r#"Title: OTHER BORROWED FUNDS-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OBOR2")]
+    #[schemars(description = r#"OTHER BORROWED FUNDS-CAVG2 - "#)]
     pub obor2: Option<f32>,
 
-    #[doc = r#"Title: OTHER BORROWED FUNDS-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OBOR5")]
+    #[schemars(description = r#"OTHER BORROWED FUNDS-CAVG5 - "#)]
     pub obor5: Option<f32>,
 
-    #[doc = r#"Title: OTH BOR FHLB-OVER 3 YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFH03")]
+    #[schemars(description = r#"OTH BOR FHLB-OVER 3 YRS - "#)]
     pub othbfh03: Option<f32>,
 
-    #[doc = r#"Title: OTH BOR. FHLB-1 TO 3 YRS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="OTHBFH13")]
+    #[schemars(description = r#"OTH BOR. FHLB-1 TO 3 YRS - "#)]
     pub othbfh13: Option<f32>,
 
-    #[doc = r#"Title: 30-89 DAYS P/D-COMMERCIAL RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3COMRE")]
+    #[schemars(description = r#"30-89 DAYS P/D-COMMERCIAL RE - "#)]
     pub p3comre: Option<f32>,
 
-    #[doc = r#"Title: 30-89 PAST DUE CONST RE/CONST RE"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RECONR")]
+    #[schemars(description = r#"30-89 PAST DUE CONST RE/CONST RE - "#)]
     pub p3reconr: Option<f32>,
 
-    #[doc = r#"Title: 30-89 P/D 1-4FAM JR/1-4 FAM JR"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="P3RERS2R")]
+    #[schemars(description = r#"30-89 P/D 1-4FAM JR/1-4 FAM JR - "#)]
     pub p3rers2r: Option<f32>,
 
-    #[doc = r#"Title: RETAINED EARNINGS - RBC"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCEQUP")]
+    #[schemars(description = r#"RETAINED EARNINGS - RBC - "#)]
     pub rbcequp: Option<f32>,
 
-    #[doc = r#"Title: TIER 1 CAPITAL - REPORTED"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="RBCT1W")]
+    #[schemars(description = r#"TIER 1 CAPITAL - REPORTED - "#)]
     pub rbct1w: Option<f32>,
 
-    #[doc = r#"Title: REPURCHASE AGREEMENTS"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="REPOPUR")]
+    #[schemars(description = r#"REPURCHASE AGREEMENTS - "#)]
     pub repopur: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-CAVG2"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SC2")]
+    #[schemars(description = r#"SECURITIES-CAVG2 - "#)]
     pub sc2: Option<f32>,
 
-    #[doc = r#"Title: SECURITIES-CAVG5"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SC5")]
+    #[schemars(description = r#"SECURITIES-CAVG5 - "#)]
     pub sc5: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL SECURITIES -AA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNIAA")]
+    #[schemars(description = r#"MUNICIPAL SECURITIES -AA - "#)]
     pub scmuniaa: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL SECURITIES -AF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNIAF")]
+    #[schemars(description = r#"MUNICIPAL SECURITIES -AF - "#)]
     pub scmuniaf: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL SECURITIES -HA"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNIHA")]
+    #[schemars(description = r#"MUNICIPAL SECURITIES -HA - "#)]
     pub scmuniha: Option<f32>,
 
-    #[doc = r#"Title: MUNICIPAL SECURITIES -HF"#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="SCMUNIHF")]
+    #[schemars(description = r#"MUNICIPAL SECURITIES -HF - "#)]
     pub scmunihf: Option<f32>,
 
 }
 
-/// Auto-generated response envelope struct for `/financials` endpoint.
-/// Spec: risview_properties.yaml
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct FinancialsResponse {
-    #[doc = r#"Title: "#]
-    #[doc = r#"Description: "#]
-    #[serde(rename="data")]
-    pub data: Option<String>,
+    pub data: Vec<FinancialsProperties>,
+    pub meta: ResponseMeta,
+    pub total: u64,
+}
 
+impl IntoContents for FinancialsResponse {
+    fn into_contents(self) -> Vec<Content> {
+        // Convert the response into a Vec<Content> as expected by MCP
+        // Panics only if serialization fails, which should be impossible for valid structs
+        vec![Content::json(self).expect("Failed to serialize FinancialsResponse to Content")]
+    }
 }
 
 /// FDIC BankFind API `/financials` endpoint handler
 /// Get Financial Information for FDIC Insured Institutions
 /// Returns financial information for financial institutions
 /// **All string parameter values (except `api_key` and `filename`) are uppercased before proxying.**
-#[allow(dead_code)]
 #[doc = r#" - `api_key` (String, optional): Api key used for api.fdic.gov - `filters` (String, optional): The filter criteria that refines the records included in the result. All values must be entered in UPPERCASE.
 Examples:  
 * Filter data by the numeric range  
@@ -14363,10 +9623,7 @@ Responses:
     503: Service Unavailable
     504: Gateway Timeout
 Tag: Financials"#]
-pub async fn financials_handler(
-    State(config): State<FDICApiConfig>,
-    Query(params): Query<FinancialsParameters>,
-) -> Response {
+pub async fn financials_handler(config: &FdicApiConfig, params: &FinancialsParameters) -> Result<CallToolResult, rmcp::Error> {
     // Log incoming request parameters and request details as structured JSON
     info!(
         target = "handler",
@@ -14374,23 +9631,13 @@ pub async fn financials_handler(
         endpoint = "financials",
         method = "GET",
         path = "/financials",
-        params = serde_json::to_string(&params).unwrap()
+        params = serde_json::to_string(params).unwrap()
     );
-    let resp = list_endpoint(
-        State(config),
-        Query(params.clone()),
-        "financials",
-    ).await;
+
+    let resp = get_fdic_bank_find_mcp_response::<_, FinancialsResponse>(config, params).await;
+
     // Log outgoing FDIC API request as structured JSON
-    debug!(
-        target = "fdic_proxy",
-        event = "proxied_fdic_api_request",
-        endpoint = "financials",
-        method = "GET",
-        path = "/financials",
-        params = serde_json::to_string(&params).unwrap()
-    );
-    resp
+    resp.and_then(|r| r.into_call_tool_result())
 }
 
 #[cfg(test)]
@@ -14409,10 +9656,10 @@ mod tests {
         };
         let _ = serde_json::to_string(&params).unwrap();
     }
+
     #[test]
     fn test_properties_struct_serialization() {
         let props = FinancialsProperties {
-            
             actevt: None,
             asset: None,
             branch: None,
@@ -16790,7 +12037,7 @@ mod tests {
             scmuniaf: None,
             scmuniha: None,
             scmunihf: None,
-        };
+            };
         let _ = serde_json::to_string(&props).unwrap();
     }
 }

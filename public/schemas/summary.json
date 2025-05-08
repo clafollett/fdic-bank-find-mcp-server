@@ -1,0 +1,1850 @@
+{
+  "data": {
+    "items": {
+      "fields": [
+        {
+          "description": "All Other Loans",
+          "example": "",
+          "name": "ALLOTHER",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Loans",
+          "type": "integer"
+        },
+        {
+          "description": "New savings institution charter created to absorb any other type of charter in its first quarter of operation.",
+          "example": "",
+          "name": "alsonew",
+          "required": false,
+          "rust_type": "i32",
+          "title": "New Charters to Absorb Another Charter",
+          "type": "integer"
+        },
+        {
+          "description": "Total Assets On A Consolidated Basis\nNote: For Banks With Foreign Operations Data For March &\nSeptember Of 1973 Through 1975 Are Reported On A\nDomestic Basis",
+          "example": "",
+          "name": "ASSET",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Total Insured Commercial Banks filing 12/31 fincncial report  (See Notes to User for definition of commercial bank)",
+          "example": "",
+          "name": "BANKS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Commercial Banks (Filing Y/E Call)",
+          "type": "integer"
+        },
+        {
+          "description": "Premises and Fixed Assets\nNote:\n(1) Premises and Fixed Assets (Including Capitalized Leases) On A Consolidated Basis\n(2) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Was Reported On A Domestic Basis",
+          "example": "",
+          "name": "BKPREM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Bank Premises and Equipment",
+          "type": "integer"
+        },
+        {
+          "description": "Branches include all offices of a bank, other than its head office, at which deposits are received, checks paid or money lent. Banking facilities separate from a banking house, banking facilities at government installations, offices, agencies, paying or receiving stations, drive-in facilities and other facilities operated for limited purposes are defined as branches under the FDI Act (see Notes to User)",
+          "example": "",
+          "name": "BRANCHES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Branches",
+          "type": "integer"
+        },
+        {
+          "description": "Banks with branches are institutions that operate one or more offices at which deposits are received or other banking business conducted in addition to the main or head office.",
+          "example": "",
+          "name": "BRANCHIN",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Banks with Branches",
+          "type": "integer"
+        },
+        {
+          "description": "Borrowed Deposits (Represents funds which the reporting bank obtains, directly or indirectly, by or through any deposit broker for deposit into one or more deposit accounts. Includes both those in which the entire beneficial interest in a given bank deposit account or investment is held by a single depositor and those in which deposit broker sells participation in a given bank deposit account or instrument to one or more investors).",
+          "example": "",
+          "name": "BRO",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Brokered Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Borrowed Funds - (1969-Present -- Represents Federal Funds purchase. securities sold under agreements to repurchase, demand notes issued to the US Treasury, mortgage indebtedness, liabilities under capitalized leases and all other liabilities for borrowed money. -- 1934-1968 -- Does not include mortgage indebtedness which is netted against bank premsises.)",
+          "example": "",
+          "name": "BRWDMONY",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Borrowed Funds",
+          "type": "integer"
+        },
+        {
+          "description": "Differentiates the summarised data between the Commercial Banks and the Savings Institutions This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "enum": [
+            "CB",
+            "SI"
+          ],
+          "example": "",
+          "name": "CB_SI",
+          "required": false,
+          "rust_type": "String",
+          "title": "Commercial Banks (CB) vs. Savings Institution (SI) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Represents the transfer of a commercial bank to a savings institution charter that meets the definition of a thrift (see Notes to Table SI-1) and has applied for and received FDIC insurance (BIF or SAIF).",
+          "example": "",
+          "name": "chartoth",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Charter Transfers from Commercial Banks",
+          "type": "integer"
+        },
+        {
+          "description": "Total Cash and Balances Due From Depository Institutions Which Include Both Noninterest-Bearing and Interest-Bearing Deposits On A Consolidated Basis\nNote:\n(1): Additional Detail Can Be Found On Schedule Rc-A\n(2) For Banks With Foreign Operations Data For March and September 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "CHBAL",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Cash & Due from Depository Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Interest-Bearing Balances Due From Depository Institutions On A Consolidated Basis\nNote: Additional Detail Can Be Found On Schedule Rc-A",
+          "example": "",
+          "name": "CHBALI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Interest Earning Balances",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the transfer of an existing institution that does not have deposit insurance to a savings institution charter with FDIC insurance from BIF or SAIF. Examples of such institutions include Trust Banks and savings institutions with state deposit insurance that apply for and receive FDIC insurance",
+          "example": "",
+          "name": "chrtrest",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Non-insured Becoming insured",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the absorption of a failing savings institution by another savings institution with assistance from either the BIF or SAIF. (Included are RTC Accelerated Resolution Program (ARP) assisted mergers. These institutions were not placed in RTC conservatorship.)",
+          "example": "",
+          "name": "comboass",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Assisted Mergers with Thrifts",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the absorption of a savings institution charter by another savings institution without assistance. Both institutions may be owned by the same holding company in a consolidation of affiliates.",
+          "example": "",
+          "name": "combos",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Unassisted Mergers/Consolidations of Thrifts",
+          "type": "integer"
+        },
+        {
+          "description": "Institutions in RTC Conservatorship",
+          "example": "",
+          "name": "CONS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "RTC Conservatorships",
+          "type": "integer"
+        },
+        {
+          "description": "Other Debt Securities",
+          "example": "",
+          "name": "CORPBNDS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Debt Securities",
+          "type": "integer"
+        },
+        {
+          "description": "All FDIC Insured Savings Institutions filing a 12/31 financial report",
+          "example": "",
+          "name": "COUNT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Savings Institutions (Filing Y/E Call)",
+          "type": "integer"
+        },
+        {
+          "description": "Total Recoveries Of Loans and Lease Financing Receivables Credited To The Allowance For Loan and Lease Losses\nNote: For Banks With Foreign Operations, Data For December\n1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "CRLNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loan & Lease Recoveries",
+          "type": "integer"
+        },
+        {
+          "description": "Total Demand Deposits Included In Total Transaction Accounts Held In Domestic Offices\nNote: For Tfr Filers Between June 1989 Through March 1990 Includes Non-interest Bearing Deposits",
+          "example": "",
+          "name": "DDT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - Domestic Demand",
+          "type": "integer"
+        },
+        {
+          "description": "Total Deposits On A Consolidated Basis\nNote:\n(1) Additional Detail Can Be Found On Schedule Rc-E\n(2) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "DEP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the sum of total deposits, domestic offices only",
+          "example": "",
+          "name": "DEPDOM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Domestic Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the sum of total deposits in foreign offices",
+          "example": "",
+          "name": "DEPFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Foreign Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Interest-Bearing Consolidated Office Deposits\n\nNote:\n(1) Additional Detail Can Be Found On Schedule Rc-E\n(2) Tfr Filers With Less Than $300 Million In Assets and Risk-Based Capital Ratios In Excess Of 12 Percent Are Not Required To File Schedule Cmr Beginning March 1993, However, When Cmr Data Is Either Incorrect Or Not Filed Fts Assumes That All Deposits Are Interest-Bearing\n(3) Prior To Receipt Of The 75-Day Tfr Tape All Tfr Filers Deposits Are Assumed To Be Interest-Bearing\n(4) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "DEPI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Interest Bearing Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents any deposit in foreign offices, whether demand, savings or time, on which the bank pays or accrues interest",
+          "example": "",
+          "name": "DEPIFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Foreign Deposits - Interest Bearing",
+          "type": "integer"
+        },
+        {
+          "description": "Represents any deposit on which the bank does not pay or accrue interest",
+          "example": "",
+          "name": "DEPNI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Deposits - Non-interest Bearing",
+          "type": "integer"
+        },
+        {
+          "description": "Represents any deposit in foreign offices on which the bank does not pay or accrue interest",
+          "example": "",
+          "name": "DEPNIFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Foreign Deposits - Non-interest Bearing",
+          "type": "integer"
+        },
+        {
+          "description": "Total Charged-Off Loans and Lease Financing Receivables Debited To The Allowance For Loan and Lease Losses\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "DRLNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loan & Lease Charge-offs",
+          "type": "integer"
+        },
+        {
+          "description": "Goodwill Impairment Losses and Amortization Expense and Impairment Loss For Other Intangible Assets On A Consolidated Basis\n\nNote:\n(1) Prior To March 2001, Listed As Memoranda Only and Is Included In All Other Non-interest Expense\n(2) Includes Only Amortization Of Goodwill For Tfr Filers",
+          "example": "",
+          "name": "EAMINTAN",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Amortization of Intangibles",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Expense On Total Deposits (Domestic and Foreign) On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EDEP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Total Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Expense On Total Deposits Held In Domestic Offices\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EDEPDOM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Deposit in Domestic Offices",
+          "type": "integer"
+        },
+        {
+          "description": "Deposit Interest Expense-For (1976-Present -- Represents all interests on all liabilities reportable as deposits in foreign offices. -- 1934-1975 -- Interest on foreign office deposits is not available. Reports of income were submitted on a domestic only basis.)",
+          "example": "",
+          "name": "EDEPFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Deposits in Foreign Offices",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the gross expenses of all liabilities reportable under this category",
+          "example": "",
+          "name": "EEREPP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Fed Funds Purchased/Securities Sold",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Expense and The Amortization Of Any Related Yield Adjustments On Fhlbank Advances\nNote: Only Reported By Tfr Filers",
+          "example": "",
+          "name": "EFHLBADV",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp Oth - Advances From FHLB",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Expense On Federal Funds Purchased and Securities Sold Under Agreements To Repurchase On A Consolidated Basis (Prior To March 1997 Was On A Consolidated Basis In Domestic Offices Of The Bank and Of Its Edge and Agreement Subsidiaries, and In Ibf'S)\nNote: For Banks With Foreign Operations, Data For December\n1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EFREPP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Fed Funds Purchased/Securities Sold",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Expense On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December\n1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EINTEXP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Interest Expense",
+          "type": "integer"
+        },
+        {
+          "description": "Eintexp2",
+          "example": "",
+          "name": "EINTEXP2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Eintexp2",
+          "type": "integer"
+        },
+        {
+          "description": "Provision For Loan & Lease Losses On A Consolidated Basis\n\nNote:\n(1) Beginning March 2003, Includes The Provision For Allocated Transfer Risk Related To Loans\n(2) From March 1997 To December 2000, Defined As The Provision For Credit Losses & Allocated Transfer Risk Reserve Which Includes The Provision For Off-Balance Sheet Credit Losses For Call Report Filers\n(3) Prior To March 1997, Defined As The Provision For Loan and Lease Losses & Allocated Transfer Risk\n(4) For Tfr Filers, Consists Of The Provision For Loan and Lease Losses\n(5) Reflects Net Provision For Losses On Interest-Bearing Assets For Tfr Filers\n(6) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ELNATR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Provision for Loan & Lease Losses",
+          "type": "integer"
+        },
+        {
+          "description": "All Other Non-interest Expense On A Consolidated Basis\n\nNote:\n(1) Prior To March 2001, Included The Amortization Of Intangible Assets For Call Reporters\n(2) Greater Detail Is Provided In Subsequent Data Fields For All Items In Excess Of 10% Of This Item All Other Non-interest Expense On A Consolidated Basis\n(3) Does Not Include Losses On Asset Sales For Tfr Filers Beginning June 1996, Such Gains (Losses) Are Included Net In Non-interest Income\n(4) Includes Loss On Sale Of Securities Held For Investments For Tfr Filers Between March 1984 Through December 1986\n(5) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EOTHNINT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Non-interest Expenses",
+          "type": "integer"
+        },
+        {
+          "description": "Expenses Of Premises and Fixed Assets (Net Of Rental Income and Excluding Salaries and Employee Benefits and Mortgage Interest) On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EPREMAGG",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Occupancy Expense",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the sum of all capital accounts",
+          "example": "",
+          "name": "EQ",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Equity",
+          "type": "integer"
+        },
+        {
+          "description": "Cash Dividends Declared On Common and Preferred Stock On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EQCDIV",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Cash Dividends Declared",
+          "type": "integer"
+        },
+        {
+          "description": "Cash Dividends Declared On Common Stock On A Consolidated Basis\n\nNote:\n(1) 034 Reporters Only File Data On The December Call\n(2) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EQCDIVC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Cash Dividends Declared (Common)",
+          "type": "integer"
+        },
+        {
+          "description": "Cash Dividends Declared On Preferred Stock On A Consolidated Basis\nNote:\n(1) 034 Reporters Only File Data On The December Call\n(2) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EQCDIVP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Cash Dividends Declared (Preferred)",
+          "type": "integer"
+        },
+        {
+          "description": "Common Stock On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "EQCS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Common Stock",
+          "type": "integer"
+        },
+        {
+          "description": "The total of cash dividends declared on all preferred and common stock during the calendar year, regardless of when payable",
+          "example": "",
+          "name": "EQDIV",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Cash Divident Declared",
+          "type": "integer"
+        },
+        {
+          "description": "Total Capital (Represents the total of all capital components, including FDIC net worth certificates.)",
+          "example": "",
+          "name": "EQNM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Equity Capital",
+          "type": "integer"
+        },
+        {
+          "description": "Net Worth Certificates Represents The Outstanding Balances Issued To The Fdic In Exchange For Promissory Notes Received From The Fdic On A Consolidated Basis",
+          "example": "",
+          "name": "EQNWCERT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "FDIC Net Worth Certificates",
+          "type": "integer"
+        },
+        {
+          "description": "Other Capital",
+          "example": "",
+          "name": "EQOTHCC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Capital",
+          "type": "integer"
+        },
+        {
+          "description": "Perpetual Preferred Stock and Related Surplus On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "EQPP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Perpetual Preferred Stock",
+          "type": "integer"
+        },
+        {
+          "description": "Surplus (Excludes All Surplus Related To Preferred Stock) On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis\n",
+          "example": "",
+          "name": "EQSUR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Surplus",
+          "type": "integer"
+        },
+        {
+          "description": "Undivided Profits, Capital Reserves, Net Unrealized Holding Gains (Losses) On Available-For-Sale Securities and Other Equity Capital Components and/Or\nAccumulated Gains (Losses) On Cash Flow Hedges On A Consolidated Basis\n\nNote:\n(1) Prior To March 1999 Included Undivided Profits, Capital Reserves and Net Unrealized Gains (Losses) On Available-For-Sale Securities\n(2) Prior To March 1994 Included Undivided Profits and Capital Reserves Less Net Unrealized Loss On Marketable Equity Securities\n(3) This Item Includes Net Worth Certificates For Bif Thrifts\n(4) For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "EQUPTOT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Undivided Profits",
+          "type": "integer"
+        },
+        {
+          "description": "Salaries and Employee Benefits On A Consolidated Basis Note: For Banks With Foreign Operations, Data For December 72 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ESAL",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Employee Salaries and Benefits",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Expense On Subordinated Notes and Debentures On A Consolidated Basis\nNote:\n1. This Item Is Not Reported By Form 51 Filers\n2. For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ESUBND",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Subordinated Notes",
+          "type": "integer"
+        },
+        {
+          "description": "Discontinued Operations, Net Of Applicable Income Taxes On A Consolidated Basis\n\nNote:\n(1) Prior To March 2016, Defined As Extraordinary Items and and Other Adjustments, Net Of Taxes On A Consolidated Basis\n(2) This Item Does Not Include The Tax Effects Related To Securities Gains and Losses and Extraordinary Items From June 1984 Through December 1985 For Bif Thrifts (Refer To Applicable Income Taxes)\n(3) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "EXTRA",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Extraordinary Items",
+          "type": "integer"
+        },
+        {
+          "description": "FDIC Supervised, BIF Insured Institutions",
+          "example": "",
+          "name": "FD_BIF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "FDIC Supervised, BIF Insured Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "FDIC supervised SAIF insured institutions",
+          "example": "",
+          "name": "FD_SAIF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "FDIC supervised, SAIF Insured Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Federal Funds Sold and Securities Purchased Under Agreements To Resell On A Consolidated Basis\n\nNote:\n(1) Prior To March 1997, Includes Only Federal Funds Sold and Securities Purchased Under Agreements To Resell In Domestic Offices Of The Bank and Of Its Edge and Agreement Subsidiaries, and In Ibf'S\n(2) Prior To March 1998, Includes Only Federal Funds Sold For Tfr Filers\n(3) For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Was Reported On A Domestic Basis",
+          "example": "",
+          "name": "FREPO",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Federal Funds Sold",
+          "type": "integer"
+        },
+        {
+          "description": "Federal Funds Purchased and Securities Sold Under Agreements To Repurchase On A Consolidated Basis \nNote:\n(1) Prior To March 1998, Includes Only Reverse Repurchase Agreements For Tfr Filers\n(2) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "FREPP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Fed Funds & Repos Purchased",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Income On Balances Due From Depository Institutions On A Consolidated Basis",
+          "example": "",
+          "name": "ICHBAL",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Balances Due",
+          "type": "integer"
+        },
+        {
+          "description": "Fee Income (Represents service charges on deposit accounts such as maintenance fees, activity charges, administrative charges, overdraft charges and check certification charges; mortgage loans servicing fees plus other fees and charges, including prepayment loan fees, late charges, assumption fees, and amortization of commitment fees.)",
+          "example": "",
+          "name": "IFEE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Fee Income",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Income On Federal Funds Sold and Securities Purchased Under Agreements To Resell On A Consolidated Basis\nNote:\n(1) Prior To March 1997 Included Only Income From Domestic Offices Of The Bank and Of Its Edge and Agreement Subsidiaries, and In Ibfs On A Consolidated Basis\n(2) For Banks With Foreign Operations Data For December 1972 Through 1975 Are Domestic Only",
+          "example": "",
+          "name": "IFREPO",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Fed Funds Sold/Securities Purchased",
+          "type": "integer"
+        },
+        {
+          "description": "Realized Gains (Losses) On Held-To-Maturity and Available-For-Sale Debt Securities and Unrealized Holding Gains (Losses) On Equity Securities Not Held For Trading Before Adjustments For Income Taxes On A Consolidated Basis (Also Includes Realized Gains On Equity Securities Until The Institution Adopts Asu 2016-01)\nNote:\n1. Prior To March 2018, Defined As Realized Gains (Losses) On Held-To-Maturity and Available-For-Sale Securities Before Adjustments For Income Taxes On A Consolidated Basis\n2. Beginning In The 2018 Reporting Year, Includes Unrealized Gains (Losses) On Equity Securities For Institutions That Adopted Asu2016-01 and Includes Realized Gains (Losses) On Equity Securities For Institutions That Have Not Yet Adopted Asu2016-01\n3. Prior To March 1994 Defined As Gains (Losses) On Securities Not Held In Trading Accounts \n4. From March 1990 Through March 2009, Includes Gains (Losses) On Assets Held For Sale For Tfr Filers\n5. Includes Gains (Losses) On Loans Held For Investment From March 1984 Through December 1989 For Tfr Filers\n6. Tfr Filers Report Only Gains From March 1984 Through December 1986\n7. For Banks With Foreign Operations Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "IGLSEC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Securities Gains and Losses",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest and Fees On Loans Held In Domestic Offices\nNote:\n(1) U-Size-Stratum = 0001 Means That Bank Has Total Assets Less Than $25 Million\n(2) U-Size-Stratum = 0002 Means That Bank Has Total Assets Equal To Or Greater Than $25 Million\n(3) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ILNDOM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Domestic Office Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest and Fees On Loans Held In Foreign Offices, Edge and Agreement Subsidiaries, and Ibf'S",
+          "example": "",
+          "name": "ILNFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Foreign Office Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Interest and Fees On Loans and Lease Financing Receivables On A Consolidated Basis\nNote:\n(1) U-Size-Stratum = 0001 Means That Bank Has Total Assets Less Than $25 Million\n(2) U-Size-Stratum = 0002 Means That Bank Has Total Assets Equal To Or Greater Than $25 Million\n(3) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ILNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Total Loans & Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Loans (Represents all interest, fees and similar charges levied against or associated with all assets reportable as loans. Includes interest, yield related fees, commitment fees, service charges on loans and discount accretion. (One savings bank with an office in Canada has been reporting on the Domestic & Foreign Consolidated Call Report form (FFIEC 031). It does not, however, indicate any income or expenses related to foreign operations.))",
+          "example": "",
+          "name": "ILNS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Income From Lease Financing Receivables On A\nConsolidated Basis",
+          "example": "",
+          "name": "ILS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Intangible Assets On A Consolidated Basis",
+          "example": "",
+          "name": "INTAN",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Intangible Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Earning Assets (Derived See Si-19) - Sc",
+          "example": "",
+          "name": "INTBAST",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Interest Earning Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Bearing Liabilities (Derived See Si-19) - Sc",
+          "example": "",
+          "name": "INTBLIB",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Interest Bearing Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest Income On A Consolidated Basis\nNote: For Banks With Foreign Operations Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "INTINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Interest Income",
+          "type": "integer"
+        },
+        {
+          "description": "INTINC2",
+          "example": "",
+          "name": "INTINC2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "INTINC2",
+          "type": "integer"
+        },
+        {
+          "description": "Individual Retirement Accounts (Ira'S) and Keogh Plan\nAccounts Held In Domestic Offices\nNote: Listed As Memoranda Only",
+          "example": "",
+          "name": "IRAKEOGH",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: IRA's and Keogh Plan-Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Total Interest and Dividend Income On: U.S. Treasury Securities, U.S. Government Agency and Corporation Obligations, Securities Issued By States and Political\nSubdivision In The U.S., Other Domestic Debt Securities, Foreign Debt Securities, and Equity Securities (Including Investments In Mutual Funds) On A Consolidated Basis\nNote:\n(1) This Item Includes Interest Income On Deposits For Tfr Filers\n(2) Includes Interest Income On Assets Held In Trading Accounts For Tfr Filers For Two Distinct Periods: (A) March 1984 Through December 1989 and (B) June 1996\nAnd Following Quarters.\n(3) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "ISC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Investment Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Represents service charges on deposit accounts in domestic offices such as maintenance fees, activity charges, administrative charges, overdraft charges, and check certification charges",
+          "example": "",
+          "name": "ISERCHG",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Service Charges on Deposit Accounts",
+          "type": "integer"
+        },
+        {
+          "description": "Represents Federal, state and local taxes on income. It does not include taxes relating to securities transactions or extraordinary items",
+          "example": "",
+          "name": "ITAX",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Applicable Income Taxes",
+          "type": "integer"
+        },
+        {
+          "description": "Pre-Tax Net Operating Income (Represents Net Interest Income plus Total Non-interest Income less Total Non-interest Expense and the Provision for Loan & Lease Losses.)",
+          "example": "",
+          "name": "ITAXR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Pre-Tax Net Operating Income",
+          "type": "integer"
+        },
+        {
+          "description": "Interest Income From Assets Held In Trading Accounts On A Consolidated Basis \nNote:\nBeginning March 2017, Reported As An Individual Income Category For Form 031 Filers Only and Is Included As A Component Of Other Interest Income For All Other Report Forms",
+          "example": "",
+          "name": "ITRADE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Trading Account Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Total Liabilities Including Subordinated Notes and Debentures and Limited Life Preferred Stock and Related Surplus On A Consolidated Basis\nNote: Prior To March 2009, This Item Included Noncontrolling (Minority) Interests In Consolidated Subsidiaries For Call Report and Tfr Filers",
+          "example": "",
+          "name": "LIAB",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Total Liabilities, Limited-Life Preferred Stock, and Equity Capital On A Consolidated Basis Note: For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "LIABEQ",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Liabilities and Equity Capital",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all assisted payouts of FDIC-insured savings institutions that are not in RTC conservatorship.",
+          "example": "",
+          "name": "liqasstd",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Assisted Payouts",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all instances where the owners of a thrift voluntarily surrender their charter with all liabilities including deposits paid down and all assets sold.",
+          "example": "",
+          "name": "liqunass",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Voluntary Liquidations",
+          "type": "integer"
+        },
+        {
+          "description": "Loans To Finance Agricultural Production and Other Loans To Farmers On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For All Periods Form December 1972 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "LNAG",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Agricultural Loans",
+          "type": "integer"
+        },
+        {
+          "description": "All Other Loans (1969-Present -- Represents Federal funds purchased, securities sold under agreements to repurchase, demand notes issued to the US Treasury, mortgage indebtedness, liabilities under capitalized leases and all other liabilities for borrowed money. -- 1934-1968 -- Does not include mortgage indebtedness which is netted against bank premises.)",
+          "example": "",
+          "name": "LNALLOTH",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Loans to Individuals",
+          "type": "integer"
+        },
+        {
+          "description": "Allowance For Loan and Lease Financing Receivable Losses and Allocated Transfer Risk On A Consolidated Basis\nNote:\n(1) From March 2001 To Dec 2002 Allocated Transfer Riskis Netted From Loans & Not Included As Part Of The Reserve\n(2) Additional Detail Can Be Found On Schedule Ri-B\n(3) For Tfr Filers Between March 1984 Through December 1989 Includes Allowance For Mortgage Pool Securities\n(4) For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Was Reported On A Domestic Basis",
+          "example": "",
+          "name": "LNATRES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Allowance for Losses Loans and Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Represents installment loans to purchase private passenger automobiles, both direct loans and purchased paper",
+          "example": "",
+          "name": "LNAUTO",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Loans to Individuals - Auto",
+          "type": "integer"
+        },
+        {
+          "description": "Commercial and Industrial Loans On A Consolidated Basis Note: For Banks With Foreign Operations, Data For All Periods From December 1972 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "LNCI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Commercial and Industrial Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Loans To Individuals For Household, Family, and Other Personal Expenditures (Consumer Loans) On A Consolidated Basis\nNote:\n(1) For Tfr Filers Includes Revolving Loans Secured By 1-4 Family Dwelling Units From March 1984 Through March 1988\n(1) For Banks With Foreign Operations, Data For All Periods From December 1972 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "LNCON",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Loans to Individuals",
+          "type": "integer"
+        },
+        {
+          "description": "Installment Loans To Individuals To Repair and Modernize\nResidential Property Held In Domestic Offices",
+          "example": "",
+          "name": "LNCONOT1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans to Individuals - Home Improvement",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all other loans to individuals for household, family and other personal expenditures. It includes auto loans, both direct and indirect, mobile homes (unless secured by a real estate mortgage), education loans, other installment loans both secured by personal property or unsecured, and single payment loans (time or demand, secured or unsecured)",
+          "example": "",
+          "name": "LNCONOTH",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans to Individuals - All Others",
+          "type": "integer"
+        },
+        {
+          "description": "Credit Cards Related Plans On A Consolidated Basis\n\nNote:\n(1)Prior To March 2001 Includes Credit Cards Related Plans-Loans To Individuals For Household, Family, and Other Personal Expenditures (Consumer Loans) Includes Check Credit and Other Revolving Credit Plans\n(2) For Tfr Filers Between March 1984 Through March 1988 This Figure Includes Home Equity Loans Based On The Creditworthiness Of The Borrower (T-Sc340)\n(3) For Banks With Foreign Operations, Data For All Periods From December 1972 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "LNCRCD",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans to Individuals - Credit Card Plans",
+          "type": "integer"
+        },
+        {
+          "description": "Loans To Depository Institutions On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For All Periods From December 1972 Through September 1978 Are Domestic Only\nNote:(1) Beginning March 2001 Includes Acceptances Of Other Banks\n(2) Beginning March 2001, Includes Acceptances Of Other Banks For Ibas",
+          "example": "",
+          "name": "LNDEP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans to Deposit Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the sum of all components of loans",
+          "example": "",
+          "name": "LNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Gross Loans and Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Loans and Lease Financing Receivables, Net Of Unearned Income, On A Consolidated Basis\nNote:\n(1) Additional Detail Can Be Found On Schedule Rc-C\n(2) For Tfr Filers This Item Is Net Of Unamortized Yield Adjustments For Mortgage Pool Securities From March 1984 Through December 1989\n(3) For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Was Reported On A Domestic Basis",
+          "example": "",
+          "name": "LNLSGR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Loans and Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Loans and Lease Financing Receivables, Net Of Unearned Income, Allowance, and Reserve On A Consolidated Basis\nNote:\n(1) For Tfr Filers This Item Is Net Of Valuation Allowances and Unamortized Yield Adjustments For Mortgage Pool Securities From March 1984 Through\n(2) For Banks With Foreign Operations, Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "LNLSNET",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Loans and Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Represents loans to individuals to purchase mobile homes. (If the bank's security interest in the loan was represented by a mortgage or deed of trust, the loan should be included in real estate loans)",
+          "example": "",
+          "name": "LNMOBILE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Loans to Individuals - Mobile Homes",
+          "type": "integer"
+        },
+        {
+          "description": "Obligations (Other Than Securities and Leases) Of States and Political Subdivisions In The U.S. (Including Nonrated Industrial Development Obligations) On A Consolidated Basis",
+          "example": "",
+          "name": "LNMUNI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans to States and Politicial Sub-divisions",
+          "type": "integer"
+        },
+        {
+          "description": "Loans Secured By Real Estate On A Consolidated Basis\nNote:\n(1) For Tfr Filers Between March 1984 Through March 1988 This Figure Excludes Home Equity Loans Based On The Creditworthiness Of The Borrower (T-Sc340)\n(2) For Banks With Foreign Operations, Data For All Periods From December 1972 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "LNRE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Real Estate Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Represents loans secured by farmland, including improvements, and other land known to be used or usable for agricultural purposes, as evidenced by mortgages or other liens. It includes loans secured by farmland that are guaranteed by the Farmers Home Administration (FHA) or by the Small Business Administration",
+          "example": "",
+          "name": "LNREAG",
+          "required": false,
+          "rust_type": "i32",
+          "title": "R/E Loan - Farmland",
+          "type": "integer"
+        },
+        {
+          "description": "Construction and Land Development Loans Secured By Real Estate Held In Domestic Offices\nNote: For Tfr Filers Portions Of Lnrecons Were Included In Other Real Estate Loan Categories Prior To March 30, 1986",
+          "example": "",
+          "name": "LNRECONS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "R/E Loan - Construction & Land Develop",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the total of all loans secured by real estate in domestic offices (U.S. and other areas)",
+          "example": "",
+          "name": "LNREDOM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total R/E Loans in Domestic Offices",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all loans secured by real estate in foreign offices",
+          "example": "",
+          "name": "LNREFOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total R/E Loans in Foreign Offices",
+          "type": "integer"
+        },
+        {
+          "description": "Revolving, Open-End Loans Secured By 1-4 Family Residential Properties and Extended Under Lines Of Credit Held In Domestic Offices",
+          "example": "",
+          "name": "LNRELOC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Home Equity Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Multifamily (5 Or More) Residential Properties Secured By Real Estate Held In Domestic Offices",
+          "example": "",
+          "name": "LNREMULT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "R/E Loans -  Multifamily",
+          "type": "integer"
+        },
+        {
+          "description": "Nonfarm Nonresidential Properties Secured By Real Estate Held In Domestic Offices\nNote: For Tfr Filers This Figure Includes Mortgages On Properties That Are Used For Farming",
+          "example": "",
+          "name": "LNRENRES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "R/E Loan -  Non-farm/Non-residential Prop",
+          "type": "integer"
+        },
+        {
+          "description": "Total Loans Secured By 1-4 Family Residential Properties Held In Domestic Offices\nNote: For Tfr Filers Between March 1984 Through March 1988 This Figure Excludes Home Equity Loans Based On The Creditworthiness Of The Borrower",
+          "example": "",
+          "name": "LNRERES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "R/E Loan - 1-4 Family",
+          "type": "integer"
+        },
+        {
+          "description": "Allowance For Loan Losses On Real Estate Loans On A Consolidated Basis\nNote: For Tfr Filers Includes Allowance For Mortgage Pool Securities Between March 1984 Through December 1989",
+          "example": "",
+          "name": "LNRESRE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Contra Account",
+          "type": "integer"
+        },
+        {
+          "description": "All loans both time or demand, secured or unsecured, to individuals for personal, family or other household expenditures",
+          "example": "",
+          "name": "LNSP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Loans to Individuals - Single Payment",
+          "type": "integer"
+        },
+        {
+          "description": "Lease Financing Receivables (Net Of Unearned Income) On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For March & September Call Dates Are Domestic Only Through December 1975",
+          "example": "",
+          "name": "LS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Mergers, consolidations or absorptions entered into as a result of supervisory actions. The transaction may or may not have required FDIC assistance.",
+          "example": "",
+          "name": "MERGERS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Failures: Assisted Merger",
+          "type": "integer"
+        },
+        {
+          "description": "Represents any FDIC-insured savings institution that did not file a financial report during the year in which the charter was added or deleted.",
+          "example": "",
+          "name": "MISSADJ",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Misc. Adjustments",
+          "type": "integer"
+        },
+        {
+          "description": "Represents mortgage indebtedness and liabilities under capitalized leases",
+          "example": "",
+          "name": "MTGLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Mortgage and Other Borrowings",
+          "type": "integer"
+        },
+        {
+          "description": "Total Nonaccrual Loans and Lease Financing Receivables On A Consolidated Basis",
+          "example": "",
+          "name": "NALNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Non-accrual Loans & Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Net Loans and Leases Charge Offs (-- 1984-1989 -- Represents Loan and Lease Charge-offs less Loan and Lease Recoveries. An amount enclosed in paraentheses indicates net recoveries. Not collected by TFR filers. -- 1990-Present -- Represents Loan and Lease Charge-offs less Loan and Lease Recoveries. An amount enclosed in paraentheses indicates net recoveries.)",
+          "example": "",
+          "name": "NCHGREC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Loans and Leases Charge-offs",
+          "type": "integer"
+        },
+        {
+          "description": "Total Loans and Lease Financing Receivables 90 Days Or More Past Due and Nonaccrual On A Consolidated Basis\nNote: Includes Delinquent Loans (60 Or More Days Overdue) and Past Due Loans (One Or More Payments Missed) For Tfr Filers Prior To March 1990",
+          "example": "",
+          "name": "NCLNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Non-current Loans & Leases",
+          "type": "integer"
+        },
+        {
+          "description": "Net income (loss) attributable to noncontrolling (minority) interests on a consolidated basis.",
+          "example": "",
+          "name": "NETIMIN",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Income Attributable to Noncontrolling Interests",
+          "type": "integer"
+        },
+        {
+          "description": "Net Income Attributable To The Bank On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "NETINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Income",
+          "type": "integer"
+        },
+        {
+          "description": "Institutions newly chartered by federal or state banking authorities including authorities in the U. S. Territories or possessions.",
+          "example": "",
+          "name": "newcount",
+          "required": false,
+          "rust_type": "i32",
+          "title": "New Charters",
+          "type": "integer"
+        },
+        {
+          "description": "Institutions newly licensed or chartered by the Office of the Comptroller of the Currency (national banks) or by state banking authorities, including banking authorities in the U. S. territories or possessions. Includes de novo institutions as well as charters issued to take over a failing institution.",
+          "example": "",
+          "name": "New_Char",
+          "required": false,
+          "rust_type": "i32",
+          "title": "New Charters",
+          "type": "integer"
+        },
+        {
+          "description": "Represents interest expense related to demand notes issued to the U. S. Treasury, mortgage indebtedness, obligations under capitalized leases, and other borrowed money",
+          "example": "",
+          "name": "NEW6_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp - Borrowed Money",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all other assets not included in previously mentioned captions. Includes, for the most part, customers' liabilities on acceptances outstanding, income earned not collected as well as any other asset not included above",
+          "example": "",
+          "name": "NEW9_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all securities, bonds, notes and debentures of domestic and foreign corporations. Also includes privately issued or guaranteed mortgage backed securities and certain detached U.S. Government security coupons held as a result of either their purchase or the bank's stripping them (CATS, TIGRs, COUGARs, LIONs and ETRs).",
+          "example": "",
+          "name": "NEW10_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Corporate Bonds and Other Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Securities within the scope of ASC Topic 320, Investments – Debt Securities, that a bank has elected to report at fair value under a fair value option with changes in fair value reported in current earnings should be classified as trading securities. (https://www.fdic.gov/regulations/resources/call/crinst/2018-06/031-041-618rc-d-063018.pdf)",
+          "example": "",
+          "name": "NEW10_2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Trading Account Securities",
+          "type": "integer"
+        },
+        {
+          "description": "For all years except 1969-1973, investment securities are reflected net of general valuation reserves. Specific reserves are deducted from each security so reserved",
+          "example": "",
+          "name": "NEW10_3",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Valuation Reserves",
+          "type": "integer"
+        },
+        {
+          "description": "Represents unplanned overdrafts and loans to: brokers and dealers in securities, any borrower for the purpose of purchasing and carrying securities, nonprofit institutions and organizations, individuals for investment purposes, real estate investment trusts, mortgage companies holding companies of depository institutions, insurance companies, finance companies, factors and other financial intermediaries, federally sponsored lending agencies, investment banks, the bank's own trust department, Small Business Investment Companies, foreign governments and official institutions, and any other loan not included in one of the above categories",
+          "example": "",
+          "name": "NEW11_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Loans",
+          "type": "integer"
+        },
+        {
+          "description": "Represents Federal funds purchased, securities sold under agreements to repurchase, demand notes issued to the US Treasury, mortgage indebtedness, liabilities under capitalized leases and all other liabilities for borrowed money",
+          "example": "",
+          "name": "NEW14_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Borrowed Funds",
+          "type": "integer"
+        },
+        {
+          "description": "Includes all liabilities not included above and limited life preferred stock",
+          "example": "",
+          "name": "NEW14_2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the total of all components of liabilities",
+          "example": "",
+          "name": "NEW14_3",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Represents undivided profits and related accounts",
+          "example": "",
+          "name": "NEW14_4",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Undivided Profits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all deposits of individuals, partnerships and corporations in domestic and foreign offices",
+          "example": "",
+          "name": "NEW15_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - Individuals, Partnerships and Corporations",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all deposits of individuals, partnerships and corporations in domestic and foreign offices",
+          "example": "",
+          "name": "NEW15_2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - U.S. Government",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all deposits of states, counties and municipalities in domestic offices. Such deposits, if any, in foreign offices are not separately reported",
+          "example": "",
+          "name": "NEW15_3",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - States and Political Subdivisions",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all other deposits. Includes deposits of financial institutions, both domestic and foreign, deposits of foreign governments and official institutions and certified and official checks. Also includes deposits in foreign offices other than those of individuals, partnerships and corporations",
+          "example": "",
+          "name": "NEW15_4",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - All Other",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all savings deposits in domestic offices",
+          "example": "",
+          "name": "NEW15_5",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - Domestic Savings",
+          "type": "integer"
+        },
+        {
+          "description": "Total Domestic Deposits",
+          "example": "",
+          "name": "NEW15_7",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Domestic Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents demand notes issued to the U.S. Treasury (Treasury tax & loan account), and all other borrowings. Includes mortgage indebtedness and liabilities under capitalized leases for Call report filers. Includes FSLIC net worth certificates for TFR filers",
+          "example": "",
+          "name": "NEW16_1",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Demand Notes and Other Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Represents any deposit in domestic and foreign offices on which the banks pays or accrues interest",
+          "example": "",
+          "name": "NEW16_2",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Interest Bearing Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Net Interest Income (Total Interest Income Minus Total Interest Expense) On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "NIM",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Interest Income",
+          "type": "integer"
+        },
+        {
+          "description": "Total Non-interest Income On A Consolidated Basis\nNote:\n(1) From March 1990 Through March 2009, Excludes Gains (Losses) On Assets Held For Sale For Tfr Filers, See Tfr Instructions For So430\n(2) Excludes Gains On The Sale Of Loans Held For Investments From March 1984 Through December 1989 For Tfr Filers\n(3) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "NONII",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Non-interest Income",
+          "type": "integer"
+        },
+        {
+          "description": "Total Non-interest Expense On A Consolidated Basis\nNote:\n(1) Excludes Losses On Asset Sales For Tfr Filers Beginning June 1996\n(2) Includes Loss On Sale Of Mortgage Pool and Other Securities Held For Investment For Tfr Filers From March 1984 Through December 1986\n(3) Excludes Losses On Loans Held For Investment For Tfr Filers From March 1987 Through December 1989\n(4) For Banks With Foreign Operations, Data For December 1972 Through December 1975 Are Domestic Only",
+          "example": "",
+          "name": "NONIX",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Non-interest Expense",
+          "type": "integer"
+        },
+        {
+          "description": "Represents Loan and Lease Charge-offs less Loan and Lease Recoveries. An amount enclosed in parentheses indicates net recoveries. Not collected by TFR filers",
+          "example": "",
+          "name": "NTLNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Net Loan & Lease Charge-offs",
+          "type": "integer"
+        },
+        {
+          "description": "Represents deposits that are not included in the definition of transaction accounts above or that do not satisfy the criteria necessary to be defined as a transaction account. MMDA's are specifically defined as nontransaction accounts",
+          "example": "",
+          "name": "NTR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Domestic Deposits Non-Transaction",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all time certificates of deposit, time open accounts and similar deposits in domestic offices",
+          "example": "",
+          "name": "NTRTIME",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Deposits - Domestic Time",
+          "type": "integer"
+        },
+        {
+          "description": "Time Deposits Over $100,000 Or More Held In Domestic Offices\nNote:\n(1) Listed As Memoranda Only and Is Included In Total Nontransaction Accounts\n(2) Prior To March 2007, Includes All Deposits (Not Just Time) Greater Than $100,000 For Tfr Filers. Except For December 2006, Includes All Nonretirement Deposits Over\n$100,000 and All Retirement Deposits Over $250,000 For Tfr Filers\n(3) Includes Time Deposits Of $100,000 Or More",
+          "example": "",
+          "name": "NTRTMLG",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Time Deposits (Over $100K)",
+          "type": "integer"
+        },
+        {
+          "description": "Number Of Full Time-Equivalent Employees On Payroll At The End Of The Current Period\nNote:\n(1) Listed As Memoranda Only\n(2) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "NUMEMP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Number of Full Time Employees",
+          "type": "integer"
+        },
+        {
+          "description": "Other Earning Assests (-- 1984-1989 -- Represents Federal funds sold and securities purchased under agreements to resell (repurchase agreements). Items not separately reported by TFR filers. They are included in Secruties. -- 1990-Present -- Represents Federal funds sold and securities purchased under agreements to resell (repurchase agreements). Includes only Federal funds sold for TFR filers. Repurchase agreements are included in Securities.)",
+          "example": "",
+          "name": "OEA",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Earning Assests",
+          "type": "integer"
+        },
+        {
+          "description": "Offices include: Multiple service offices, Military facilities, Drive-in facilities, Loan production offices, Consumer credit offices, Seasonal offices, Administrative offices, Messenger service offices, Supermarket banking offices, and Other offices.",
+          "example": "",
+          "name": "OFFICES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Offices",
+          "type": "integer"
+        },
+        {
+          "description": "Demand Notes and Other Borrowings (Represents demand notes issued to US Treasury (Treasury tax & loan account), and all other borrowings. Includes mortgage indebtedness and liabilities under capitalized leases for Call report filers. Includes FSLIC net worth certificates for TFR filers.)",
+          "example": "",
+          "name": "OINTBOR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Demand Notes and Other Borrowings",
+          "type": "integer"
+        },
+        {
+          "description": "Total Other Interest Expenses (Federal Funds Purchased and Securities Sold -- Represents the gross expense of all liabilities reportable under this category. This item is not reported separately by TFR filers. It is included in Borrowed Money).",
+          "example": "",
+          "name": "OINTEXP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Other Interest Expenses",
+          "type": "integer"
+        },
+        {
+          "description": "Total Other Interest Income (Represents the total of all Other Interest Income components).",
+          "example": "",
+          "name": "OINTINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Total Other",
+          "type": "integer"
+        },
+        {
+          "description": "Other Non Interest Income (1984-1989 -- Same as Total Other Interest Income except gains on the sale of loans held for investment are excluded for TFR filers. -- 1990- Present -- Represents income derived from the sale of assets held for sale; office building operations; real estate held for investment; REO operations; LOCOM adjustments made to assets held for sale; net income (loss) from investements in service corporations/subsidiaries (other than operating or finance subsidiaires); leasing operations; realized and unrealized gains (losses) on trading assets; gains on the sale of REO real estate held for investment, and loans held for investment; and the amoritization of deferred gains (losses) on asset hedges.)",
+          "example": "",
+          "name": "OONONII",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Non-interest Income",
+          "type": "integer"
+        },
+        {
+          "description": "Other Real Estate Owned On A Consolidated Basis\nNote:\n(1) Prior To June 2009, Includes Direct and Indirect Investments In Real Estate\n(2) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Was Reported On A Domestic Basis",
+          "example": "",
+          "name": "ORE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Real Estate Owned",
+          "type": "integer"
+        },
+        {
+          "description": "Other Real Estate (Represents other real estate owned net of reserves for losses). Not available for 1997. For 1986 through 1988 ORET = ORE + INVSUORE; for all other years ORET = ORE",
+          "example": "",
+          "name": "ORET",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Real Estate",
+          "type": "integer"
+        },
+        {
+          "description": "Non FDIC supervised BIF insured institutions",
+          "example": "",
+          "name": "OT_BIF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Non FDIC Supervised BIF Insured Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Non FDIC supervised SAIF insured institutions",
+          "example": "",
+          "name": "OT_SAIF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Non FDIC Supervised SAIF Insured Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "All Other Assets (Same as Other Real Estate except that investment in service corporations/subsidiaries is reported gross of valuation allowances by TFR filers, and assets held in trading accounts are included in Securities for TFR filers. -- 1990-Present -- Represents all associations assets not previously mentioned. Includes all non real estate repossessed property, investment in service corporations/subsidiaries, property leased to others, income earned but not yet collected, assets held in the trading accounts, and miscellaneous assets) For 2009- present OTHASST = SUM (INVSUB + INVSUORE + CUSLI + OA)",
+          "example": "",
+          "name": "OTHASST",
+          "required": false,
+          "rust_type": "i32",
+          "title": "All Other Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Other Liabilities From The Fhlb\nNote:Prior To March 2001 Only Reported On Tfrs",
+          "example": "",
+          "name": "OTHBFHLB",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Advances from FHLB",
+          "type": "integer"
+        },
+        {
+          "description": "Borrowed Money (Represents interest expense related to demand notes issued the US Treasury, mortage indebtedness, obligations under capitalized leases and on other borrowed money.",
+          "example": "",
+          "name": "OTHBORR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp Oth - Borrowed Money",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all equity securities not held for trading: investment in mutual funds, common stock of FNMA, Student Loan Marketing Association, Federal Home Loan Mortgage Corporation, Federal Reserve Bank stock, Federal Home Loan Bank stock, minority interests not meeting the definition of associated companies, \"restricted\" stock, and other equity securities in both domestic and foreign corporations\n",
+          "example": "",
+          "name": "OTHEQ",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Equity",
+          "type": "integer"
+        },
+        {
+          "description": "Withdrawals from FDIC insurance, voluntary liquidations, or conversions to institutions that are not considered commercial banks. Also includes relocation of banks from one state to another.",
+          "example": "",
+          "name": "OTHER",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other",
+          "type": "integer"
+        },
+        {
+          "description": "Other Liabilities (Includes all liabilities not included above and limited life preferred stock. 2001- present -- Includes OTHER LIAB & MINOR IN SUBS).",
+          "example": "",
+          "name": "OTHLIAB",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Other Liabilities",
+          "type": "integer"
+        },
+        {
+          "description": "Borrowed Funds (Includes federal funds purchased, securities sold under agreements to repurchase (reverse repurchase agreements), demand notes issued to the US Treasury, mortgage indebtedness, liabilities under capitalized leases and all other liabilities for borrowed money. Includes only reverse purchase agreements (securities sold under agreements to repurchase) and FSLIC net worth certificates for TFR filers)",
+          "example": "",
+          "name": "OTHNBORR",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Borrowed Funds",
+          "type": "integer"
+        },
+        {
+          "description": "Other Contracts (Represents amount reported by savings institutions that file on the Thrift Financial Report. Contra accounts include accrued interest receivable, unamortized yield adjustments and valuation allowances. Negative amounts reflect unamortized premiums and deferred direct costs exceeding unamortized discounts and deferred loan fees).",
+          "example": "",
+          "name": "OTLNCNTA",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Less: Other Contra Accounts",
+          "type": "integer"
+        },
+        {
+          "description": "Institutions that were declared insolvent, the insured deposits of which were paid by the FDIC.",
+          "example": "",
+          "name": "PAID_OFF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Failures: Paid Off",
+          "type": "integer"
+        },
+        {
+          "description": "Total Loans and Lease Financing Receivables Past Due 30 Through 89 Days and Still Accruing Interest On A Consolidated Basis\nNote:\n(1) Prior To March 2001,This Information On An Institution Level Is Considered Confidential By The Ffiec",
+          "example": "",
+          "name": "P3LNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans & Leases P/D 30-89 Days",
+          "type": "integer"
+        },
+        {
+          "description": "Total Loans and Lease Financing Receivables Past Due 90 Or More Days and Still Accruing Interest On A Consolidated Basis",
+          "example": "",
+          "name": "P9LNLS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Loans & Leases P/D 90+ Days",
+          "type": "integer"
+        },
+        {
+          "description": "Pre-Tax Net Operating Income",
+          "example": "",
+          "name": "PTXNOINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Pre-Tax Net Operating Income",
+          "type": "integer"
+        },
+        {
+          "description": "Conversions of existing institutions of any type that meet the definition of commercial banks (see Definition of Total Commercial Banks and have applied for and received FDIC insurance. Also includes bank relocations from one state to another.",
+          "example": "",
+          "name": "REL_CO",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Conversions",
+          "type": "integer"
+        },
+        {
+          "description": "Total Insured Savings Institutions including institutions that did not file a 12/31 fincncial report and other adjustments (See Notes to User).",
+          "example": "",
+          "name": "SAVINGS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Savings Institutions (Total Insured)",
+          "type": "integer"
+        },
+        {
+          "description": "Total Securities: The Sum Of Held-To-Maturity Securities At Amortized Cost, Available-For-Sale Securities At Fair Value and Equity Securities With Readily Determinable Fair Values Not Held For Trading On A Consolidated Basis\nNote:\n1. Prior To March 2018, Defined As Total Held-To-Maturity At Amortized Cost and Available-For-Sale At Fair Value Securities (Excludes Assets Held In Trading Accounts) On A Consolidated Basis\n2. Beginning In 2018, Includes Equity Securities For Institutions That Have Adopted Asu2016-01 and Those Institutions That Have Not Yet Adopted This Accounting\nStandard\n3. Prior To March 1994 Item Defined As Book Value\n4. Additional Detail Can Be Found On Schedule Rc-B\n5. For Tfr Filers Between March 1984 Through December 1989 Includes Interest-Earning Deposits In Fhlbs, Other Interest-Earning Deposits, Federal Funds Sold and Assets Held In Trading Accounts\n6. For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "SC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Investment Securities (Book Value)",
+          "type": "integer"
+        },
+        {
+          "description": "Total U.S. Government Agency and Corporation Obligations On A Consolidated Basis\nNote:\n1) From June 2009 Through December 2010, This Item Excluded Other Commercial\nMortgage-Backed Securities\n2) Prior To June 2009, This Item Included Other Commercial Mortgage-Backed Securities\n3) Beginning March 1994 Consists Of Held-To-Maturity At Amortized Cost and Available-For-Sale At Fair Value Securities\n4) Includes The Aforementioned Securities Held In Trading Accounts For Tfr Filers\n5) Includes U.S. Treasury Securities For Tfr Filers Between March 1984 Through December 1989 and After March 1996\n6) Does Not Include Mortgage Derivative Securities For Tfr Filers Between March 1984 Through December 1986\n7) For Banks With Foreign Operations, Data For March & September Of 1973 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "SCAGE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "U.S. Agencies and Corporation Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Total Equity Securities Available-For-Sale At Fair Value On A Consolidated Basis\nNote:\n(1) Beginning March 2018 Does Not Include Equity Securities For Institutions That Have Adopted Asu 2016-01 See Sceqfv\n(2) Includes The Aforementioned Securities Held In Trading Accounts For Tfr Filers",
+          "example": "",
+          "name": "SCEQ",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Equity Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Mortgage Backed Securities On A Consolidated Basis\nIncludes:\n(1) U.S. Government Agency and Corporation Obligations Issued Or Guaranteed Certificates Of Participation In Pools Of Residential Mortgages,\n(2) U.S. Government Agency and Corporation Obligations Collateralized Mortgage Obligations Issued By Fnma and Fhlmc (Including Remics)\n(3) Other Domestic Debt Securities - Private (I.E., Non-Government-Issued-Or-Guaranteed) Certificates Of Participations In Pools Of Residential Mortgages, and\n(4) Other Domestic Debt Securities - Privately-Issued Collateralized Mortgage Obligations (Including Remics)",
+          "example": "",
+          "name": "SCMTGBK",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Mortgage Backed Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Total Securities Issued By States and Political Subdivisions Held-To-Maturity At Amortized Cost and Available-For-Sale At Fair Value On A Consolidated Basis\nNote:\n(1) Prior To March 1994 Item Was Defined As Book Value\n(2) Includes The Aforementioned Securities Held In Trading Accounts For Tfr Filers\n(3) For Banks With Foreign Opeations, Data For March & September Of 1973 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "SCMUNI",
+          "required": false,
+          "rust_type": "i32",
+          "title": "States and Political Subdivisions Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the market (fair) value of all investment securities",
+          "example": "",
+          "name": "SCMV",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Market Values",
+          "type": "integer"
+        },
+        {
+          "description": "Contra-Assets To Securities (Reserves)\nNote: For Tfr Filers Only",
+          "example": "",
+          "name": "SCRES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Less: Contra Accounts",
+          "type": "integer"
+        },
+        {
+          "description": "Total U.S. Treasury Securities and U.S. Government Agency and Corporation Obligations On A Consolidated Basis\nNote:\n1) From June 2009 Through December 2010 This Item Excluded Commercial Mortgage Backed Securities\n2) Prior To June 2009, This Item Included Commercial Mortgage Backed Securities\n3) Beginning March 1994 Consists Of Held-To-Maturity At Amortized Cost and Available-For-Sale At Fair Value Securities\n4) Does Not Include Mortgage Derivative Securities From March 1984 Through December 1986 For Tfr Filers\n5) Includes The Aforementioned Securities Held In Trading Accounts For Tfr Filers\n6) For Banks With Foreign Operations Data For March & September Of 1973 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "SCUS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "U.S. Treasury & Agency",
+          "type": "integer"
+        },
+        {
+          "description": "Securities Of Us Agencies",
+          "example": "",
+          "name": "SCUSA",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Securities Of Us Agencies",
+          "type": "integer"
+        },
+        {
+          "description": "U.S. Treasury Securities Held-To-Maturity At Amortized Cost and Available-For-Sale At Fair Value On A Consolidated Basis\nNote:\n(1) Beginning June 1996, Tfr Filers No Longer Report U.S. Treasury Securities Separately\n(2) Prior To March 1994 Item Was Defined As Book Value\n(3) Includes The Aforementioned Securities Held In Trading Accounts For Tfr Filers\n(4) For Banks With Foreign Operations, Data For March & September Of 1973 Through 1975 Are Reported On A Domestic Basis",
+          "example": "",
+          "name": "SCUST",
+          "required": false,
+          "rust_type": "i32",
+          "title": "U.S. Treasury Securities",
+          "type": "integer"
+        },
+        {
+          "description": "Locations This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "Locations (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "State Number This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STNUM",
+          "required": false,
+          "rust_type": "String",
+          "title": "State Number (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "Subordinated Notes and Debentures and Limited-Life Preferred Stock and Related Surplus On A Consolidated Basis\nNote: (1) Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domesitc Basis",
+          "example": "",
+          "name": "SUBLLPF",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Subordinated Notes",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all notes and debentures subordinated to deposits and all capital notes and debentures",
+          "example": "",
+          "name": "SUBND",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Subordinated Notes/Debentures",
+          "type": "integer"
+        },
+        {
+          "description": "Total Other Interest Income (Represents the sum of Other Interest Income - Investment Securities, Trading Account Assets, Federal Funds Sold and Securities Purchased, and Balanaces Due from Depository Institutions)",
+          "example": "",
+          "name": "TINTINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Inc - Total Other",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the charter transfer of existing FDIC-insured savings institutions to an FDIC-insured commercial bank charter.",
+          "example": "",
+          "name": "tochrt",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Charter Transfers to Commercial Banks",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the absorption of a failing savings institution by a commercial bank with assistance from either the BIF or SAIF.",
+          "example": "",
+          "name": "tofail",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Assisted Mergers with Commercial Banks",
+          "type": "integer"
+        },
+        {
+          "description": "Total Other Interest Expense (Represents the sum of all components of Other Interest Expense)",
+          "example": "",
+          "name": "TOINTEXP",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Int Exp  - Total Deposits",
+          "type": "integer"
+        },
+        {
+          "description": "Represents the absorption of a savings institution charter by a commercial bank without assistance.",
+          "example": "",
+          "name": "tomerg",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Unassisted Mergers with Commercial Banks",
+          "type": "integer"
+        },
+        {
+          "description": "Represents institutions that were declared failed and placed under RTC conservatorship until a buyer(s) is(are) found or a payout to depositors occurs.",
+          "example": "",
+          "name": "tortc",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Failures Transferred to the RTC",
+          "type": "integer"
+        },
+        {
+          "description": "Total Insured Commercial Banks including institutions that did not file a 12/31 fincncial report and other adjustments (See Notes to User)",
+          "example": "",
+          "name": "TOTAL",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Commercial Banks (Total Insured)",
+          "type": "integer"
+        },
+        {
+          "description": "Total FDIC Supervised Savings Institutions",
+          "example": "",
+          "name": "TOT_FDIC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total FDIC Supervised Savings Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Total Non FDIC Supervised Savings Institutions",
+          "example": "",
+          "name": "TOT_OTS",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Non FDIC Supervised Savings Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "All FDIC Insured Savings Institutions filing a 12/31 financial report",
+          "example": "",
+          "name": "TOT_SAVE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Savings Institutions",
+          "type": "integer"
+        },
+        {
+          "description": "Total Loans and Leases Past Due",
+          "example": "",
+          "name": "TPD",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Total Loans and Leases Past Due",
+          "type": "integer"
+        },
+        {
+          "description": "Assets Held In Trading Accounts On A Consolidated Basis\nNote:\n(1) Effective March 1994 Item Reported On A Gross Basis\n(2) Additional Detail Can Be Found On Schedule Rc-D\n(3) For Banks With Foreign Operations Data For March & September Of 1972 Through 1975 Are Reported On A Domestic Basis,\n(4) For Periods 1972 Through 1983 Includes Only Securities",
+          "example": "",
+          "name": "TRADE",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Trading Account Assets",
+          "type": "integer"
+        },
+        {
+          "description": "Trading Accounts",
+          "example": "",
+          "name": "TRADES",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Less: Trading Accounts",
+          "type": "integer"
+        },
+        {
+          "description": "Represents all demand deposits, NOW accounts, ATS accounts, accounts from which payments may be made to third parties by means of an automated teller machine, a remote service unit, or another electronic device, and accounts that permit third party payments through use of checks, drafts, negotiable instruments, or other similar instrument. (MMDA's are specifically excluded from the latter two definitions)",
+          "example": "",
+          "name": "TRN",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Memo: Domestic Deposits Transaction",
+          "type": "integer"
+        },
+        {
+          "description": "Voluntary mergers, consolidations or absorptions of two or more institutions.",
+          "example": "",
+          "name": "UNASSIST",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Unassisted Mergers",
+          "type": "integer"
+        },
+        {
+          "description": "Unearned Income On Loans On A Consolidated Basis\nNote: For Banks With Foreign Operations, Data For March 1976 Through September 1978 Are Domestic Only",
+          "example": "",
+          "name": "UNINC",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Unearned Income",
+          "type": "integer"
+        },
+        {
+          "description": "Unit banks are institutions that are operating only one office at which deposits are received or other banking business is conducted.",
+          "example": "",
+          "name": "UNIT",
+          "required": false,
+          "rust_type": "i32",
+          "title": "Unit Banks",
+          "type": "integer"
+        },
+        {
+          "description": "Statistics reported as of end of year. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "YEAR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Year (Search-Eligible)",
+          "type": "string"
+        }
+      ]
+    },
+    "type": "array"
+  },
+  "meta": {
+    "description": "Metadata about the query, parameters, and FDIC index info. Structure may vary by endpoint."
+  },
+  "totals": {
+    "description": "Aggregate totals and counts for the query, if present."
+  }
+}

@@ -1,0 +1,773 @@
+{
+  "data": {
+    "items": {
+      "fields": [
+        {
+          "description": "ADDRESS (BRANCH)",
+          "example": "",
+          "name": "ADDRESBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "ADDRESS (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "ADDRESS This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ADDRESS",
+          "required": false,
+          "rust_type": "String",
+          "title": "ADDRESS (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "TOTAL ASSETS",
+          "example": "",
+          "name": "ASSET",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TOTAL ASSETS",
+          "type": "number"
+        },
+        {
+          "description": "INSTITUTION CLASS This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "BKCLASS",
+          "required": false,
+          "rust_type": "String",
+          "title": "INSTITUTION CLASS (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "MAIN OFFICE DESIGNATION FLAG",
+          "example": "",
+          "name": "BKMO",
+          "required": false,
+          "rust_type": "f32",
+          "title": "MAIN OFFICE DESIGNATION FLAG",
+          "type": "number"
+        },
+        {
+          "description": "CENCODES C",
+          "example": "",
+          "name": "BRCENM",
+          "required": false,
+          "rust_type": "String",
+          "title": "CENCODES C",
+          "type": "string"
+        },
+        {
+          "description": "BRANCH NUMBER",
+          "example": "",
+          "name": "BRNUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "BRANCH NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "BRANCH SERVICE TYPE",
+          "example": "",
+          "name": "BRSERTYP",
+          "required": false,
+          "rust_type": "f32",
+          "title": "BRANCH SERVICE TYPE",
+          "type": "number"
+        },
+        {
+          "description": "REPORT TYPE",
+          "example": "",
+          "name": "CALL",
+          "required": false,
+          "rust_type": "String",
+          "title": "REPORT TYPE",
+          "type": "string"
+        },
+        {
+          "description": "COMMUNITY BANK FLAG",
+          "example": "",
+          "name": "CB",
+          "required": false,
+          "rust_type": "f32",
+          "title": "COMMUNITY BANK FLAG",
+          "type": "number"
+        },
+        {
+          "description": "CBSA DIVISION NAME (BRANCH)",
+          "example": "",
+          "name": "CBSA_DIV_NAMB",
+          "required": false,
+          "rust_type": "String",
+          "title": "CBSA DIVISION NAME (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "FDIC CERT NUMBER",
+          "example": "",
+          "name": "CERT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC CERT NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "CHARTER This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CHARTER",
+          "required": false,
+          "rust_type": "String",
+          "title": "CHARTER (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "CHARTER AGENT NAME",
+          "example": "",
+          "name": "CHRTAGNN",
+          "required": false,
+          "rust_type": "String",
+          "title": "CHARTER AGENT NAME",
+          "type": "string"
+        },
+        {
+          "description": "CHARTER AGENT CODE",
+          "example": "",
+          "name": "CHRTAGNT",
+          "required": false,
+          "rust_type": "String",
+          "title": "CHARTER AGENT CODE",
+          "type": "string"
+        },
+        {
+          "description": "CITY (MAIN OFFICE) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CITY",
+          "required": false,
+          "rust_type": "String",
+          "title": "CITY (MAIN OFFICE) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "PREFERRED CITY (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CITY2BR",
+          "required": false,
+          "rust_type": "String",
+          "title": "PREFERRED CITY (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "CITY (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CITYBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "CITY (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "CITY-HOLDING CO.- REGULATORY This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CITYHCR",
+          "required": false,
+          "rust_type": "String",
+          "title": "CITY-HOLDING CO.- REGULATORY (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "CLASS NUMBER",
+          "example": "",
+          "name": "CLCODE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "CLASS NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "COUNTRY NAME (MAIN OFFICE)",
+          "example": "",
+          "name": "CNTRYNA",
+          "required": false,
+          "rust_type": "String",
+          "title": "COUNTRY NAME (MAIN OFFICE)",
+          "type": "string"
+        },
+        {
+          "description": "COUNTRY NAME (BRANCH)",
+          "example": "",
+          "name": "CNTRYNAB",
+          "required": false,
+          "rust_type": "String",
+          "title": "COUNTRY NAME (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "COUNTY NAME (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "CNTYNAMB",
+          "required": false,
+          "rust_type": "String",
+          "title": "COUNTY NAME (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "FIPS COUNTY CODE (BRANCH)",
+          "example": "",
+          "name": "CNTYNUMB",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FIPS COUNTY CODE (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "CONSOLIDATED BRANCH NUMBER",
+          "example": "",
+          "name": "CONSOLD",
+          "required": false,
+          "rust_type": "f32",
+          "title": "CONSOLIDATED BRANCH NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "CSA NUMBER (BRANCH)",
+          "example": "",
+          "name": "CSABR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "CSA NUMBER (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "CSA NAME (BRANCH)",
+          "example": "",
+          "name": "CSANAMBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "CSA NAME (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "DENOVO FLAG",
+          "example": "",
+          "name": "DENOVO",
+          "required": false,
+          "rust_type": "f32",
+          "title": "DENOVO FLAG",
+          "type": "number"
+        },
+        {
+          "description": "TOTAL DOMESTIC DEPOSITS",
+          "example": "",
+          "name": "DEPDOM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TOTAL DOMESTIC DEPOSITS",
+          "type": "number"
+        },
+        {
+          "description": "TOTAL DEPOSITS",
+          "example": "",
+          "name": "DEPSUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TOTAL DEPOSITS",
+          "type": "number"
+        },
+        {
+          "description": "DOMESTIC DEPOSITS (SOD)",
+          "example": "",
+          "name": "DEPSUMBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "DOMESTIC DEPOSITS (SOD)",
+          "type": "number"
+        },
+        {
+          "description": "CBSA DIVISION CODE (BRANCH)",
+          "example": "",
+          "name": "DIVISIONB",
+          "required": false,
+          "rust_type": "f32",
+          "title": "CBSA DIVISION CODE (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "OTS DOCKET NUMBER",
+          "example": "",
+          "name": "DOCKET",
+          "required": false,
+          "rust_type": "f32",
+          "title": "OTS DOCKET NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "ESCROW ACCOUNTS - TFR",
+          "example": "",
+          "name": "ESCROW",
+          "required": false,
+          "rust_type": "f32",
+          "title": "ESCROW ACCOUNTS - TFR",
+          "type": "number"
+        },
+        {
+          "description": "FDIC REGION NUMBER",
+          "example": "",
+          "name": "FDICDBS",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FDIC REGION NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "FDIC REGION NAME",
+          "example": "",
+          "name": "FDICNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "FDIC REGION NAME",
+          "type": "string"
+        },
+        {
+          "description": "FRB DISTRICT NUMBER",
+          "example": "",
+          "name": "FED",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FRB DISTRICT NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "FED DISTRICT NAME",
+          "example": "",
+          "name": "FEDNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "FED DISTRICT NAME",
+          "type": "string"
+        },
+        {
+          "description": "MULTI-BANK HOLDING CO",
+          "example": "",
+          "name": "HCTMULT",
+          "required": false,
+          "rust_type": "String",
+          "title": "MULTI-BANK HOLDING CO",
+          "type": "string"
+        },
+        {
+          "description": "PRIMARY INSURANCE FUND",
+          "example": "",
+          "name": "INSAGNT1",
+          "required": false,
+          "rust_type": "String",
+          "title": "PRIMARY INSURANCE FUND",
+          "type": "string"
+        },
+        {
+          "description": "DEMAND DEPOSITS IN INSURED BRANCHES",
+          "example": "",
+          "name": "INSBRDD",
+          "required": false,
+          "rust_type": "f32",
+          "title": "DEMAND DEPOSITS IN INSURED BRANCHES",
+          "type": "number"
+        },
+        {
+          "description": "TIME & SAVINGS DEPOSITS IN INSURED BRANCHES",
+          "example": "",
+          "name": "INSBRTS",
+          "required": false,
+          "rust_type": "f32",
+          "title": "TIME & SAVINGS DEPOSITS IN INSURED BRANCHES",
+          "type": "number"
+        },
+        {
+          "description": "INSURED This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "INSURED",
+          "required": false,
+          "rust_type": "String",
+          "title": "INSURED (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "METRO FLAG (BRANCH)",
+          "example": "",
+          "name": "METROBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "METRO FLAG (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "MICRO FLAG (BRANCH)",
+          "example": "",
+          "name": "MICROBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "MICRO FLAG (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "MSA (BRANCH)",
+          "example": "",
+          "name": "MSABR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "MSA (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "MSA NAME (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "MSANAMB",
+          "required": false,
+          "rust_type": "String",
+          "title": "MSA NAME (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "INSTITUTION NAME (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "NAMEBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "INSTITUTION NAME (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "INSTITUTION NAME (MAIN OFFICE) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "NAMEFULL",
+          "required": false,
+          "rust_type": "String",
+          "title": "INSTITUTION NAME (MAIN OFFICE) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "BANK HOLDING CO. NAME This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "NAMEHCR",
+          "required": false,
+          "rust_type": "String",
+          "title": "BANK HOLDING CO. NAME (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "NECTA NAME (BRANCH)",
+          "example": "",
+          "name": "NECNAMB",
+          "required": false,
+          "rust_type": "String",
+          "title": "NECTA NAME (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "NECTA (BRANCH)",
+          "example": "",
+          "name": "NECTABR",
+          "required": false,
+          "rust_type": "String",
+          "title": "NECTA (BRANCH)",
+          "type": "string"
+        },
+        {
+          "description": "OCC DISTRICT NUMBER",
+          "example": "",
+          "name": "OCCDIST",
+          "required": false,
+          "rust_type": "f32",
+          "title": "OCC DISTRICT NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "OCC REGION NAME",
+          "example": "",
+          "name": "OCCNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "OCC REGION NAME",
+          "type": "string"
+        },
+        {
+          "description": "PLACE CODE NUMBER (DF)",
+          "example": "",
+          "name": "PLACENUM",
+          "required": false,
+          "rust_type": "f32",
+          "title": "PLACE CODE NUMBER (DF)",
+          "type": "number"
+        },
+        {
+          "description": "PRIMARY FEDERAL REGULATOR",
+          "example": "",
+          "name": "REGAGNT",
+          "required": false,
+          "rust_type": "String",
+          "title": "PRIMARY FEDERAL REGULATOR",
+          "type": "string"
+        },
+        {
+          "description": "FRB ID NUMBER - BHC",
+          "example": "",
+          "name": "RSSDHCR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FRB ID NUMBER - BHC",
+          "type": "number"
+        },
+        {
+          "description": "FRB ID NUMBER",
+          "example": "",
+          "name": "RSSDID",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FRB ID NUMBER",
+          "type": "number"
+        },
+        {
+          "description": "SIMS ACQUIRED DATE",
+          "example": "",
+          "name": "SIMS_ACQUIRED_DATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "SIMS ACQUIRED DATE",
+          "type": "string"
+        },
+        {
+          "description": "SIMS MATCH CODE (DESCRIPTION)",
+          "example": "",
+          "name": "SIMS_DESCRIPTION",
+          "required": false,
+          "rust_type": "String",
+          "title": "SIMS MATCH CODE (DESCRIPTION)",
+          "type": "string"
+        },
+        {
+          "description": "SIMS ESTABLISHED DATE",
+          "example": "",
+          "name": "SIMS_ESTABLISHED_DATE",
+          "required": false,
+          "rust_type": "String",
+          "title": "SIMS ESTABLISHED DATE",
+          "type": "string"
+        },
+        {
+          "description": "SIMS GEOGRAPHIC LATITUDE",
+          "example": "",
+          "name": "SIMS_LATITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "SIMS GEOGRAPHIC LATITUDE",
+          "type": "number"
+        },
+        {
+          "description": "SIMS GEOGRAPHIC LONGITUDE",
+          "example": "",
+          "name": "SIMS_LONGITUDE",
+          "required": false,
+          "rust_type": "f32",
+          "title": "SIMS GEOGRAPHIC LONGITUDE",
+          "type": "number"
+        },
+        {
+          "description": "SIMS SCORE (PROJECTION)",
+          "example": "",
+          "name": "SIMS_PROJECTION",
+          "required": false,
+          "rust_type": "String",
+          "title": "SIMS SCORE (PROJECTION)",
+          "type": "string"
+        },
+        {
+          "description": "SPECGRP DESCRIPTION",
+          "example": "",
+          "name": "SPECDESC",
+          "required": false,
+          "rust_type": "String",
+          "title": "SPECGRP DESCRIPTION",
+          "type": "string"
+        },
+        {
+          "description": "INDUSTRY SPECIALIZATION GROUP",
+          "example": "",
+          "name": "SPECGRP",
+          "required": false,
+          "rust_type": "f32",
+          "title": "INDUSTRY SPECIALIZATION GROUP",
+          "type": "number"
+        },
+        {
+          "description": "FIPS STATE ALPHA CODE (MAIN OFFICE) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STALP",
+          "required": false,
+          "rust_type": "String",
+          "title": "FIPS STATE ALPHA CODE (MAIN OFFICE) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "FIPS STATE ALPHA CODE (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STALPBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "FIPS STATE ALPHA CODE (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "FIPS STATE ALPHA CODE - BHC This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STALPHCR",
+          "required": false,
+          "rust_type": "String",
+          "title": "FIPS STATE ALPHA CODE - BHC (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "FIPS STATE & COUNTY NO. (MAIN OFFICE)",
+          "example": "",
+          "name": "STCNTY",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FIPS STATE & COUNTY NO. (MAIN OFFICE)",
+          "type": "number"
+        },
+        {
+          "description": "",
+          "example": "",
+          "name": "STCNTYBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "",
+          "type": "number"
+        },
+        {
+          "description": "FIPS STATE NAME (MAIN OFFICE) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STNAME",
+          "required": false,
+          "rust_type": "String",
+          "title": "FIPS STATE NAME (MAIN OFFICE) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "STATE NAME (BRANCH) This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "STNAMEBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "STATE NAME (BRANCH) (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "FIPS STATE CODE (BRANCH)",
+          "example": "",
+          "name": "STNUMBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "FIPS STATE CODE (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "UNINUM (BRANCH)",
+          "example": "",
+          "name": "UNINUMBR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "UNINUM (BRANCH)",
+          "type": "number"
+        },
+        {
+          "description": "UNIT BANK FLAG",
+          "example": "",
+          "name": "UNIT",
+          "required": false,
+          "rust_type": "f32",
+          "title": "UNIT BANK FLAG",
+          "type": "number"
+        },
+        {
+          "description": "USA LOCATED INSTITUTION",
+          "example": "",
+          "name": "USA",
+          "required": false,
+          "rust_type": "f32",
+          "title": "USA LOCATED INSTITUTION",
+          "type": "number"
+        },
+        {
+          "description": "YEAR",
+          "example": "",
+          "name": "YEAR",
+          "required": false,
+          "rust_type": "f32",
+          "title": "YEAR",
+          "type": "number"
+        },
+        {
+          "description": "",
+          "example": "",
+          "name": "ZIP_RAW",
+          "required": false,
+          "rust_type": "String",
+          "title": "",
+          "type": "string"
+        },
+        {
+          "description": "",
+          "example": "",
+          "name": "ZIPBR_RAW",
+          "required": false,
+          "rust_type": "String",
+          "title": "",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ZIP",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code (Search-Eligible)",
+          "type": "string"
+        },
+        {
+          "description": "The first three, four, or five digits of the full postal zip code representing physical location of the institution or one of its branch offices. This field can be used for search and filtering.",
+          "elastic_type": "keyword",
+          "example": "",
+          "name": "ZIPBR",
+          "required": false,
+          "rust_type": "String",
+          "title": "Zip Code (Search-Eligible)",
+          "type": "string"
+        }
+      ]
+    },
+    "type": "array"
+  },
+  "meta": {
+    "description": "Metadata about the query, parameters, and FDIC index info. Structure may vary by endpoint."
+  },
+  "totals": {
+    "description": "Aggregate totals and counts for the query, if present."
+  }
+}

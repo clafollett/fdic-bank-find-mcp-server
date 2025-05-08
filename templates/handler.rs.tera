@@ -1,5 +1,3 @@
-//! Do not edit by hand.
-//! Auto-generated handler for FDIC BankFind API `/{{ endpoint }}` endpoint.
 {#-
 Tera template for generating FDIC handler stubs.
 Context variables (from generate_handlers.rs):
@@ -17,20 +15,25 @@ Context variables (from generate_handlers.rs):
     properties_for_handler: Vec<String> — property names (UPPERCASE, except api_key/filename) for handler slice
     common_parameter_names: Vec<String> — names of common parameters
     endpoint_specific_parameters: Vec<String> — names of endpoint-specific parameters
--#}
+-#}//! Do not edit by hand.
+//! Auto-generated handler for FDIC BankFind API `/{{ endpoint }}` endpoint.
+
 // Internal imports (std, crate)
-use std::collections::HashMap;
-use crate::config::FDICApiConfig;
-use crate::common::{list_endpoint, CommonParameters, QueryParameters};
+use crate::common::*;
+use crate::config::FdicApiConfig;
 
 // External imports (alphabetized)
-use axum::{extract::{Query, State}, response::Response};
+use rmcp::handler::server::tool::IntoCallToolResult;
+use rmcp::model::*;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use tracing::{info, debug};
+use std::collections::HashMap;
+use tracing::info;
+use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/{{ endpoint }}` endpoint.
 /// Spec: {{ spec_file_name | default(value="") }}
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
 pub struct {{ parameters_type }} {
     /// Shared FDIC query parameters
     #[serde(flatten)]
@@ -38,13 +41,17 @@ pub struct {{ parameters_type }} {
     {#- Endpoint-specific additional parameters -#}
     {%- set common_list = ["api_key","filters","fields","sort_by","sort_order","limit","offset","format","download","filename"] -%}
     {% for p in parameters %}{%- if p.name not in common_list %}{%- if p.description %}
-    #[doc = r#"{{ p.description }}"#]
-    {%- endif %}
-    {%- if p.example %}
-    #[doc = r#"Example: {{ p.example }}"#]
+    #[schemars(description = r#"{{ p.description }}"#)]
     {%- endif %}
     pub {{ p.name }}: Option<{{ p.rust_type }}>,
     {%- endif %}{% endfor %}
+}
+
+// Implement FdicEndpoint for generic handler
+impl FdicEndpoint for {{ parameters_type }} {
+    fn name() -> &'static str {
+        "{{ endpoint }}"
+    }
 }
 
 // Implement QueryParameters for generic handler
@@ -55,10 +62,9 @@ impl QueryParameters for {{ parameters_type }} {
         {%- endfor %}
     ];
 
-    #[allow(unused_variables)]
+    #[allow(unused_variables)] // the `query` parameter is unused if there are no endpoint-specific parameters
     fn insert_endpoint_specific(&self, query: &mut HashMap<String, String>) {
-        {%- set has_params = false -%}
-        {% for p in parameters %}{% if p.name not in common_list %}{% set has_params = true %}
+        {% for p in parameters %}{% if p.name not in common_list %}
         if let Some(val) = &self.{{ p.name }} {
             query.insert("{{ p.name }}".to_string(), val.to_string());
         }
@@ -72,26 +78,28 @@ impl QueryParameters for {{ parameters_type }} {
 
 /// Auto-generated properties struct for `/{{ endpoint }}` endpoint.
 /// Spec: {{ spec_file_name | default(value="") }}
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct {{ properties_type }} {
 {%- for prop in properties %}
-    #[doc = r#"Title: {{ prop.title }}"#]
-    #[doc = r#"Description: {{ prop.description }}"#]
-    #[serde(rename="{{ prop.name }}")]
+    #[schemars(description = r#"{{ prop.title }} - {{ prop.description }}"#)]
     pub {{ prop.name | lower }}: Option<{{ prop.rust_type }}>,
 {% endfor %}
 }
 
-/// Auto-generated response envelope struct for `/{{ endpoint }}` endpoint.
-/// Spec: {{ spec_file_name | default(value="") }}
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Clone,Debug, Serialize, Deserialize, JsonSchema, ToSchema)]
 pub struct {{ endpoint_cap }}Response {
-{%- for prop in envelope_properties %}
-    #[doc = r#"Title: {{ prop.title }}"#]
-    #[doc = r#"Description: {{ prop.description }}"#]
-    #[serde(rename="{{ prop.name }}")]
-    pub {{ prop.name | lower }}: Option<{{ prop.rust_type }}>,
-{% endfor %}
+    pub data: Vec<serde_json::Value>,
+    pub meta: ResponseMeta,
+    pub totals: ResponseTotals,
+}
+
+impl IntoContents for {{ endpoint_cap }}Response {
+    fn into_contents(self) -> Vec<Content> {
+        // Convert the response into a Vec<Content> as expected by MCP
+        // Panics only if serialization fails, which should be impossible for valid structs
+        vec![Content::json(self).expect("Failed to serialize {{ endpoint_cap }}Response to Content")]
+    }
 }
 
 /// FDIC BankFind API `/{{ endpoint }}` endpoint handler
@@ -100,7 +108,6 @@ pub struct {{ endpoint_cap }}Response {
 /// {{ description }}
 {%- endif %}
 /// **All string parameter values (except `api_key` and `filename`) are uppercased before proxying.**
-#[allow(dead_code)]
 {% if parameters -%}
 #[doc = r#"{% for p in parameters %}{%- if p.name %} - `{{ p.name }}` ({{ p.rust_type }}, optional): {{ p.description | trim }}{% if p.example %}
 {{ p.example }}{% endif %}{% endif %}{% endfor %}"#]
@@ -116,10 +123,7 @@ Responses:
     503: Service Unavailable
     504: Gateway Timeout
 Tag: {{ tags.0 }}"#]
-pub async fn {{ endpoint }}_handler(
-    State(config): State<FDICApiConfig>,
-    Query(params): Query<{{ parameters_type }}>,
-) -> Response {
+pub async fn {{ endpoint }}_handler(config: &FdicApiConfig, params: &{{ parameters_type }}) -> Result<CallToolResult, rmcp::Error> {
     // Log incoming request parameters and request details as structured JSON
     info!(
         target = "handler",
@@ -127,23 +131,13 @@ pub async fn {{ endpoint }}_handler(
         endpoint = "{{ endpoint }}",
         method = "GET",
         path = "/{{ endpoint }}",
-        params = serde_json::to_string(&params).unwrap()
+        params = serde_json::to_string(params).unwrap()
     );
-    let resp = list_endpoint(
-        State(config),
-        Query(params.clone()),
-        "{{ endpoint }}",
-    ).await;
+
+    let resp = get_fdic_bank_find_mcp_response::<_, {{ endpoint_cap }}Response>(config, params).await;
+
     // Log outgoing FDIC API request as structured JSON
-    debug!(
-        target = "fdic_proxy",
-        event = "proxied_fdic_api_request",
-        endpoint = "{{ endpoint }}",
-        method = "GET",
-        path = "/{{ endpoint }}",
-        params = serde_json::to_string(&params).unwrap()
-    );
-    resp
+    resp.and_then(|r| r.into_call_tool_result())
 }
 
 #[cfg(test)]
@@ -160,12 +154,12 @@ mod tests {
         };
         let _ = serde_json::to_string(&params).unwrap();
     }
+
     #[test]
     fn test_properties_struct_serialization() {
         let props = {{ properties_type }} {
-            {% for prop in properties %}
-            {{ prop.name | lower }}: None,
-            {%- endfor %}
+            {% for prop in properties %}{{ prop.name | lower }}: None,
+            {% endfor -%}
         };
         let _ = serde_json::to_string(&props).unwrap();
     }
