@@ -88,7 +88,8 @@ jobs:
       - name: Inject cargo-build-cache
         uses: reproducible-containers/buildkit-cache-dance@653a570f730e3b9460adc576db523788ba59a0d7 # v3.2.0
         with:
-          cache-source: cargo-build-cache
+          cache-map: |
+            {"cargo-build-cache": "/cargo-build-cache"}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
