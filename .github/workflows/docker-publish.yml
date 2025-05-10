@@ -27,20 +27,30 @@ jobs:
     permissions:
       contents: read
       packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install cosign for image signing (OIDC, no secrets needed for GHCR)
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
         with:
           cosign-release: "v2.2.4"
 
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
 
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
       - name: Log into GitHub Container Registry (GHCR)
         if: github.event_name != 'pull_request'
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
@@ -69,40 +79,16 @@ jobs:
             # Custom rule to prevent pre-releases from getting latest tag
             type=raw,value=latest,enable=${{ github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-') }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Cargo Build Cache for Docker
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      # Sign the Docker image with cosign (OIDC, no secrets required for GHCR)
-      - name: Sign Docker image with cosign
-        if: github.event_name != 'pull_request'
-        env:
-          COSIGN_EXPERIMENTAL: "1"
-        run: |
-          for tag in $(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n'); do
-            echo "Signing image: $tag"
-            cosign sign --yes $tag
-          done
-
-      - name: Smoke test (run container and check MCP stdio)
-        if: github.event_name != 'pull_request'
-        run: |
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --help || true
-
-      - name: Go Build Cache for Docker
-        uses: actions/cache@v4
+          path: cargo-build-cache
+          key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
+    
+      - name: Inject cargo-build-cache
+        uses: reproducible-containers/buildkit-cache-dance@653a570f730e3b9460adc576db523788ba59a0d7 # v3.2.0
         with:
-          path: go-build-cache
-          key: ${{ runner.os }}-go-build-cache-${{ hashFiles('**/go.sum') }}
-
-      - name: Inject go-build-cache
-        uses: reproducible-containers/buildkit-cache-dance@4b2444fec0c0fb9dbf175a96c094720a692ef810 # v2.1.4
-        with:
-          cache-source: go-build-cache
+          cache-source: cargo-build-cache
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -134,3 +120,9 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      # Smoke test: run the published image and check MCP stdio
+      - name: Smoke test (run container and check MCP stdio)
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --help || true
