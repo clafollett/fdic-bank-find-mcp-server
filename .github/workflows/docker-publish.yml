@@ -79,12 +79,14 @@ jobs:
             # Custom rule to prevent pre-releases from getting latest tag
             type=raw,value=latest,enable=${{ github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-') }}
 
-      - name: Cargo Build Cache for Docker
+      # Cache CARGO_HOME directory for Rust BuildKit cache (matches Dockerfile)
+      - name: Cache Rust CARGO_HOME for Docker BuildKit
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: cargo-build-cache
-          key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
-    
+          key: ${{ runner.os }}-cargo-cargohome-${{ hashFiles('**/Cargo.lock') }}
+
+      # Inject the CARGO_HOME cache into the Docker build as /cargo-build-cache
       - name: Inject cargo-build-cache
         uses: reproducible-containers/buildkit-cache-dance@653a570f730e3b9460adc576db523788ba59a0d7 # v3.2.0
         with:
