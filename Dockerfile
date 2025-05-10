@@ -2,13 +2,21 @@
 FROM rust:1.86.0-slim AS builder
 
 WORKDIR /app
-COPY . .
 
 # Install build dependencies (if any extra needed)
 RUN apt-get update && apt-get install -y pkg-config libssl-dev curl
 
-# Build for GNU target (dynamic, but portable)
-RUN cargo build --release
+# 1. Cache dependencies separately for fast incremental builds
+COPY Cargo.toml Cargo.lock ./
+RUN --mount=type=cache,target=/cargo-build-cache \
+    CARGO_HOME=/cargo-build-cache \
+    cargo fetch
+
+# 2. Copy the rest of the source and build
+COPY . .
+RUN --mount=type=cache,target=/cargo-build-cache \
+    CARGO_HOME=/cargo-build-cache \
+    cargo build --release
 
 # --- Runtime stage ---
 FROM debian:bookworm-slim
