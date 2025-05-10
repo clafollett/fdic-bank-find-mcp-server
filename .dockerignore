@@ -11,4 +11,3 @@
 /.vscode
 .idea
 *.md
-Cargo.lock
