@@ -12,8 +12,8 @@ use serde_json::json;
 use utoipa::ToSchema;
 
 /// Maximum allowed FDIC API response Content-Length in bytes.
-/// Configurable via the FDIC_MAX_RESPONSE_CONTENT_LENGTH env variable (default: 5MB).
-pub const FDIC_MAX_RESPONSE_CONTENT_LENGTH: usize = 5 * 1024 * 1024; // 5MB
+/// Configurable via the FDIC_MAX_RESPONSE_CONTENT_LENGTH env variable (default: 10MB).
+pub const FDIC_MAX_RESPONSE_CONTENT_LENGTH: usize = 10 * 1024 * 1024; // 10MB
 
 /// Shared FDIC BankFind API query parameters.
 #[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, ToSchema)]

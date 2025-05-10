@@ -1,0 +1,14 @@
+# Ignore files not needed in Docker image
+/target
+.git
+.gitignore
+.env
+*.rs.bk
+*.swp
+*.swo
+*.DS_Store
+/tests
+/.vscode
+.idea
+*.md
+Cargo.lock

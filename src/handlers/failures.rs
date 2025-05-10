@@ -11,7 +11,7 @@ use rmcp::model::*;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use tracing::info;
+use tracing::{debug, error, info};
 use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/failures` endpoint.
@@ -223,8 +223,23 @@ pub async fn failures_handler(config: &FdicApiConfig, params: &FailuresParameter
         path = "/failures",
         params = serde_json::to_string(params).unwrap()
     );
-
+    debug!(target = "handler", event = "before_fdic_api_call", endpoint = "failures");
     let resp = get_fdic_bank_find_mcp_response::<_, FailuresResponse>(config, params).await;
+
+    match &resp {
+        Ok(r) => {
+            info!(
+                target = "handler",
+                event = "fdic_api_response",
+                endpoint = "failures",
+                meta = ?r.meta,
+                totals = ?r.totals
+            );
+        },
+        Err(e) => {
+            error!(target = "handler", event = "fdic_api_error", endpoint = "failures", error = ?e);
+        }
+    }
 
     // Log outgoing FDIC API request as structured JSON
     resp.and_then(|r| r.into_call_tool_result())

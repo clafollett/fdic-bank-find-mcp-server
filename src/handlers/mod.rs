@@ -11,7 +11,11 @@ pub mod summary;
 // Skipped endpoints due to ENDPOINT_EXCLUSIONS:
 // [EXCLUDED] pub mod financials;
 
+// Internal dependencies
 use crate::config::FdicApiConfig;
+
+// External dependencies
+use log::debug;
 use rmcp::{ServerHandler, Error, model::*, service::*, tool};
 
 pub const FDIC_BASE_URL: &str = "https://banks.data.fdic.gov/api";
@@ -88,7 +92,7 @@ impl FdicBankFindMcpServer {
 #[tool(tool_box)]
 impl ServerHandler for FdicBankFindMcpServer {
     fn get_info(&self) -> ServerInfo {
-        eprintln!("[FDIC MCP] get_info() called - should show tools!");
+        debug!("[FDIC MCP] get_info() called - should show tools!");
 
         // Set up explicit capabilities for tools and resources
         let mut tools_capability = ToolsCapability::default();
@@ -131,7 +135,7 @@ impl ServerHandler for FdicBankFindMcpServer {
 }"#.into()),
         };
 
-        eprintln!("[FDIC MCP] Returning ServerInfo with enabled tools and resources: {:?}", info);
+        debug!("[FDIC MCP] Returning ServerInfo with enabled tools and resources: {:?}", info);
         info
     }
 

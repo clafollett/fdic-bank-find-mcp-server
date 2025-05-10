@@ -1,4 +1,4 @@
-# #{issue-number} Short summary of changes (50 chars or less)
+#{issue-number} Short summary of changes (50 chars or less)
 
 # NOTE: The below section is optional and can be left blank if your commit is small and self-explanatory
 # ### Why is this change necessary?
@@ -21,23 +21,24 @@
 # - Do not end with a period
 # - Limit line length to 72 characters
 # - Reference issues and pull requests using `#{issue-number}` pattern
+# - Use Mark down syntax for all sections but the first line
 #
 # Example:
 # #101 Refactor OpenAPI parameter serialization for MCP endpoints
 
-# Why is this change necessary?
+# # Why is this change necessary?
 # Refactor needed to ensure OpenAPI output matches official spec and improves clarity for API consumers.
 
-# How does it address the issue?
+# # How does it address the issue?
 # - Updated OpenAPI JSON generation to match spec for parameter objects
 # - Added helper to map ParameterInfo to OpenAPI-compliant objects
 # - Improved validation and error messaging for FDIC endpoint parameters
 
-# Side effects, risks, or other impacts:
+# # Side effects, risks, or other impacts:
 # - No breaking changes, but downstream consumers will see improved parameter docs
 # - Additional unit and integration tests added for parameter serialization
 
-# How was this tested?
+# # How was this tested?
 # - Ran cargo test for all handlers and OpenAPI output
 # - Manual QA of Swagger UI and OpenAPI JSON
 
