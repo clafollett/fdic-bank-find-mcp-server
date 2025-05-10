@@ -17,15 +17,17 @@ This project provides a modern, robust, and contributor-friendly Rust web server
 - [Features](#features) ✨
 - [Architecture](#architecture) 🏗️
 - [Getting Started](#getting-started) 🚀
+- [MCP Inspector Setup & Usage](#mcp-inspector-setup--usage-) 
+- [MCP IDE Configuration](#mcp-ide-configuration) 
 - [Usage Examples](#usage-examples) 📦
 - [Handler & OpenAPI Generation](#handler--openapi-generation) 🛠️
 - [Adding New Endpoints](#adding-new-endpoints) ➕
-- [Contributing](#contributing) 🤝
-- [Governance and Docs](#governance-and-docs) 📚
-- [License](#license) ⚖️
-- [Official FDIC Resources](#official-fdic-resources) 🔗
 - [Vibe-Architected with Windsurf & GPT-4.1](#vibe-architected-with-windsurf-gpt-41) 🚀
 - [About Dynamic Search Response Fields](#about-dynamic-search-response-fields) ⚡️
+- [Contributing](#contributing) 🤝
+- [Official FDIC Resources](#official-fdic-resources) 🔗
+- [Governance and Docs](#governance-and-docs) 📚
+- [License](#license) ⚖️
 
 ---
 
@@ -58,8 +60,80 @@ $ cd fdic-bank-find-mcp-server
 $ cargo run
 ```
 
-- Server starts on `http://localhost:3000`
+- Server starts on `http://localhost:5000`
 - See [OpenAPI docs](public/fdic/swagger.yaml) for endpoints
+
+
+### Docker
+
+```sh
+docker build -t fdic-bank-find-mcp-server:latest .
+docker run --rm \
+  -e "RUST_BACKTRACE=1" \
+  -e "BIND_ADDR=0.0.0.0" \
+  -e "BIND_PORT=5000" \
+  -e "RUST_LOG=debug" \
+  -p "5000:5000" \
+  --name "fdic-bank-find-mcp-server" \
+  "fdic-bank-find-mcp-server:latest"
+```
+
+---
+
+## MCP Inspector Setup & Usage 🕵️‍♂️
+
+### 1. Install the MCP Inspector
+
+You can run it directly (no install needed):
+```sh
+npx @modelcontextprotocol/inspector cargo run --bin fdic-bank-find-mcp-server
+```
+
+Or install globally for convenience:
+```sh
+npm install -g @modelcontextprotocol/inspector
+```
+
+### 2. Start the Inspector with your Rust MCP server
+
+```sh
+npx @modelcontextprotocol/inspector cargo run --bin fdic-bank-find-mcp-server
+```
+Or, if installed globally:
+```sh
+modelcontextprotocol-inspector cargo run --bin fdic-bank-find-mcp-server
+```
+
+### 3. Troubleshooting
+
+- If you see `PORT IS IN USE`, kill any previous inspector processes (`pkill -f inspector` on Mac/Linux).
+- If you get `spawn stdio ENOENT`, check your command: it must be `cargo`, not `stdio`, and don’t use `--` between arguments.
+- If you see `Unexpected token 'M'`, make sure your Rust server prints only valid MCP protocol JSON to stdout (send logs to stderr).
+
+---
+
+## MCP IDE Configuration
+
+### Windsurf
+```json
+{
+  "mcpServers": {
+    "fdic-bank-find": {
+      "command": "docker",
+      "args": [
+        "run", "--rm",
+        "-e", "RUST_BACKTRACE=1", 
+        "-e", "BIND_ADDR=0.0.0.0",
+        "-e", "BIND_PORT=5000",
+        "-e", "RUST_LOG=debug",
+        "-p", "5000:5000",
+        "--name", "fdic-bank-find-mcp-server",
+        "fdic-bank-find-mcp-server:latest"
+      ]
+    }
+  }
+}
+```
 
 ---
 
@@ -135,23 +209,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process!
 
 ---
 
-## Contributing
-- Open issues or feature requests using the templates in `.github/ISSUE_TEMPLATE/`
-- Fork and PR from a feature branch (see [CONTRIBUTING.md](CONTRIBUTING.md))
-- Follow the [Prime Directive](.windsurfrules) and code style rules
-- All PRs require code owner review (see [CODEOWNERS](.github/CODEOWNERS))
-
----
-
-## Governance and Docs
-- [CONTRIBUTING.md](CONTRIBUTING.md)
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- [SECURITY.md](SECURITY.md)
-- [LICENSE](LICENSE)
-- [OpenAPI Spec](public/fdic/swagger.yaml)
-
----
-
 ## ⚡️ About Dynamic Search Response Fields
 
 Some endpoints, like `/institutions`, may return additional fields in each search result—such as `highlight` (for term highlighting) and `score` (for match relevance)—in addition to the standard `data` object. These fields are passed directly from the underlying search engine (e.g., Elasticsearch) and are not always present for every query.
@@ -200,11 +257,28 @@ If you’re reading this, you’re looking at a codebase that’s not just moder
 
 ---
 
+## Contributing
+- Open issues or feature requests using the templates in `.github/ISSUE_TEMPLATE/`
+- Fork and PR from a feature branch (see [CONTRIBUTING.md](CONTRIBUTING.md))
+- Follow the [Prime Directive](.windsurfrules) and code style rules
+- All PRs require code owner review (see [CODEOWNERS](.github/CODEOWNERS))
+
+---
+
 ## Official FDIC Resources
 - [FDIC BankFind Suite](https://banks.data.fdic.gov/docs/)
 - [API Documentation](https://banks.data.fdic.gov/docs/)
 - [YAML Definitions](https://banks.data.fdic.gov/docs/yaml/)
 - [FDIC Data Download](https://banks.data.fdic.gov/data-download/)
+
+---
+
+## Governance and Docs
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [SECURITY.md](SECURITY.md)
+- [LICENSE](LICENSE)
+- [OpenAPI Spec](public/fdic/swagger.yaml)
 
 ---
 

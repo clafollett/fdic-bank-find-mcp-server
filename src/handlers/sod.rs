@@ -11,7 +11,7 @@ use rmcp::model::*;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use tracing::info;
+use tracing::{debug, error, info};
 use utoipa::ToSchema;
 
 /// Auto-generated parameters struct for `/sod` endpoint.
@@ -453,8 +453,23 @@ pub async fn sod_handler(config: &FdicApiConfig, params: &SodParameters) -> Resu
         path = "/sod",
         params = serde_json::to_string(params).unwrap()
     );
-
+    debug!(target = "handler", event = "before_fdic_api_call", endpoint = "sod");
     let resp = get_fdic_bank_find_mcp_response::<_, SodResponse>(config, params).await;
+
+    match &resp {
+        Ok(r) => {
+            info!(
+                target = "handler",
+                event = "fdic_api_response",
+                endpoint = "sod",
+                meta = ?r.meta,
+                totals = ?r.totals
+            );
+        },
+        Err(e) => {
+            error!(target = "handler", event = "fdic_api_error", endpoint = "sod", error = ?e);
+        }
+    }
 
     // Log outgoing FDIC API request as structured JSON
     resp.and_then(|r| r.into_call_tool_result())

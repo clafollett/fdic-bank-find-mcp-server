@@ -3,43 +3,43 @@ mod common;
 mod config;
 mod handlers;
 mod param_utils;
+mod server;
+mod signal;
 
 // Internal imports (std, crate)
-use crate::handlers::FdicBankFindMcpServer;
+use crate::config::Config;
+use std::sync::Arc;
+use tokio::sync::Mutex;
 
 // External imports (alphabetized)
 use dotenvy::dotenv;
-use tracing_appender::non_blocking::WorkerGuard;
+use log::debug;
+use tracing_appender::non_blocking::{NonBlocking, WorkerGuard};
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
-use tracing_subscriber;
 use tracing_subscriber::fmt::writer::MakeWriterExt;
-
-use rmcp::{
-    ServiceExt,
-    transport::{
-        sse_server::{SseServer, SseServerConfig},
-        stdio,
-    },
-};
-use std::time::Duration;
-use tokio_util::sync::CancellationToken;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    eprintln!("=== FDIC MCP main() reached ===");
+    debug!("=== FDIC MCP main() reached ===");
     dotenv().ok();
 
-    // === Dual Logging Setup (configurable) ===
-    // Get log directory from env (default: "logs")
-    let log_dir = std::env::var("FDIC_MCP_LOG_DIR").unwrap_or_else(|_| "logs".to_string());
+    // Load application config
+    let cfg = Arc::new(Mutex::new(Config::load()));
+    // Create log directory from config
+    let log_dir = {
+        let cfg_guard = cfg.lock().await;
+        cfg_guard.log_dir.clone()
+    };
     std::fs::create_dir_all(&log_dir)?;
 
-    // 1. File logger (daily rotation)
+    // === Dual Logging Setup (configurable) ===
+    // 1. File logger (daily rotation, async non-blocking)
     let file_appender = RollingFileAppender::new(Rotation::DAILY, &log_dir, "fdic-mcp.log");
-    let (file_writer, _file_guard): (_, WorkerGuard) = tracing_appender::non_blocking(file_appender);
+    let (file_writer, file_guard): (NonBlocking, WorkerGuard) = tracing_appender::non_blocking(file_appender);
 
-    // 2. Stderr logger (non-blocking)
-    let (stderr_writer, _stderr_guard): (_, WorkerGuard) = tracing_appender::non_blocking(std::io::stderr());
+    // 2. Stderr logger (async non-blocking)
+    let (stderr_writer, stderr_guard): (NonBlocking, WorkerGuard) = tracing_appender::non_blocking(std::io::stderr());
+    // IMPORTANT: Keep file_guard and stderr_guard alive for the duration of main() to prevent premature shutdown of logging and stdio, especially in Docker or MCP stdio mode.
 
     // 3. Combine writers using .and()
     let multi_writer = file_writer.and(stderr_writer);
@@ -50,43 +50,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    eprintln!("[FDIC MCP] After tracing_subscriber setup");
+    debug!("[FDIC MCP] After tracing_subscriber setup");
 
-    // Select transport at runtime (env var MCP_TRANSPORT)
-    let transport = match std::env::var("MCP_TRANSPORT").as_deref() {
-        Ok("sse") => {
-            // SSE/Axum mode
-            eprintln!("[FDIC MCP] SSE mode selected");
-            let addr: std::net::SocketAddr = std::env::var("MCP_SSE_ADDR")
-                .unwrap_or_else(|_| "127.0.0.1:7878".to_string())
-                .parse()?;
-            let sse_config = SseServerConfig {
-                bind: addr,
-                sse_path: "/sse".to_string(),
-                post_path: "/message".to_string(),
-                ct: CancellationToken::new(),
-                sse_keep_alive: Some(Duration::from_secs(15)),
-            };
-            let (sse_server, router) = SseServer::new(sse_config);
-            let _ct = sse_server.with_service(move || FdicBankFindMcpServer::new());
-            eprintln!("[FDIC MCP] Starting SSE/Axum server on {}...", addr);
-            let listener = tokio::net::TcpListener::bind(addr).await?;
-            axum::serve(listener, router).await?;
-            return Ok(());
-        }
-        _ => {
-            eprintln!("[FDIC MCP] Stdio mode selected");
-            stdio()
-        }
-    };
-
-    // Stdio mode: Inspector/CLI
-    eprintln!("[FDIC MCP] Before server()");
-    let service = FdicBankFindMcpServer::new().serve(transport).await?;
-    eprintln!("[FDIC MCP] After serve()");
-    service.waiting().await?;
-    eprintln!("[FDIC MCP] After waiting()");
-    Ok(())
+    // Run unified server orchestrator (handles transport, hot reload, shutdown)
+    server::start(cfg.clone(), file_guard, stderr_guard).await
 }
 
 // #[cfg(test)]

@@ -170,4 +170,62 @@ mod tests {
         let output = normalize_filters(&input);
         assert_eq!(output, Some("  AND  (  )  ".to_string()));
     }
+
+    #[test]
+    fn test_normalize_fields_none() {
+        assert_eq!(normalize_fields(&None::<String>, &["A", "B"]).unwrap(), None);
+    }
+
+    #[test]
+    fn test_normalize_fields_valid() {
+        assert_eq!(
+            normalize_fields(&Some("a,b".to_string()), &["A", "B"]).unwrap(),
+            Some("A,B".to_string())
+        );
+    }
+
+    #[test]
+    fn test_normalize_fields_invalid() {
+        let err = normalize_fields(&Some("C,D".to_string()), &["A", "B"]).unwrap_err();
+        assert!(err.contains("Invalid field"));
+    }
+
+    #[test]
+    fn test_normalize_sort_by_none() {
+        assert_eq!(normalize_sort_by(&None, &["A", "B"]).unwrap(), None);
+    }
+
+    #[test]
+    fn test_normalize_sort_by_valid() {
+        assert_eq!(
+            normalize_sort_by(&Some("a".to_string()), &["A", "B"]).unwrap(),
+            Some("A".to_string())
+        );
+    }
+
+    #[test]
+    fn test_normalize_sort_by_invalid() {
+        let err = normalize_sort_by(&Some("C".to_string()), &["A", "B"]).unwrap_err();
+        assert!(err.contains("Invalid sort_by"));
+    }
+
+    #[test]
+    fn test_normalize_sort_order_none() {
+        assert_eq!(normalize_sort_order(&None).unwrap(), None);
+    }
+
+    #[test]
+    fn test_normalize_sort_order_valid_asc() {
+        assert_eq!(normalize_sort_order(&Some("asc".to_string())).unwrap(), Some("ASC".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_sort_order_valid_desc() {
+        assert_eq!(normalize_sort_order(&Some("DESC".to_string())).unwrap(), Some("DESC".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_sort_order_invalid() {
+        assert!(normalize_sort_order(&Some("up".to_string())).is_err());
+    }
 }
