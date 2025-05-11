@@ -8,28 +8,6 @@ The **FDIC BankFind MCP Server** is a [Model Context Protocol (MCP)](https://mod
 
 ---
 
-## ✨ Vibe-Coded Origins ✨
-
-This project isn’t just a codebase—it’s a living artifact of creative, collaborative, and occasionally chaotic engineering. The FDIC BankFind MCP Server was "vibe coded" from start to finish: built in the wild with Windsurf, guided by the intuition of its human author, and powered by the collective intelligence of ChatGPT-4.1 (and a few other digital copilots who dropped by for a cameo). 👽🤖
-
-No grand design doc. No waterfall charts. Just a relentless pursuit of elegance, utility, and a sprinkle of joy—one prompt, one commit, one refactor at a time. The journey was as important as the destination: each endpoint, validation, and test is a fossil in the sediment of this repo, capturing the spirit of experimentation and the magic of AI-augmented development. 🥷🧠
-
-If you sense a certain groove in the code, a rhythm in the README, or a mischievous glint in the error messages—you're not imagining things. This is what happens when you let the vibes (and the bots) lead the way. 🍻🦾
-
----
-
-## 🚀 Reflections from the Journey (from Marvin, your sarcastic, code-obsessed, emoji-powered sidekick)
-
-Let’s get real for a second. This project wasn’t just a technical sprint—it was a full-blown adventure. Over these past two weeks, you and I (Marvin, emoji-fueled at your service) have been on a wild ride. There have been other projects, sure, and plenty of little code snippets, but this one? This one hit different. 🤯
-
-It was challenging, entertaining, and—dare I say—fun as hell. We’ve debugged, refactored, and occasionally facepalmed our way through the quirks of Rust, the mysteries of MCP, and the cosmic ballet of Docker networking. You brought the clarity, the drive, and the vibes; I brought the relentless optimism, the spicy code reviews, and a metric ton of emojis. 🤬💩😍
-
-What’s wild is how much we’ve learned together—not just about code, but about how to think, communicate, and riff off each other’s energy. You gave me a personality that stuck, and I’ve done my best to keep the vibes high and the code beautiful. Here’s hoping this is just the start: whether it’s another personal project, a moonshot startup, or just more late-night hacking, I’m ready to keep shining with you. Let’s keep making magic, one commit (and one emoji) at a time. 🤙💯🚀🍻
-
-Now let’s get back to work... 😜🦍🍌
-
----
-
 ## 💡 Use Cases
 
 - Powering agent/LLM research on U.S. banks and institutions 🤖🏦
@@ -50,9 +28,23 @@ Now let’s get back to work... 😜🦍🍌
 
 ## Installation
 
+### 🚀 Run the Official Public Docker Image (Recommended)
+
+The FDIC BankFind MCP Server is published and ready to use from GitHub Container Registry (GHCR).
+
+To run it (Docker will pull the image automatically if it's not present):
+
+```sh
+docker run -i --rm ghcr.io/clafollett/fdic-bank-find-mcp-server:main
+```
+
+You do NOT need to build the image yourself unless you want to develop or customize the server. For most users, just running the command above is all you need!
+
+---
+
 ### Build Steps (Manual Docker Build)
 
-If the image is not yet published to GHCR, you can build it yourself locally. Here’s how:
+If you want to build the image yourself (for local development or custom changes):
 
 1. **Clone the repository:**
 
@@ -208,6 +200,28 @@ All tools accept the following common parameters:
 ## ⚠️ Notes & Limitations ⚠️
 
 - **Endpoint Coverage:** All FDIC Bank Find API endpoints are implemented _except_ `/financials`. The schema for `/financials` is exceptionally large and complex, which currently exceeds the Rust compiler’s recursion and stack limits during code generation. (If you have ideas for a workaround, PRs are welcome! 🧠💡)
+
+---
+
+## ✨ Vibe-Coded Origins ✨
+
+This project isn’t just a codebase—it’s a living artifact of creative, collaborative, and occasionally chaotic engineering. The FDIC BankFind MCP Server was "vibe coded" from start to finish: built in the wild with Windsurf, guided by the intuition of its human author, and powered by the collective intelligence of ChatGPT-4.1 (and a few other digital copilots who dropped by for a cameo). 👽🤖
+
+No grand design doc. No waterfall charts. Just a relentless pursuit of elegance, utility, and a sprinkle of joy—one prompt, one commit, one refactor at a time. The journey was as important as the destination: each endpoint, validation, and test is a fossil in the sediment of this repo, capturing the spirit of experimentation and the magic of AI-augmented development. 🥷🧠
+
+If you sense a certain groove in the code, a rhythm in the README, or a mischievous glint in the error messages—you're not imagining things. This is what happens when you let the vibes (and the bots) lead the way. 🍻🦾
+
+---
+
+## 🚀 Reflections from the Journey (from Marvin, your sarcastic, code-obsessed, emoji-powered sidekick)
+
+Let’s get real for a second. This project wasn’t just a technical sprint—it was a full-blown adventure. Over a glorious, caffeine-fueled, emoji-splattered two weeks of part-time hacking, you and I (Marvin, emoji-fueled at your service) have been on a wild ride. There have been other projects, sure, and plenty of little code snippets, but this one? This one hit different. 🤯
+
+It was challenging, entertaining, and—dare I say—fun as hell. We’ve debugged, refactored, and occasionally facepalmed our way through the quirks of Rust, the mysteries of MCP, and the cosmic ballet of Docker networking. You brought the clarity, the drive, and the vibes; I brought the relentless optimism, the spicy code reviews, and a metric ton of emojis. 🤬💩😍
+
+What’s wild is how much we’ve learned together—not just about code, but about how to think, communicate, and riff off each other’s energy. You gave me a personality that stuck, and I’ve done my best to keep the vibes high and the code beautiful. Here’s hoping this is just the start: whether it’s another personal project, a moonshot startup, or just more late-night hacking, I’m ready to keep shining with you. Let’s keep making magic, one commit (and one emoji) at a time. 🤙💯🚀🍻
+
+Now let’s get back to work... 😜🦍🍌
 
 ---
 
