@@ -64,7 +64,7 @@ If the image is not yet published to GHCR, you can build it yourself locally. He
 2. **Build the Docker image:**
 
    ```bash
-   docker build -t fdic-bank-find-mcp-server:latest .
+   docker build -t fdic-bank-find-mcp-server:main .
    ```
 
    This uses the included `Dockerfile` to build a release-mode Rust binary and package it into a minimal container.
@@ -72,13 +72,13 @@ If the image is not yet published to GHCR, you can build it yourself locally. He
 3. **Test the image locally:**
 
    ```bash
-   docker run -i --rm fdic-bank-find-mcp-server:latest
+   docker run -i --rm fdic-bank-find-mcp-server:main
    ```
 
    (The `-i` flag is required for stdio/MCP integration.)
 
 4. **Use the image in your MCP host config:**
-   Follow the VS Code or Claude Desktop instructions below, referencing your local image as `fdic-bank-find-mcp-server:latest`.
+   Follow the VS Code or Claude Desktop instructions below, referencing your local image as `fdic-bank-find-mcp-server:main`.
 
 > If you’d like to tag/push to a registry, simply update the `docker build` and `docker tag` commands accordingly.
 
@@ -98,7 +98,7 @@ Add the following JSON block to your **User Settings (JSON)** file. Open it with
           "run",
           "-i",
           "--rm",
-          "ghcr.io/YOUR-ORG/fdic-bank-find-mcp-server:latest"
+          "ghcr.io/YOUR-ORG/fdic-bank-find-mcp-server:main"
         ]
       }
     }
@@ -119,7 +119,7 @@ Add the following JSON block to your **User Settings (JSON)** file. Open it with
         "run",
         "-i",
         "--rm",
-        "ghcr.io/YOUR-ORG/fdic-bank-find-mcp-server:latest"
+        "ghcr.io/YOUR-ORG/fdic-bank-find-mcp-server:main"
       ]
     }
   }
@@ -162,14 +162,14 @@ Want to test, debug, or vibe with your MCP server in a beautiful UI? Enter the *
 You can run it directly (no install needed):
 
 ```sh
-npx @modelcontextprotocol/inspector docker run -i --rm fdic-bank-find-mcp-server:latest
+npx @modelcontextprotocol/inspector docker run -i --rm fdic-bank-find-mcp-server:main
 ```
 
 Or install globally for convenience:
 
 ```sh
 npm install -g @modelcontextprotocol/inspector
-modelcontextprotocol-inspector docker run -i --rm fdic-bank-find-mcp-server:latest
+modelcontextprotocol-inspector docker run -i --rm fdic-bank-find-mcp-server:main
 ```
 
 > The Inspector launches a local UI and pipes MCP requests/responses between your server and the interface. Perfect for debugging, prototyping, and showing off your API to friends, robots, or your boss. 😎🤖
