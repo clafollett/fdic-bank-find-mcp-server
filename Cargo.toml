@@ -11,16 +11,10 @@ path = "src/main.rs"
 [dependencies]
 signal-hook = "*"
 anyhow = "1.0"
-# async-trait = "0.1"
 axum = { version = "0.8.3", features = ["json", "macros", "ws", "multipart"] }
-# base64 = "0.22.1"
 clap = { version = "4", features = ["derive"] }
 dotenvy = { version = "0.15.7", features = ["cli"] }
 futures = "0.3.31"
-# futures-util = "0.3"
-# hyper = { version = "1", features = ["server"] }
-# NOTE: rustls-tls enabled for reqwest to avoid OpenSSL and support static linking
-# http-body-util = "0.1"
 log = "0.4"
 rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk.git", branch = "main", features = [
     "macros",
